@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Portfolio | Acuff Analytics LLC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+  <div class="nav-container">
+    <div class="logo-mark">
+      <div class="logo-icon" aria-hidden="true">
+        <span class="logo-bar"></span>
+        <span class="logo-bar"></span>
+        <span class="logo-bar"></span>
+      </div>
+      <div>
+        <div class="logo-text-main">Acuff Analytics</div>
+        <div class="logo-text-sub">Simple. Secure. Insightful.</div>
+      </div>
+    </div>
+
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <a href="contact.html" class="nav-cta">Book a KPI Audit</a>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="section-label">Portfolio</div>
+    <h1 class="section-title">Sample dashboard concepts.</h1>
+    <p class="section-subtitle">
+      These examples illustrate how Acuff Analytics LLC structures dashboards for both business
+      performance and nonprofit impact. Actual dashboards are customized for each client’s data
+      sources and goals.
+    </p>
+
+    <div class="portfolio-grid">
+      <article class="portfolio-card">
+        <h3>Business Performance Dashboard</h3>
+        <div class="portfolio-meta">Client: Small Retail / Service Business</div>
+        <div class="portfolio-section">
+          <p><strong>Problem:</strong> Reporting lived in multiple spreadsheets, making it hard to see trends.</p>
+          <p><strong>Approach:</strong> Consolidated POS and revenue data, standardized KPIs, and built a unified dashboard.</p>
+          <p><strong>Key Views:</strong> Sales over time, product/category breakdowns, returning vs new customers, and forecast indicators.</p>
+          <p><strong>Outcome:</strong> Leadership gained a single source of truth for performance and inventory planning.</p>
+        </div>
+      </article>
+
+      <article class="portfolio-card">
+        <h3>Nonprofit Impact Dashboard</h3>
+        <div class="portfolio-meta">Client: Community Nonprofit</div>
+        <div class="portfolio-section">
+          <p><strong>Problem:</strong> Impact and grant metrics were scattered across unlinked spreadsheets.</p>
+          <p><strong>Approach:</strong> Cleaned and merged program, donor, and volunteer data; aligned KPIs with grant requirements.</p>
+          <p><strong>Key Views:</strong> People served, programs delivered, volunteer hours, donor trends, and quarterly snapshots.</p>
+          <p><strong>Outcome:</strong> Clearer storytelling for funders and a stronger case for continued support.</p>
+        </div>
+      </article>
+
+      <article class="portfolio-card">
+        <h3>Financial Reporting Dashboard</h3>
+        <div class="portfolio-meta">Client: Service Organization</div>
+        <div class="portfolio-section">
+          <p><strong>Problem:</strong> Budget vs actuals were difficult to track across departments.</p>
+          <p><strong>Approach:</strong> Integrated budget sheets with accounting exports and added role-based access to sensitive data.</p>
+          <p><strong>Key Views:</strong> Budget variance, multi-year spend trends, department comparisons, vendor analysis.</p>
+          <p><strong>Outcome:</strong> Better forecasting and cost control across the organization.</p>
+        </div>
+      </article>
+
+      <article class="portfolio-card">
+        <h3>Secure Workflow & KPI Audit</h3>
+        <div class="portfolio-meta">Client: Healthcare / Social Services</div>
+        <div class="portfolio-section">
+          <p><strong>Problem:</strong> Sensitive data required strict access, but leadership still needed actionable analytics.</p>
+          <p><strong>Approach:</strong> Conducted a data-access review, implemented secure aggregation, and documented the BI workflow.</p>
+          <p><strong>Key Views:</strong> Program KPIs, workflow bottlenecks, audit log summaries, role-based activity.</p>
+          <p><strong>Outcome:</strong> Reduced reporting time and increased confidence in data security and compliance.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer>
+  &copy; <span id="year"></span> Acuff Analytics LLC. Simple. Secure. Insightful.
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>About | Acuff Analytics LLC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+  <div class="nav-container">
+    <div class="logo-mark">
+      <div class="logo-icon" aria-hidden="true">
+        <span class="logo-bar"></span>
+        <span class="logo-bar"></span>
+        <span class="logo-bar"></span>
+      </div>
+      <div>
+        <div class="logo-text-main">Acuff Analytics</div>
+        <div class="logo-text-sub">Simple. Secure. Insightful.</div>
+      </div>
+    </div>
+
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <a href="contact.html" class="nav-cta">Book a KPI Audit</a>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="section-label">About</div>
+    <h1 class="section-title">Data clarity with a security-first mindset.</h1>
+    <p class="section-subtitle">
+      Acuff Analytics LLC blends professional analytics training with hands-on cybersecurity and
+      operations experience to deliver data you can trust.
+    </p>
+
+    <div class="about-grid">
+      <div>
+        <p>
+          <strong>Acuff Analytics LLC</strong> was founded by <strong>Christian Acuff</strong> to
+          help organizations turn complex data into simple, secure, and insightful reporting.
+          Christian has supported secure systems, improved workflows, and analyzed mission-critical
+          information across healthcare, corporate, nonprofit, and military environments.
+        </p>
+        <br />
+        <p>
+          With the Google Data Analytics Professional Certificate, Christian focuses on the full
+          analytics lifecycle—from collecting and cleaning data to analysis, visualization, and
+          storytelling with dashboards. Tools include spreadsheets, SQL, Tableau, and R.
+        </p>
+        <br />
+        <p>
+          A background in cybersecurity and internal audits shapes every engagement. Data is handled
+          with care, access is considered deliberately, and the outcome is always focused on
+          supporting clear decisions.
+        </p>
+      </div>
+
+      <aside class="about-highlight">
+        <h3>What sets Acuff Analytics apart</h3>
+        <div class="badge-list">
+          <span class="badge">Google Data Analytics</span>
+          <span class="badge">Secure systems mindset</span>
+          <span class="badge">Business & nonprofit focus</span>
+          <span class="badge">KPI & impact strategy</span>
+          <span class="badge">Hands-on operations background</span>
+        </div>
+        <br />
+        <p>
+          Every dashboard is built to be genuinely useful: easy to read, focused on the right
+          metrics, and grounded in the realities of your team, your systems, and your mission.
+        </p>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer>
+  &copy; <span id="year"></span> Acuff Analytics LLC. Simple. Secure. Insightful.
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

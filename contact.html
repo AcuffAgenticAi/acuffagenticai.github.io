@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact | Acuff Analytics LLC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header>
+  <div class="nav-container">
+    <div class="logo-mark">
+      <div class="logo-icon" aria-hidden="true">
+        <span class="logo-bar"></span>
+        <span class="logo-bar"></span>
+        <span class="logo-bar"></span>
+      </div>
+      <div>
+        <div class="logo-text-main">Acuff Analytics</div>
+        <div class="logo-text-sub">Simple. Secure. Insightful.</div>
+      </div>
+    </div>
+
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <a href="contact.html" class="nav-cta">Book a KPI Audit</a>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="section-label">Contact</div>
+    <h1 class="section-title">Let’s build clarity into your data.</h1>
+    <p class="section-subtitle">
+      Share a bit about your business or nonprofit and the data challenges you’re facing. Acuff
+      Analytics LLC will follow up to schedule a call or send over a few practical next steps.
+    </p>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p><strong>Email:</strong> <a href="mailto:christianacuff@gmail.com">christianacuff@gmail.com</a></p>
+        <p><strong>Phone:</strong> <a href="tel:+15572196978">(557) 219-6978</a></p>
+        <p><strong>Location:</strong> St. Louis, MO · Remote-friendly</p>
+        <br />
+        <p>
+          Not sure where to start? Ask about a free 30-minute KPI audit. We’ll review your current
+          reports and identify the most valuable metrics to track.
+        </p>
+      </div>
+
+      <form>
+        <div class="form-row">
+          <label for="name">Name</label>
+          <input id="name" type="text" placeholder="Your name" />
+        </div>
+        <div class="form-row">
+          <label for="org">Organization</label>
+          <input id="org" type="text" placeholder="Business or nonprofit name" />
+        </div>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="you@example.com" />
+        </div>
+        <div class="form-row">
+          <label for="message">How can we help?</label>
+          <textarea
+            id="message"
+            placeholder="Tell us about your data, reporting, or analytics challenges..."
+          ></textarea>
+          <div class="form-note">
+            This demo form is static. In production, connect it to email or a form handler.
+          </div>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn-primary">Send Message</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  &copy; <span id="year"></span> Acuff Analytics LLC. Simple. Secure. Insightful.
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

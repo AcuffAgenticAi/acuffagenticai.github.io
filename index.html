@@ -4,38 +4,123 @@
   <meta charset="UTF-8" />
   <title>Acuff Analytics LLC | Simple. Secure. Insightful.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta
-    name="description"
-    content="Acuff Analytics LLC provides simple, secure, and insightful data analytics solutions for businesses and nonprofits."
-  />
-
-  <!-- Google Fonts -->
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap"
     rel="stylesheet"
   />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <div class="logo-mark">
+        <div class="logo-icon" aria-hidden="true">
+          <span class="logo-bar"></span>
+          <span class="logo-bar"></span>
+          <span class="logo-bar"></span>
+        </div>
+        <div>
+          <div class="logo-text-main">Acuff Analytics</div>
+          <div class="logo-text-sub">Simple. Secure. Insightful.</div>
+        </div>
+      </div>
 
-  <style>
-    :root {
-      --color-slate-blue: #5a6a87;
-      --color-charcoal: #2f3640;
-      --color-soft-white: #f7f8fa;
-      --color-muted-teal: #6fa7a2;
-      --color-graphite: #8c95a1;
-      --max-width: 1100px;
-    }
+      <nav aria-label="Main navigation">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="portfolio.html">Portfolio</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+      <a href="contact.html" class="nav-cta">Book a KPI Audit</a>
+    </div>
+  </header>
 
-    body {
-      font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
-      background-color: var(--color-soft-white);
-      color: var(--color-charcoal);
-      line-height: 1.6;
-    }
+  <main>
+    <section id="hero">
+      <div class="hero">
+        <div>
+          <div class="hero-badge">Data intelligence for businesses & nonprofits</div>
+          <h1 class="hero-title">Simple. Secure. Insightful.</h1>
+          <p class="hero-tagline">
+            Intelligence that drives decisions for businesses and nonprofits. Acuff Analytics LLC
+            turns complex, scattered data into clear, confident insight.
+          </p>
 
+          <div class="hero-cta-group">
+            <a href="contact.html" class="btn-primary">Schedule a Consultation</a>
+            <a href="services.html" class="btn-secondary">View Services</a>
+          </div>
+
+          <div class="hero-meta">
+            <span>Business & nonprofit dashboards</span>
+            <span>Secure, privacy-conscious reporting</span>
+            <span>From raw data to decision-ready insight</span>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Sample KPI panel">
+          <div class="hero-card-title">Sample KPI Snapshot</div>
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-label">Monthly Revenue</div>
+              <div class="kpi-value">$185K</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Impact Reach</div>
+              <div class="kpi-value">4,320+</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Donor Retention</div>
+              <div class="kpi-value">78%</div>
+            </div>
+          </div>
+          <p class="kpi-footnote">
+            Real dashboards are tailored to your metrics, mission, and data sources.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-label">Overview</div>
+      <h2 class="section-title">Turning data into decisions.</h2>
+      <p class="section-subtitle">
+        Acuff Analytics LLC helps organizations move from scattered spreadsheets and manual reports
+        to clean, secure, and decision-ready dashboards.
+      </p>
+
+      <div class="cards-grid">
+        <article class="card">
+          <div class="card-tag">Businesses</div>
+          <h3 class="card-title">Small Business BI</h3>
+          <p>Unified views of sales, operations, and financials for owners and leadership teams.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-tag">Nonprofits</div>
+          <h3 class="card-title">Impact Analytics</h3>
+          <p>Grant-ready dashboards and impact metrics that tell your story with data.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-tag">Security</div>
+          <h3 class="card-title">Secure Workflows</h3>
+          <p>Analytics built with a security-first mindset, informed by cybersecurity experience.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> Acuff Analytics LLC. Simple. Secure. Insightful.
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
