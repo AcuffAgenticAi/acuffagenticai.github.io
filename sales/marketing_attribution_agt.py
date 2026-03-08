@@ -27,12 +27,6 @@ class MarketingAttributionAgent:
             "top_converter": "Paid Search",
             "top_introducer": "Organic Social (LinkedIn)",
             "efficiency_score": 0.85
-        }
-
-# Example Usage for the Leadership Dashboard
-# agent = MarketingAttributionAgent(marketing_df, sales_df)
-# print(agent.get_attribution_summary())
-    
      def calculate_u_shaped_attribution(journey_df):
     """
     Assigns 40% credit to the first touch, 40% to the last, 
@@ -60,3 +54,10 @@ class MarketingAttributionAgent:
                 attributed_results.append({channel: revenue * weights[i]})
                 
     return pd.DataFrame(attributed_results).sum()
+        }
+
+# Example Usage for the Leadership Dashboard
+# agent = MarketingAttributionAgent(marketing_df, sales_df)
+# print(agent.get_attribution_summary())
+    
+ s).sum()
