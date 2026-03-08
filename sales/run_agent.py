@@ -1,5 +1,7 @@
 import pandas as pd
 import os
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 class AttributionAgent:
     def __init__(self, filename):
@@ -16,18 +18,33 @@ class AttributionAgent:
     def analyze_performance(self):
         if self.df is None: return
         
-        # Group by channel to sum Revenue and Cost
+        # Group by channel
         metrics = self.df.groupby('channel').agg({
             'revenue': 'sum',
             'cost': 'sum'
-        })
+        }).reset_index()
 
-        # Calculate ROAS: Revenue / Cost
-        # We use fillna(0) for Organic channels where cost might be 0
-        metrics['roas'] = (metrics['revenue'] / metrics['cost']).fillna(float('inf'))
+        # Calculate ROAS (Handle zero cost for organic)
+        metrics['roas'] = metrics.apply(
+            lambda x: x['revenue'] / x['cost'] if x['cost'] > 0 else x['revenue'], 
+            axis=1
+        )
         
         print(metrics.sort_values(by='roas', ascending=False))
+        self.create_visual(metrics)
         return metrics
+
+    def create_visual(self, metrics):
+        plt.figure(figsize=(10, 6))
+        sns.barplot(x='channel', y='roas', data=metrics, palette='viridis')
+        plt.title('Marketing Channel Performance (ROAS)')
+        plt.ylabel('Return on Ad Spend (ROAS)')
+        plt.xlabel('Channel')
+        
+        # Save the report to your folder
+        report_path = os.path.join(os.path.dirname(__file__), 'roas_report.png')
+        plt.savefig(report_path)
+        print(f"\n--- Visual Report Saved: {report_path} ---")
 
 if __name__ == "__main__":
     agent = AttributionAgent('marketing_data.csv')
