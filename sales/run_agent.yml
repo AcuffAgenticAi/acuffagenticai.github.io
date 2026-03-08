@@ -1,0 +1,35 @@
+name: Run Attribution Agent
+
+on:
+  push:
+    paths:
+      - 'sales/marketing_data.csv' # Only runs when data changes
+  workflow_dispatch: # Allows you to run it manually
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install -r sales/requirements.txt
+
+      - name: Run Attribution Agent
+        run: |
+          python sales/run_agent.py
+
+      - name: Commit and Push Report
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add sales/roas_report.png
+          git commit -m "Automated update: New ROAS report generated" || exit 0
+          git push
