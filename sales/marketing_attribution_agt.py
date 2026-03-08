@@ -27,12 +27,12 @@ class MarketingAttributionAgent:
             "top_converter": "Paid Search",
             "top_introducer": "Organic Social (LinkedIn)",
             "efficiency_score": 0.85
-     def calculate_u_shaped_attribution(journey_df):
-    """
-    Assigns 40% credit to the first touch, 40% to the last, 
-    and splits 20% across all intermediate touches.
-    """
-    attributed_results = []
+    def calculate_u_shaped_attribution(journey_df):
+        """
+        Assigns 40% credit to the first touch, 40% to the last, 
+        and splits 20% across all intermediate touches.
+        """
+        attributed_results = []
 
     for index, row in journey_df.iterrows():
         touches = row['channel_path'].split(' > ')
