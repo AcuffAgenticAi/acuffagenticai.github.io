@@ -1,0 +1,2827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acuff Agentic AI & Analytics — Industrial Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ROOT & RESET
+============================================================ */
+:root {
+  --obsidian:   #0A0A0B;
+  --obsidian2:  #0E0E10;
+  --obsidian3:  #131316;
+  --cyan:       #00F5FF;
+  --cyan-dim:   rgba(0,245,255,0.08);
+  --cyan-mid:   rgba(0,245,255,0.18);
+  --cyan-glow:  rgba(0,245,255,0.35);
+  --neural:     #8E9AAF;
+  --white:      #F8F9FA;
+  --grid-line:  rgba(142,154,175,0.10);
+  --border:     rgba(142,154,175,0.14);
+  --green:      #00E676;
+  --amber:      #FFC107;
+  --red:        #FF3B30;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:16px; }
+
+body {
+  background: var(--obsidian);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ============================================================
+   CUSTOM CURSOR
+============================================================ */
+#cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--cyan);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, opacity 0.2s;
+  box-shadow: 0 0 12px var(--cyan);
+  transform: translate(-50%, -50%);
+}
+#cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(0,245,255,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transition: width 0.25s, height 0.25s, border-color 0.25s, transform 0.08s linear;
+  transform: translate(-50%, -50%);
+}
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring {
+  width: 56px; height: 56px;
+  border-color: var(--cyan);
+}
+
+/* ============================================================
+   GLOBAL BACKGROUND EFFECTS
+============================================================ */
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+.bg-scanlines {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(0,0,0,0.025) 3px, rgba(0,0,0,0.025) 4px
+  );
+}
+.bg-vignette {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%);
+}
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10,10,11,0.92);
+  backdrop-filter: blur(24px);
+  transition: border-color 0.3s;
+}
+
+.nav-logo {
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer;
+}
+.nav-logo-pulse {
+  width: 9px; height: 9px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 14px var(--cyan);
+  animation: navpulse 2.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes navpulse {
+  0%,100%{ opacity:1; box-shadow: 0 0 14px var(--cyan); }
+  50%{ opacity:0.35; box-shadow: 0 0 4px var(--cyan); }
+}
+.nav-logo-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--white);
+  text-transform: uppercase;
+}
+.nav-logo-text span { color: var(--cyan); }
+
+.nav-links {
+  display: flex; align-items: center; gap: 0;
+  list-style: none;
+}
+.nav-links li a {
+  display: block;
+  padding: 0 20px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--neural);
+  text-decoration: none;
+  text-transform: uppercase;
+  line-height: 64px;
+  transition: color 0.2s;
+  position: relative;
+}
+.nav-links li a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 20px; right: 20px;
+  height: 1px;
+  background: var(--cyan);
+  transform: scaleX(0);
+  transition: transform 0.25s ease;
+}
+.nav-links li a:hover,
+.nav-links li a.active { color: var(--white); }
+.nav-links li a:hover::after,
+.nav-links li a.active::after { transform: scaleX(1); }
+
+.nav-status {
+  display: flex; align-items: center; gap: 24px;
+}
+.status-badge {
+  display: flex; align-items: center; gap: 7px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--green);
+  text-transform: uppercase;
+}
+.status-dot {
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: navpulse 1.8s ease-in-out infinite;
+  box-shadow: 0 0 8px var(--green);
+}
+.nav-cta {
+  padding: 9px 22px;
+  background: var(--cyan);
+  color: var(--obsidian);
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, letter-spacing 0.2s;
+}
+.nav-cta:hover { background: var(--white); letter-spacing: 0.28em; }
+
+/* ============================================================
+   PAGE SYSTEM
+============================================================ */
+.page {
+  display: none;
+  min-height: 100vh;
+  padding-top: 64px;
+  position: relative;
+  z-index: 1;
+  animation: pageIn 0.45s ease both;
+}
+.page.active { display: block; }
+@keyframes pageIn {
+  from { opacity:0; transform: translateY(10px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* ============================================================
+   SHARED COMPONENTS
+============================================================ */
+.section-tag {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.4em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.section-tag::before { content: '//'; opacity: 0.5; }
+.section-tag::after {
+  content: '';
+  display: block; width: 32px; height: 1px;
+  background: var(--cyan); opacity: 0.5;
+}
+
+.section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(36px, 4vw, 56px);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+.section-title em { font-style: normal; color: var(--cyan); }
+
+.section-body {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--neural);
+  max-width: 560px;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+  margin: 0;
+}
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 28px;
+  background: var(--cyan);
+  color: var(--obsidian);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none; cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: letter-spacing 0.2s;
+}
+.btn-primary::before {
+  content:''; position:absolute; inset:0;
+  background: var(--white);
+  transform: translateX(-101%);
+  transition: transform 0.3s ease;
+}
+.btn-primary:hover { letter-spacing: 0.28em; }
+.btn-primary:hover::before { transform: translateX(0); }
+.btn-primary span { position: relative; z-index:1; }
+
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 28px;
+  background: transparent;
+  color: var(--neural);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.btn-outline:hover { color: var(--white); border-color: rgba(248,249,250,0.4); }
+
+/* ============================================================
+   PAGE: HOME
+============================================================ */
+
+/* --- HERO --- */
+.hero {
+  min-height: calc(100vh - 64px);
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 0;
+  align-items: center;
+  padding: 80px 48px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* BIG BG WATERMARK */
+.hero-watermark {
+  position: absolute;
+  right: -60px; top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(140px, 20vw, 300px);
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(0,245,255,0.04);
+  letter-spacing: -0.06em;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+
+.hero-left {
+  position: relative;
+  z-index: 2;
+  animation: fadeInUp 0.7s ease 0.1s both;
+}
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border: 1px solid rgba(0,245,255,0.25);
+  background: rgba(0,245,255,0.04);
+  margin-bottom: 36px;
+}
+.hero-tag::before { content: '//'; opacity:0.6; }
+
+h1.hero-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(44px, 5.5vw, 80px);
+  line-height: 0.97;
+  letter-spacing: -0.035em;
+  margin-bottom: 30px;
+}
+h1.hero-title em { font-style:normal; color: var(--cyan); }
+h1.hero-title .outline {
+  -webkit-text-stroke: 1px rgba(248,249,250,0.25);
+  color: transparent;
+}
+
+.hero-sub {
+  font-size: 17px;
+  line-height: 1.72;
+  color: var(--neural);
+  margin-bottom: 48px;
+  max-width: 520px;
+}
+
+.hero-actions {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 60px;
+  animation: fadeInUp 0.7s ease 0.35s both;
+}
+
+.hero-trust {
+  display: flex; align-items: center; gap: 16px;
+  animation: fadeInUp 0.7s ease 0.5s both;
+}
+.trust-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--neural);
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+.trust-items {
+  display: flex; gap: 20px;
+}
+.trust-item {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: rgba(248,249,250,0.25);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.trust-item:hover { color: rgba(248,249,250,0.5); }
+
+/* TERMINAL PANEL */
+.hero-terminal {
+  position: relative;
+  z-index: 2;
+  border: 1px solid rgba(0,245,255,0.18);
+  background: rgba(10,10,11,0.97);
+  overflow: hidden;
+  animation: fadeInUp 0.7s ease 0.2s both;
+  box-shadow: 0 0 60px rgba(0,245,255,0.05), 0 40px 80px rgba(0,0,0,0.5);
+}
+
+.terminal-titlebar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 16px;
+  background: rgba(0,245,255,0.04);
+  border-bottom: 1px solid rgba(0,245,255,0.12);
+}
+.td { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+.td-r { background:#FF5F57; } .td-y { background:#FEBC2E; } .td-g { background:#28C840; }
+.terminal-title {
+  margin-left: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--neural);
+  opacity: 0.6;
+}
+.terminal-badge {
+  margin-left: auto;
+  padding: 3px 8px;
+  background: rgba(0,230,118,0.12);
+  border: 1px solid rgba(0,230,118,0.25);
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: var(--green);
+  text-transform: uppercase;
+}
+
+.terminal-body {
+  padding: 20px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  line-height: 1.9;
+  min-height: 220px;
+}
+.t-prompt { color: var(--cyan); }
+.t-cmd    { color: var(--white); }
+.t-out    { color: var(--neural); padding-left: 18px; display:block; }
+.t-ok     { color: var(--green);  padding-left: 18px; display:block; }
+.t-warn   { color: var(--amber);  padding-left: 18px; display:block; }
+.t-err    { color: var(--red);    padding-left: 18px; display:block; }
+.t-line   { display:flex; gap:8px; }
+.t-cursor {
+  display:inline-block; width:8px; height:13px;
+  background: var(--cyan); vertical-align:middle; margin-left:3px;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+/* TERMINAL TABS */
+.terminal-tabs {
+  display: flex; border-bottom: 1px solid rgba(0,245,255,0.1);
+}
+.ttab {
+  padding: 10px 18px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--neural);
+  text-transform: uppercase;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  opacity: 0.5;
+}
+.ttab.active { color: var(--cyan); border-bottom-color: var(--cyan); opacity:1; }
+
+/* TERMINAL FOOTER */
+.terminal-footer {
+  padding: 10px 16px;
+  background: rgba(0,245,255,0.02);
+  border-top: 1px solid rgba(0,245,255,0.08);
+  display: flex; align-items: center; gap: 20px;
+}
+.tf-item {
+  display: flex; align-items: center; gap: 6px;
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: var(--neural);
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+.tf-dot { width:5px; height:5px; border-radius:50%; background: var(--green); }
+
+/* --- METRICS RAIL --- */
+.metrics-rail {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  background: var(--border);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.metric-cell {
+  background: var(--obsidian);
+  padding: 32px 40px;
+  border-right: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+.metric-cell:last-child { border-right: none; }
+.metric-cell::after {
+  content: '';
+  position: absolute; top:0; left:0; right:0;
+  height: 2px;
+  background: var(--cyan);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.metric-cell:hover { background: rgba(0,245,255,0.02); }
+.metric-cell:hover::after { transform: scaleX(1); }
+
+.metric-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--cyan);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.metric-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  color: var(--neural);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.metric-sub {
+  font-size: 12px;
+  color: rgba(142,154,175,0.5);
+  line-height: 1.5;
+}
+.metric-delta {
+  position: absolute; top:32px; right:40px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: var(--green);
+  letter-spacing: 0.1em;
+}
+
+/* --- MARQUEE --- */
+.marquee-bar {
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  background: rgba(0,245,255,0.015);
+}
+.marquee-track {
+  display: flex;
+  animation: marqueeScroll 30s linear infinite;
+  white-space: nowrap;
+}
+.marquee-item {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  color: var(--neural);
+  text-transform: uppercase;
+  padding: 0 40px;
+  flex-shrink: 0;
+  opacity: 0.45;
+}
+.marquee-item span { color: var(--cyan); opacity:1; }
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* --- SERVICES SECTION --- */
+.services-section {
+  padding: 100px 48px;
+}
+.services-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: end;
+  margin-bottom: 60px;
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.service-card {
+  background: var(--obsidian);
+  padding: 44px 40px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+.service-card:nth-child(3n) { border-right:none; }
+.service-card:nth-child(n+4) { border-bottom:none; }
+.service-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background: var(--cyan);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.service-card:hover { background: rgba(0,245,255,0.025); }
+.service-card:hover::before { transform: scaleX(1); }
+
+.sc-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--cyan);
+  opacity: 0.55;
+  margin-bottom: 22px;
+}
+.sc-icon {
+  width: 36px; height: 36px;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+.sc-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 19px;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  transition: color 0.2s;
+}
+.service-card:hover .sc-title { color: var(--cyan); }
+.sc-body {
+  font-size: 13.5px;
+  line-height: 1.72;
+  color: var(--neural);
+  margin-bottom: 22px;
+}
+.sc-tags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.sc-tag {
+  padding: 3px 9px;
+  border: 1px solid rgba(0,245,255,0.15);
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+.sc-arrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 20px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+.service-card:hover .sc-arrow { opacity:1; transform:translateX(0); }
+
+/* --- CALLOUT BAND --- */
+.callout-band {
+  margin: 0 48px;
+  padding: 72px;
+  border: 1px solid rgba(0,245,255,0.14);
+  background: rgba(0,245,255,0.025);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 80px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.callout-band::before {
+  content: 'DEPLOY';
+  position: absolute; right:-30px; top:50%;
+  transform: translateY(-50%);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 180px;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(0,245,255,0.03);
+  pointer-events: none; letter-spacing:-0.05em;
+}
+.cb-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 3vw, 44px);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+.cb-sub {
+  font-size: 15px; line-height: 1.7;
+  color: var(--neural); max-width: 560px;
+}
+.cb-actions { display:flex; flex-direction:column; gap:12px; flex-shrink:0; }
+
+/* --- PROCESS SECTION --- */
+.process-section {
+  padding: 100px 48px;
+  border-top: 1px solid var(--border);
+}
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 64px;
+  position: relative;
+}
+.process-steps::before {
+  content:'';
+  position:absolute; top:23px; left:12%; right:12%;
+  height:1px;
+  background: linear-gradient(90deg, transparent, rgba(0,245,255,0.3), transparent);
+}
+.p-step { padding: 0 28px; text-align:center; }
+.p-step-num {
+  width: 46px; height: 46px;
+  border: 1px solid rgba(0,245,255,0.28);
+  display: flex; align-items:center; justify-content:center;
+  margin: 0 auto 24px;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  color: var(--cyan);
+  background: var(--obsidian);
+  position: relative; z-index:1;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.p-step:hover .p-step-num {
+  background: var(--cyan-dim);
+  box-shadow: 0 0 20px rgba(0,245,255,0.15);
+}
+.p-step h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing:-0.01em;
+  margin-bottom: 10px;
+}
+.p-step p {
+  font-size: 13px; line-height:1.65;
+  color: var(--neural);
+}
+
+/* --- SOCIAL PROOF --- */
+.proof-section {
+  padding: 80px 48px;
+  border-top: 1px solid var(--border);
+  background: var(--obsidian2);
+}
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  background: var(--border);
+  margin-top: 56px;
+  border: 1px solid var(--border);
+}
+.proof-card {
+  background: var(--obsidian2);
+  padding: 44px 40px;
+  border-right: 1px solid var(--border);
+  transition: background 0.3s;
+}
+.proof-card:last-child { border-right:none; }
+.proof-card:hover { background: rgba(0,245,255,0.02); }
+.proof-quote {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: rgba(248,249,250,0.75);
+  margin-bottom: 28px;
+  font-style: italic;
+}
+.proof-quote::before { content: '"'; color: var(--cyan); font-size:20px; }
+.proof-author {
+  display: flex; align-items:center; gap: 12px;
+}
+.proof-avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--cyan-dim);
+  border: 1px solid rgba(0,245,255,0.25);
+  display: flex; align-items:center; justify-content:center;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  font-weight: 700;
+  flex-shrink:0;
+}
+.proof-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+.proof-role {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--neural);
+  opacity: 0.6;
+  text-transform: uppercase;
+}
+.proof-stat {
+  display: flex; align-items:baseline; gap: 6px;
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+.proof-stat-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--cyan);
+  letter-spacing: -0.03em;
+}
+.proof-stat-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--neural);
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   PAGE: SOLUTIONS
+============================================================ */
+.solutions-hero {
+  padding: 80px 48px 60px;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: end;
+}
+.sh-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.4em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
+.solutions-intro {
+  font-size: 15px; line-height:1.75;
+  color: var(--neural);
+}
+
+/* SOLUTION DETAIL BLOCKS */
+.solution-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+.solution-block:nth-child(even) .sb-visual { order:-1; }
+.sb-content {
+  padding: 80px 60px;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction:column; justify-content:center;
+}
+.solution-block:nth-child(even) .sb-content { border-right:none; border-left:1px solid var(--border); }
+.sb-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.sb-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(26px, 3vw, 38px);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+.sb-body {
+  font-size: 14.5px; line-height:1.75;
+  color: var(--neural);
+  margin-bottom: 32px;
+}
+.sb-features {
+  list-style: none;
+  margin-bottom: 36px;
+}
+.sb-features li {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 13px; line-height:1.6;
+  color: var(--neural);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--grid-line);
+}
+.sb-features li::before {
+  content: '→';
+  color: var(--cyan); flex-shrink:0; margin-top:1px;
+  font-family: 'Space Mono', monospace;
+}
+
+/* Solution visual panels */
+.sb-visual {
+  padding: 60px;
+  background: var(--obsidian2);
+  display: flex; align-items:center; justify-content:center;
+  position: relative;
+  overflow: hidden;
+  min-height: 420px;
+}
+.sb-visual::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.5;
+}
+
+/* Diagram widgets */
+.diag-widget {
+  position: relative; z-index:1;
+  width: 100%; max-width: 340px;
+}
+.diag-node {
+  padding: 12px 20px;
+  border: 1px solid rgba(0,245,255,0.2);
+  background: rgba(10,10,11,0.9);
+  margin-bottom: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--white);
+  text-transform: uppercase;
+  display: flex; align-items:center; gap: 10px;
+  transition: border-color 0.3s, background 0.3s;
+}
+.diag-node:hover { border-color: var(--cyan); background: var(--cyan-dim); }
+.diag-node-dot {
+  width: 7px; height:7px;
+  border-radius:50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+  flex-shrink:0;
+  animation: navpulse 2s infinite;
+}
+.diag-node-dot.amber { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
+.diag-node-dot.green { background: var(--green); box-shadow: 0 0 8px var(--green); }
+.diag-connector {
+  width: 1px; height: 20px;
+  background: linear-gradient(180deg, var(--cyan), transparent);
+  margin: 0 auto 0 29px;
+  opacity: 0.4;
+}
+.diag-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: var(--neural);
+  text-transform: uppercase;
+  opacity: 0.5;
+  text-align:center;
+  margin-top: 16px;
+}
+
+/* Gauge widget */
+.gauge-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  width: 100%; max-width: 320px;
+}
+.gauge-cell {
+  padding: 18px;
+  border: 1px solid rgba(0,245,255,0.12);
+  background: rgba(10,10,11,0.9);
+  text-align: center;
+}
+.gauge-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--cyan);
+  letter-spacing: -0.03em;
+  margin-bottom: 4px;
+}
+.gauge-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: var(--neural);
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+.gauge-bar {
+  height: 3px;
+  background: rgba(0,245,255,0.12);
+  margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.gauge-bar-fill {
+  position: absolute; top:0; left:0; bottom:0;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+/* Data stream widget */
+.stream-widget {
+  width: 100%; max-width: 340px;
+  border: 1px solid rgba(0,245,255,0.15);
+  background: rgba(10,10,11,0.95);
+  overflow: hidden;
+}
+.stream-header {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(0,245,255,0.1);
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--neural);
+  text-transform: uppercase;
+  display:flex; align-items:center; gap:8px;
+}
+.stream-row {
+  padding: 9px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: flex; justify-content:space-between; align-items:center;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  transition: background 0.2s;
+}
+.stream-row:hover { background: rgba(0,245,255,0.03); }
+.stream-key { color: var(--neural); letter-spacing:0.1em; }
+.stream-val { color: var(--white); font-size: 11px; }
+.stream-val.up   { color: var(--green); }
+.stream-val.warn { color: var(--amber); }
+.stream-val.down { color: var(--red); }
+
+/* SOLUTIONS TABS */
+.solutions-tabs-section {
+  padding: 80px 48px;
+  border-bottom: 1px solid var(--border);
+}
+.tab-buttons {
+  display: flex; gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+}
+.tab-btn {
+  padding: 14px 24px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--neural);
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.tab-btn.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+.tab-btn:hover { color: var(--white); }
+.tab-panel { display:none; padding: 48px 0 0; }
+.tab-panel.active { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+.tp-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(24px, 2.5vw, 36px);
+  letter-spacing: -0.03em;
+  margin-bottom: 18px;
+}
+.tp-body { font-size:14px; line-height:1.75; color:var(--neural); margin-bottom:24px; }
+.tp-checklist { list-style:none; }
+.tp-checklist li {
+  padding: 11px 0;
+  border-bottom: 1px solid var(--grid-line);
+  font-size: 13.5px;
+  color: var(--neural);
+  display: flex; gap: 12px; align-items:flex-start;
+}
+.tp-checklist li::before {
+  content: '✓';
+  color: var(--cyan);
+  font-family: 'Space Mono', monospace;
+  flex-shrink:0;
+}
+
+/* ============================================================
+   PAGE: CASE STUDIES
+============================================================ */
+.cases-hero {
+  padding: 80px 48px 60px;
+  border-bottom: 1px solid var(--border);
+}
+.cases-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-top: none;
+}
+.case-card {
+  background: var(--obsidian);
+  padding: 56px 52px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.case-card:nth-child(2n) { border-right: none; }
+.case-card:nth-last-child(-n+2) { border-bottom: none; }
+.case-card:hover { background: rgba(0,245,255,0.02); }
+.case-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:3px;
+  background: linear-gradient(90deg, var(--cyan), transparent);
+  transform: scaleX(0); transform-origin:left;
+  transition: transform 0.5s ease;
+}
+.case-card:hover::before { transform: scaleX(1); }
+
+.case-industry {
+  display: inline-block;
+  padding: 4px 10px;
+  border: 1px solid rgba(0,245,255,0.2);
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.case-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(20px, 2.2vw, 28px);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  transition: color 0.2s;
+}
+.case-card:hover .case-title { color: var(--cyan); }
+.case-body {
+  font-size: 13.5px; line-height: 1.72;
+  color: var(--neural);
+  margin-bottom: 32px;
+}
+.case-results {
+  display: flex; gap: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.cr-item {}
+.cr-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--cyan);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.cr-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: var(--neural);
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+.case-tag-list {
+  display: flex; flex-wrap:wrap; gap:6px;
+  margin-bottom: 20px;
+}
+.case-tag {
+  padding: 3px 8px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  color: var(--neural);
+  text-transform: uppercase;
+}
+.case-featured {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+.cf-content {
+  padding: 72px 60px;
+  border-right: 1px solid var(--border);
+}
+.cf-visual {
+  padding: 60px;
+  background: var(--obsidian2);
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
+}
+.cf-visual::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.cf-badge {
+  display: inline-flex; align-items:center; gap:8px;
+  padding: 6px 14px;
+  background: rgba(0,230,118,0.08);
+  border: 1px solid rgba(0,230,118,0.25);
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.cf-badge::before { content:'★'; }
+.cf-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 3vw, 44px);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin-bottom: 20px;
+}
+.cf-body { font-size:14.5px; line-height:1.75; color:var(--neural); margin-bottom:36px; }
+.cf-results {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.cfr-item {
+  background: var(--obsidian2);
+  padding: 22px 20px;
+  border-right: 1px solid var(--border);
+  text-align:center;
+}
+.cfr-item:last-child { border-right:none; }
+.cfr-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: var(--cyan);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.cfr-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  color: var(--neural);
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* Chart mock inside CF visual */
+.chart-mock {
+  position:relative; z-index:1;
+  width: 100%; max-width: 360px;
+}
+.chart-header {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom: 20px;
+}
+.chart-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing:0.2em;
+  color: var(--neural);
+  text-transform: uppercase;
+}
+.chart-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight:700;
+  font-size:20px;
+  color: var(--cyan);
+  letter-spacing:-0.03em;
+}
+.chart-bars {
+  display:flex; align-items:flex-end; gap:6px;
+  height:110px;
+  padding-bottom:1px;
+  border-bottom: 1px solid rgba(0,245,255,0.12);
+}
+.chart-bar {
+  flex:1;
+  background: rgba(0,245,255,0.12);
+  position:relative;
+  min-height:4px;
+  transition: background 0.2s;
+}
+.chart-bar:hover { background: rgba(0,245,255,0.3); }
+.chart-bar.active { background: var(--cyan); box-shadow: 0 0 10px rgba(0,245,255,0.4); }
+.chart-x {
+  display:flex; justify-content:space-between;
+  margin-top:8px;
+  font-family:'Space Mono', monospace;
+  font-size:8px; letter-spacing:0.1em;
+  color:var(--neural); opacity:0.4;
+}
+
+/* ============================================================
+   PAGE: ABOUT
+============================================================ */
+.about-hero {
+  padding: 80px 48px 0;
+  border-bottom: 1px solid var(--border);
+}
+.about-headline {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(48px, 6vw, 88px);
+  letter-spacing: -0.04em;
+  line-height: 0.96;
+  margin-bottom: 60px;
+  max-width: 800px;
+}
+.about-headline em { font-style:normal; color:var(--cyan); }
+.about-headline .outline {
+  -webkit-text-stroke: 1px rgba(248,249,250,0.18);
+  color: transparent;
+}
+
+.about-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  padding: 60px 0;
+  border-top: 1px solid var(--border);
+}
+.ai-body { font-size:15.5px; line-height:1.8; color:var(--neural); }
+.ai-body p { margin-bottom:20px; }
+.ai-body strong { color: var(--white); font-weight:500; }
+
+.about-values {
+  padding: 80px 48px;
+  border-top: 1px solid var(--border);
+  background: var(--obsidian2);
+}
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 56px;
+}
+.value-card {
+  background: var(--obsidian2);
+  padding: 40px 36px;
+  border-right: 1px solid var(--border);
+  transition: background 0.3s;
+}
+.value-card:last-child { border-right:none; }
+.value-card:hover { background: rgba(0,245,255,0.02); }
+.value-icon {
+  font-family: 'Space Mono', monospace;
+  font-size: 24px;
+  color: var(--cyan);
+  margin-bottom: 16px;
+  opacity: 0.8;
+}
+.value-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+.value-body { font-size:13px; line-height:1.65; color:var(--neural); }
+
+.team-section {
+  padding: 80px 48px;
+  border-top: 1px solid var(--border);
+}
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 56px;
+}
+.team-card {
+  background: var(--obsidian);
+  padding: 36px 32px;
+  border-right: 1px solid var(--border);
+  transition: background 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.team-card:last-child { border-right: none; }
+.team-card:hover { background: rgba(0,245,255,0.02); }
+.team-card::before {
+  content:'';
+  position:absolute; bottom:0; left:0; right:0; height:2px;
+  background: var(--cyan);
+  transform: scaleX(0); transform-origin:left;
+  transition: transform 0.4s ease;
+}
+.team-card:hover::before { transform: scaleX(1); }
+.team-avatar {
+  width: 56px; height:56px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,245,255,0.2);
+  background: var(--cyan-dim);
+  display: flex; align-items:center; justify-content:center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--cyan);
+  margin-bottom: 20px;
+}
+.team-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.team-role {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-bottom: 14px;
+}
+.team-bio { font-size:12.5px; line-height:1.65; color:var(--neural); }
+
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.as-cell {
+  background: var(--obsidian);
+  padding: 40px 36px;
+  border-right: 1px solid var(--border);
+  text-align:center;
+  transition: background 0.3s;
+}
+.as-cell:last-child { border-right:none; }
+.as-cell:hover { background: rgba(0,245,255,0.02); }
+.as-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 48px;
+  color: var(--cyan);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.as-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  color: var(--neural);
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* ============================================================
+   PAGE: CONTACT
+============================================================ */
+.contact-section {
+  padding: 80px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  border-bottom: 1px solid var(--border);
+}
+.contact-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: clamp(36px, 4vw, 56px);
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+.contact-title em { font-style:normal; color: var(--cyan); }
+.contact-body { font-size:15px; line-height:1.75; color:var(--neural); margin-bottom:40px; }
+.contact-info { list-style:none; }
+.ci-item {
+  display:flex; align-items:flex-start; gap:14px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+.ci-icon {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--cyan);
+  width: 20px;
+  flex-shrink:0;
+  margin-top:2px;
+}
+.ci-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--neural);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  opacity:0.6;
+}
+.ci-value {
+  font-size: 14px;
+  color: var(--white);
+}
+
+/* FORM */
+.contact-form {
+  background: var(--obsidian2);
+  border: 1px solid var(--border);
+  padding: 48px;
+}
+.form-header {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  display:flex; align-items:center; gap:10px;
+}
+.form-header::before { content:'//'; opacity:0.5; }
+.form-row { margin-bottom: 20px; }
+.form-row.half {
+  display: grid; grid-template-columns:1fr 1fr; gap:16px;
+}
+label {
+  display:block;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  color: var(--neural);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  opacity:0.7;
+}
+input, select, textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  -webkit-appearance: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: rgba(0,245,255,0.4);
+  background: rgba(0,245,255,0.03);
+}
+textarea { resize:vertical; min-height:120px; }
+select option { background: var(--obsidian); color: var(--white); }
+.form-submit {
+  width: 100%;
+  margin-top: 8px;
+}
+.form-note {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: var(--neural);
+  opacity:0.4;
+  text-align:center;
+  margin-top: 14px;
+  text-transform: uppercase;
+}
+.offices-section {
+  padding: 80px 48px;
+}
+.offices-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 52px;
+}
+.office-card {
+  background: var(--obsidian);
+  padding: 40px 36px;
+  border-right: 1px solid var(--border);
+  transition: background 0.3s;
+}
+.office-card:last-child { border-right:none; }
+.office-card:hover { background: rgba(0,245,255,0.02); }
+.office-city {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.office-region {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--cyan);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  opacity:0.7;
+}
+.office-addr { font-size:13px; line-height:1.65; color:var(--neural); }
+
+/* ============================================================
+   FOOTER
+============================================================ */
+#footer {
+  background: var(--obsidian2);
+  border-top: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+}
+.footer-main {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 0;
+  padding: 64px 48px;
+  border-bottom: 1px solid var(--border);
+}
+.footer-col { padding-right: 48px; }
+.footer-col:last-child { padding-right:0; }
+.footer-brand {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--white);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display:flex; align-items:center; gap:12px;
+}
+.footer-tagline {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--neural);
+  margin-bottom: 28px;
+  max-width: 280px;
+}
+.footer-col-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--neural);
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-bottom: 20px;
+}
+.footer-links { list-style:none; }
+.footer-links li { margin-bottom: 10px; }
+.footer-links a {
+  font-size: 13px;
+  color: rgba(248,249,250,0.45);
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+.footer-links a:hover { color: var(--white); }
+
+.footer-bottom {
+  padding: 20px 48px;
+  display: flex; align-items:center; justify-content:space-between;
+}
+.footer-copy {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--neural);
+  opacity: 0.35;
+  text-transform: uppercase;
+}
+.footer-status {
+  display:flex; align-items:center; gap: 16px;
+}
+.footer-status-item {
+  display:flex; align-items:center; gap:6px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--neural);
+  opacity:0.4;
+  text-transform: uppercase;
+}
+.fsi-dot { width:5px; height:5px; border-radius:50%; background: var(--green); }
+
+/* ============================================================
+   ANIMATIONS & UTILITIES
+============================================================ */
+@keyframes fadeInUp {
+  from { opacity:0; transform: translateY(20px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity:0; }
+  to   { opacity:1; }
+}
+
+.fade-in-up {
+  opacity:0;
+  transform: translateY(18px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.fade-in-up.visible {
+  opacity:1;
+  transform: translateY(0);
+}
+
+/* Utility */
+.mt-8  { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mt-32 { margin-top: 32px; }
+.mt-48 { margin-top: 48px; }
+.mt-64 { margin-top: 64px; }
+.gap-16 { gap: 16px; }
+.flex { display:flex; }
+.items-center { align-items:center; }
+.col { flex-direction:column; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--obsidian); }
+::-webkit-scrollbar-thumb { background: rgba(0,245,255,0.25); border-radius:2px; }
+
+/* Mobile fallback */
+@media (max-width: 900px) {
+  body { cursor: auto; }
+  #cursor, #cursor-ring { display:none; }
+  .hero { grid-template-columns: 1fr; padding: 48px 24px; }
+  .hero-terminal { display:none; }
+  .metrics-rail { grid-template-columns: repeat(2, 1fr); }
+  .services-grid { grid-template-columns:1fr; }
+  nav { padding: 0 24px; }
+  .nav-links { display:none; }
+  .solution-block { grid-template-columns:1fr; }
+  .sb-visual { display:none; }
+  .cases-grid { grid-template-columns:1fr; }
+  .case-featured { grid-template-columns:1fr; }
+  .cf-visual { display:none; }
+  .team-grid, .values-grid { grid-template-columns:1fr 1fr; }
+  .contact-section { grid-template-columns:1fr; }
+  .footer-main { grid-template-columns:1fr 1fr; }
+  .solutions-hero { grid-template-columns:1fr; }
+  .services-header { grid-template-columns:1fr; }
+  .tab-panel.active { grid-template-columns:1fr; }
+  .process-steps { grid-template-columns:1fr 1fr; }
+  .about-intro-grid { grid-template-columns:1fr; }
+  .about-stats { grid-template-columns:1fr 1fr; }
+  .offices-grid { grid-template-columns:1fr; }
+  .callout-band { grid-template-columns:1fr; margin:0 24px; padding:48px; }
+  .services-section, .process-section, .proof-section,
+  .solutions-tabs-section, .cases-hero, .about-hero,
+  .about-values, .team-section, .contact-section,
+  .offices-section { padding-left:24px; padding-right:24px; }
+  .footer-main { padding:40px 24px; }
+  .footer-bottom { padding:16px 24px; }
+  .hero-watermark { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- BACKGROUND EFFECTS -->
+<div class="bg-grid"></div>
+<div class="bg-scanlines"></div>
+<div class="bg-vignette"></div>
+
+<!-- ============================================================
+     NAVIGATION
+============================================================ -->
+<nav id="nav">
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-pulse"></div>
+    <div class="nav-logo-text">ACUFF <span>—</span> AGENTIC AI &amp; ANALYTICS</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+    <li><a href="#" onclick="showPage('solutions')" id="nav-solutions">Solutions</a></li>
+    <li><a href="#" onclick="showPage('cases')" id="nav-cases">Case Studies</a></li>
+    <li><a href="#" onclick="showPage('about')" id="nav-about">About</a></li>
+    <li><a href="#" onclick="showPage('contact')" id="nav-contact">Contact</a></li>
+  </ul>
+  <div class="nav-status">
+    <div class="status-badge"><div class="status-dot"></div>All Systems Nominal</div>
+    <a href="#" class="nav-cta" onclick="showPage('contact')">Request Briefing</a>
+  </div>
+</nav>
+
+<!-- ============================================================
+     PAGE: HOME
+============================================================ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-watermark">AGENT</div>
+
+    <div class="hero-left">
+      <div class="hero-tag">Industrial Intelligence System v4.1</div>
+      <h1 class="hero-title">
+        Where <em>Agency</em><br>
+        Becomes<br>
+        <span class="outline">Architecture.</span>
+      </h1>
+      <p class="hero-sub">Autonomous AI systems engineered for enterprise-scale decisions. Not a tool. Not an assistant. An operational intelligence layer that thinks, adapts, and executes across your entire organization.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary" onclick="showPage('solutions')"><span>Explore Solutions →</span></a>
+        <a href="#" class="btn-outline" onclick="showPage('cases')">View Case Studies</a>
+      </div>
+      <div class="hero-trust">
+        <span class="trust-label">Trusted by</span>
+        <div class="trust-items">
+          <span class="trust-item">FinServ Corp</span>
+          <span class="trust-item">Meridian Health</span>
+          <span class="trust-item">Atlas Logistics</span>
+          <span class="trust-item">NovaTech</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVE TERMINAL -->
+    <div class="hero-terminal">
+      <div class="terminal-titlebar">
+        <div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div>
+        <div class="terminal-title">ACUFF_AGENT_v4.1.0 — RUNTIME</div>
+        <div class="terminal-badge">● Live</div>
+      </div>
+      <div class="terminal-tabs">
+        <div class="ttab active">Agent Log</div>
+        <div class="ttab">Analytics</div>
+        <div class="ttab">Deploy</div>
+      </div>
+      <div class="terminal-body" id="terminal-log">
+        <div class="t-line"><span class="t-prompt">▶</span><span class="t-cmd"> init acuff.agent --mode=autonomous</span></div>
+        <span class="t-out">Loading cognitive architecture...</span>
+        <span class="t-ok">✓ Neural mesh connected [24ms]</span>
+        <span class="t-ok">✓ Data pipelines active [12 streams]</span>
+        <span class="t-ok">✓ Decision engine armed</span>
+        <div class="t-line" style="margin-top:6px"><span class="t-prompt">▶</span><span class="t-cmd"> run analytics.deep --realtime</span></div>
+        <span class="t-out">Scanning 847,291 data points...</span>
+        <span class="t-warn">⚠ Anomaly detected: revenue variance +18.3%</span>
+        <span class="t-ok">✓ Insight report generated → Q3_delta.pdf</span>
+        <span class="t-ok">✓ Stakeholders notified [3 recipients]</span>
+        <div class="t-line" style="margin-top:6px"><span class="t-prompt">▶</span><span class="t-cmd"> deploy workflow.entprise_01</span></div>
+        <span class="t-out">Validating governance policy...</span>
+        <span class="t-ok">✓ Compliance check passed</span>
+        <span class="t-ok">✓ Workflow live — monitoring active</span>
+        <div class="t-line" style="margin-top:6px"><span class="t-prompt">▶</span><span class="t-cmd"> status --all<span class="t-cursor"></span></span></div>
+      </div>
+      <div class="terminal-footer">
+        <div class="tf-item"><div class="tf-dot"></div> 12 Agents Running</div>
+        <div class="tf-item"><div class="tf-dot"></div> 847K Events/sec</div>
+        <div class="tf-item"><div class="tf-dot"></div> 99.97% Uptime</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS RAIL -->
+  <div class="metrics-rail">
+    <div class="metric-cell fade-in-up">
+      <div class="metric-delta">↑ +2.1%</div>
+      <div class="metric-num">98.7%</div>
+      <div class="metric-label">Decision Accuracy</div>
+      <div class="metric-sub">Validated across 12M+ production decisions</div>
+    </div>
+    <div class="metric-cell fade-in-up" style="transition-delay:0.1s">
+      <div class="metric-delta">↓ 40% faster</div>
+      <div class="metric-num">0.3s</div>
+      <div class="metric-label">Avg. Response Time</div>
+      <div class="metric-sub">From trigger event to actionable output</div>
+    </div>
+    <div class="metric-cell fade-in-up" style="transition-delay:0.2s">
+      <div class="metric-delta">↑ Proven ROI</div>
+      <div class="metric-num">14×</div>
+      <div class="metric-label">Ops Efficiency Gain</div>
+      <div class="metric-sub">Avg. multiplier across deployed clients</div>
+    </div>
+    <div class="metric-cell fade-in-up" style="transition-delay:0.3s">
+      <div class="metric-delta">↓ 0 breaches</div>
+      <div class="metric-num">SOC2</div>
+      <div class="metric-label">Compliance Ready</div>
+      <div class="metric-sub">HIPAA, FedRAMP, SOC2 Type II certified</div>
+    </div>
+  </div>
+
+  <!-- MARQUEE -->
+  <div class="marquee-bar">
+    <div class="marquee-track">
+      <div class="marquee-item">Autonomous Agents <span>✦</span></div>
+      <div class="marquee-item">Real-Time Analytics <span>✦</span></div>
+      <div class="marquee-item">Enterprise AI Infrastructure <span>✦</span></div>
+      <div class="marquee-item">Neural Data Mesh <span>✦</span></div>
+      <div class="marquee-item">Decision Intelligence <span>✦</span></div>
+      <div class="marquee-item">Production-Ready Deployment <span>✦</span></div>
+      <div class="marquee-item">AI Operations <span>✦</span></div>
+      <div class="marquee-item">Custom Intelligence Models <span>✦</span></div>
+      <!-- duplicate for loop -->
+      <div class="marquee-item">Autonomous Agents <span>✦</span></div>
+      <div class="marquee-item">Real-Time Analytics <span>✦</span></div>
+      <div class="marquee-item">Enterprise AI Infrastructure <span>✦</span></div>
+      <div class="marquee-item">Neural Data Mesh <span>✦</span></div>
+      <div class="marquee-item">Decision Intelligence <span>✦</span></div>
+      <div class="marquee-item">Production-Ready Deployment <span>✦</span></div>
+      <div class="marquee-item">AI Operations <span>✦</span></div>
+      <div class="marquee-item">Custom Intelligence Models <span>✦</span></div>
+    </div>
+  </div>
+
+  <!-- SERVICES OVERVIEW -->
+  <section class="services-section">
+    <div class="services-header">
+      <div>
+        <div class="section-tag">Core Capabilities</div>
+        <h2 class="section-title">Intelligence as<br><em>Infrastructure.</em></h2>
+      </div>
+      <div>
+        <p class="section-body">Six interconnected capability layers built to operate as a unified intelligence platform. Each can be deployed independently, or as an integrated system — the architecture is yours.</p>
+        <div class="mt-24">
+          <a href="#" class="btn-outline" onclick="showPage('solutions')">Full Capability Stack →</a>
+        </div>
+      </div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card fade-in-up">
+        <div class="sc-num">01 / AGENT</div>
+        <svg class="sc-icon" viewBox="0 0 36 36" fill="none"><rect x="4" y="4" width="28" height="28" rx="2" stroke="#00F5FF" stroke-width="1.2"/><path d="M12 18h12M18 12v12" stroke="#00F5FF" stroke-width="1.5" stroke-linecap="round"/><circle cx="18" cy="18" r="3" fill="#00F5FF" opacity="0.4"/></svg>
+        <div class="sc-title">Agentic AI Systems</div>
+        <div class="sc-body">Autonomous agents that don't just respond — they plan, execute multi-step workflows, and self-correct in production environments. Designed for your most complex operational demands.</div>
+        <div class="sc-tags"><span class="sc-tag">Autonomous</span><span class="sc-tag">Multi-Step</span><span class="sc-tag">Self-Healing</span></div>
+        <div class="sc-arrow" onclick="showPage('solutions')">Explore →</div>
+      </div>
+      <div class="service-card fade-in-up" style="transition-delay:0.1s">
+        <div class="sc-num">02 / ANALYTICS</div>
+        <svg class="sc-icon" viewBox="0 0 36 36" fill="none"><path d="M4 28L12 18l6 6 8-12 6 6" stroke="#00F5FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="4" width="28" height="28" rx="2" stroke="#00F5FF" stroke-width="1.2" opacity="0.3"/></svg>
+        <div class="sc-title">Deep Analytics Engine</div>
+        <div class="sc-body">Real-time intelligence that surfaces decisions before your team knows to ask the question. Predictive, prescriptive, and continuously learning from your operational data stream.</div>
+        <div class="sc-tags"><span class="sc-tag">Real-Time</span><span class="sc-tag">Predictive</span><span class="sc-tag">Prescriptive</span></div>
+        <div class="sc-arrow" onclick="showPage('solutions')">Explore →</div>
+      </div>
+      <div class="service-card fade-in-up" style="transition-delay:0.2s">
+        <div class="sc-num">03 / DEPLOY</div>
+        <svg class="sc-icon" viewBox="0 0 36 36" fill="none"><path d="M18 4L32 18 18 32 4 18 18 4Z" stroke="#00F5FF" stroke-width="1.2"/><circle cx="18" cy="18" r="5" stroke="#00F5FF" stroke-width="1.2" fill="#00F5FF" fill-opacity="0.15"/></svg>
+        <div class="sc-title">Enterprise Deployment</div>
+        <div class="sc-body">Secure, scalable AI infrastructure built for regulated industries. SOC2, HIPAA, and FedRAMP-ready architectures from day one. Deploy to your cloud or on-premises environment.</div>
+        <div class="sc-tags"><span class="sc-tag">SOC2</span><span class="sc-tag">HIPAA</span><span class="sc-tag">FedRAMP</span></div>
+        <div class="sc-arrow" onclick="showPage('solutions')">Explore →</div>
+      </div>
+      <div class="service-card fade-in-up" style="transition-delay:0.05s">
+        <div class="sc-num">04 / MESH</div>
+        <svg class="sc-icon" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="4" stroke="#00F5FF" stroke-width="1.2"/><circle cx="6" cy="10" r="3" stroke="#00F5FF" stroke-width="1.2"/><circle cx="30" cy="10" r="3" stroke="#00F5FF" stroke-width="1.2"/><circle cx="6" cy="26" r="3" stroke="#00F5FF" stroke-width="1.2"/><circle cx="30" cy="26" r="3" stroke="#00F5FF" stroke-width="1.2"/><path d="M9 10.5L14 16M22 20l5 5.5M9 25.5L14 20M22 16l5-5.5" stroke="#00F5FF" stroke-width="1" opacity="0.5"/></svg>
+        <div class="sc-title">Neural Data Mesh</div>
+        <div class="sc-body">Break down every data silo. Our mesh architecture connects every data source into a unified intelligence substrate your agents can reason across in real time. Zero shadow IT required.</div>
+        <div class="sc-tags"><span class="sc-tag">Unified</span><span class="sc-tag">Low-Latency</span><span class="sc-tag">Scalable</span></div>
+        <div class="sc-arrow" onclick="showPage('solutions')">Explore →</div>
+      </div>
+      <div class="service-card fade-in-up" style="transition-delay:0.15s">
+        <div class="sc-num">05 / OPS</div>
+        <svg class="sc-icon" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="14" stroke="#00F5FF" stroke-width="1.2" opacity="0.3"/><path d="M18 8v10l6 4" stroke="#00F5FF" stroke-width="1.5" stroke-linecap="round"/><circle cx="18" cy="18" r="2" fill="#00F5FF"/></svg>
+        <div class="sc-title">AI Operations (AIOps)</div>
+        <div class="sc-body">Monitor, optimize, and govern every model in production. Full observability with automated drift detection, performance alerting, and intelligent rollback protocols built in from day one.</div>
+        <div class="sc-tags"><span class="sc-tag">Observability</span><span class="sc-tag">Governance</span><span class="sc-tag">Drift Detection</span></div>
+        <div class="sc-arrow" onclick="showPage('solutions')">Explore →</div>
+      </div>
+      <div class="service-card fade-in-up" style="transition-delay:0.25s">
+        <div class="sc-num">06 / INTEL</div>
+        <svg class="sc-icon" viewBox="0 0 36 36" fill="none"><rect x="8" y="8" width="20" height="20" rx="2" stroke="#00F5FF" stroke-width="1.2"/><path d="M13 18h10M18 13v10" stroke="#00F5FF" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/><path d="M4 4l5 5M32 4l-5 5M4 32l5-5M32 32l-5-5" stroke="#00F5FF" stroke-width="1" opacity="0.3"/></svg>
+        <div class="sc-title">Custom Intelligence Models</div>
+        <div class="sc-body">Domain-specific models fine-tuned on your proprietary data. Built with your IP, secured in your environment, owned entirely by you. No shared model risk. No data leakage.</div>
+        <div class="sc-tags"><span class="sc-tag">Fine-Tuned</span><span class="sc-tag">Private</span><span class="sc-tag">Owned</span></div>
+        <div class="sc-arrow" onclick="showPage('solutions')">Explore →</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALLOUT BAND -->
+  <div class="callout-band fade-in-up">
+    <div>
+      <div class="section-tag">Deployment-First Approach</div>
+      <div class="cb-title">Stop piloting.<br>Start operating.</div>
+      <p class="cb-sub">Most AI projects die in proof-of-concept — 73% according to Gartner. We build for production from day one: fully integrated, auditable, and built to scale to your most mission-critical operations.</p>
+    </div>
+    <div class="cb-actions">
+      <a href="#" class="btn-primary" onclick="showPage('contact')"><span>Schedule a Briefing →</span></a>
+      <a href="#" class="btn-outline" onclick="showPage('cases')">View Deployments</a>
+    </div>
+  </div>
+
+  <!-- PROCESS -->
+  <section class="process-section">
+    <div class="section-tag">Engagement Model</div>
+    <h2 class="section-title">From Discovery<br>to <em>Deployment.</em></h2>
+    <div class="process-steps">
+      <div class="p-step fade-in-up">
+        <div class="p-step-num">01</div>
+        <h4>Intelligence Audit</h4>
+        <p>Map your existing data, workflows, and decision points. Identify the highest-leverage AI interventions across your operations in a structured 2-week discovery sprint.</p>
+      </div>
+      <div class="p-step fade-in-up" style="transition-delay:0.1s">
+        <div class="p-step-num">02</div>
+        <h4>Architecture Design</h4>
+        <p>Build the agentic blueprint. Data mesh configuration, model selection, integration layers, and governance framework — delivered as a full technical specification.</p>
+      </div>
+      <div class="p-step fade-in-up" style="transition-delay:0.2s">
+        <div class="p-step-num">03</div>
+        <h4>Accelerated Build</h4>
+        <p>Deploy to production in weeks, not quarters. Continuous integration with your engineering team throughout. First agent live within 4 weeks of kickoff.</p>
+      </div>
+      <div class="p-step fade-in-up" style="transition-delay:0.3s">
+        <div class="p-step-num">04</div>
+        <h4>Operate &amp; Evolve</h4>
+        <p>Ongoing model ops, performance monitoring, and capability expansion as your intelligence architecture matures. Your team inherits full ownership.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF -->
+  <section class="proof-section">
+    <div class="section-tag">Client Outcomes</div>
+    <h2 class="section-title">Results that<br><em>Compound.</em></h2>
+    <div class="proof-grid">
+      <div class="proof-card fade-in-up">
+        <p class="proof-quote">The Acuff team didn't just build us an AI tool — they rebuilt how our entire operations center thinks. We're making decisions in real time that used to take three days and six people.</p>
+        <div class="proof-author">
+          <div class="proof-avatar">MR</div>
+          <div>
+            <div class="proof-name">Michael R.</div>
+            <div class="proof-role">CTO, Meridian Health Systems</div>
+          </div>
+        </div>
+        <div class="proof-stat">
+          <div class="proof-stat-num">68%</div>
+          <div class="proof-stat-label">Reduction in<br>Decision Latency</div>
+        </div>
+      </div>
+      <div class="proof-card fade-in-up" style="transition-delay:0.1s">
+        <p class="proof-quote">We went from 4 quarterly reports to continuous intelligence. The analytics engine catches things our analysts never would have found — and it tells us what to do about them.</p>
+        <div class="proof-author">
+          <div class="proof-avatar">SL</div>
+          <div>
+            <div class="proof-name">Sarah L.</div>
+            <div class="proof-role">VP Data, Quantum Capital Group</div>
+          </div>
+        </div>
+        <div class="proof-stat">
+          <div class="proof-stat-num">$22M</div>
+          <div class="proof-stat-label">Additional Revenue<br>Identified, Year 1</div>
+        </div>
+      </div>
+      <div class="proof-card fade-in-up" style="transition-delay:0.2s">
+        <p class="proof-quote">In a heavily regulated industry, we couldn't afford AI that wasn't fully auditable. Acuff built us a governance layer that satisfied legal, IT, and operations simultaneously. That's rare.</p>
+        <div class="proof-author">
+          <div class="proof-avatar">DK</div>
+          <div>
+            <div class="proof-name">David K.</div>
+            <div class="proof-role">COO, Atlas Federal Logistics</div>
+          </div>
+        </div>
+        <div class="proof-stat">
+          <div class="proof-stat-num">100%</div>
+          <div class="proof-stat-label">Compliance Audit<br>Pass Rate</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div><!-- /page-home -->
+
+
+<!-- ============================================================
+     PAGE: SOLUTIONS
+============================================================ -->
+<div class="page" id="page-solutions">
+
+  <div class="solutions-hero">
+    <div>
+      <div class="sh-eyebrow">// 01 — Solutions</div>
+      <h1 class="section-title" style="font-size:clamp(44px,5vw,72px);">Full-Stack<br><em>Intelligence.</em></h1>
+    </div>
+    <div>
+      <p class="solutions-intro">Six interconnected capability layers engineered to function independently or as an integrated platform. Every solution is designed for production from the first line of architecture — not retrofitted from a research prototype.</p>
+      <div class="mt-24">
+        <a href="#" class="btn-primary" onclick="showPage('contact')"><span>Request a Technical Briefing →</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOLUTION 1 -->
+  <div class="solution-block">
+    <div class="sb-content">
+      <div class="sb-tag">// 01 — Core System</div>
+      <div class="sb-title">Agentic AI Systems</div>
+      <p class="sb-body">Our agentic framework is the core of every deployment. Unlike single-turn models, Acuff agents maintain persistent context, reason across multi-step plans, and self-heal when steps fail — without human intervention.</p>
+      <ul class="sb-features">
+        <li>Multi-step plan generation and autonomous execution</li>
+        <li>Self-correction loops with configurable failure thresholds</li>
+        <li>Parallel agent orchestration for high-throughput workflows</li>
+        <li>Full audit trail for every decision and action taken</li>
+        <li>Human-in-the-loop escalation at configurable confidence thresholds</li>
+        <li>Supports 40+ enterprise tool integrations out of the box</li>
+      </ul>
+      <a href="#" class="btn-primary" onclick="showPage('contact')"><span>Get Technical Specs →</span></a>
+    </div>
+    <div class="sb-visual">
+      <div class="diag-widget">
+        <div class="diag-node"><div class="diag-node-dot"></div> TRIGGER EVENT RECEIVED</div>
+        <div class="diag-connector"></div>
+        <div class="diag-node"><div class="diag-node-dot amber"></div> AGENT: PLAN GENERATION</div>
+        <div class="diag-connector"></div>
+        <div class="diag-node"><div class="diag-node-dot"></div> STEP 01: DATA RETRIEVAL</div>
+        <div class="diag-connector"></div>
+        <div class="diag-node"><div class="diag-node-dot"></div> STEP 02: ANALYSIS + REASONING</div>
+        <div class="diag-connector"></div>
+        <div class="diag-node"><div class="diag-node-dot"></div> STEP 03: ACTION EXECUTION</div>
+        <div class="diag-connector"></div>
+        <div class="diag-node"><div class="diag-node-dot green"></div> OUTCOME LOGGED + VERIFIED</div>
+        <div class="diag-label">Agent Execution Flow — v4.1</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOLUTION 2 -->
+  <div class="solution-block">
+    <div class="sb-content">
+      <div class="sb-tag">// 02 — Analytics</div>
+      <div class="sb-title">Deep Analytics Engine</div>
+      <p class="sb-body">Built on a streaming-first architecture, our analytics engine processes events in real time, surfaces anomalies proactively, and generates prescriptive recommendations — not just charts.</p>
+      <ul class="sb-features">
+        <li>Sub-second ingestion from 50+ data source connectors</li>
+        <li>Anomaly detection with configurable sensitivity per domain</li>
+        <li>Prescriptive intelligence: surfaces "what to do," not just "what happened"</li>
+        <li>Automated narrative generation for executive reporting</li>
+        <li>Scenario modeling and forward-looking simulation</li>
+        <li>Unified dashboards with role-based intelligence views</li>
+      </ul>
+      <a href="#" class="btn-primary" onclick="showPage('contact')"><span>See a Live Demo →</span></a>
+    </div>
+    <div class="sb-visual">
+      <div class="gauge-grid">
+        <div class="gauge-cell">
+          <div class="gauge-val">98.7%</div>
+          <div class="gauge-label">Accuracy</div>
+          <div class="gauge-bar"><div class="gauge-bar-fill" style="width:98.7%"></div></div>
+        </div>
+        <div class="gauge-cell">
+          <div class="gauge-val">847K</div>
+          <div class="gauge-label">Events/sec</div>
+          <div class="gauge-bar"><div class="gauge-bar-fill" style="width:76%"></div></div>
+        </div>
+        <div class="gauge-cell">
+          <div class="gauge-val">0.3s</div>
+          <div class="gauge-label">Latency</div>
+          <div class="gauge-bar"><div class="gauge-bar-fill" style="width:92%"></div></div>
+        </div>
+        <div class="gauge-cell">
+          <div class="gauge-val">99.97%</div>
+          <div class="gauge-label">Uptime</div>
+          <div class="gauge-bar"><div class="gauge-bar-fill" style="width:99.97%"></div></div>
+        </div>
+        <div class="gauge-cell" style="grid-column:1/-1;">
+          <div class="gauge-val" style="font-size:22px;">12 Streams</div>
+          <div class="gauge-label">Active Data Sources</div>
+          <div class="gauge-bar"><div class="gauge-bar-fill" style="width:60%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOLUTION 3 -->
+  <div class="solution-block">
+    <div class="sb-content">
+      <div class="sb-tag">// 03 — Infrastructure</div>
+      <div class="sb-title">Enterprise Deployment</div>
+      <p class="sb-body">Security and compliance are not add-ons. Every Acuff deployment is built within a governance framework that satisfies the most demanding regulatory environments — from initial architecture through ongoing operations.</p>
+      <ul class="sb-features">
+        <li>SOC2 Type II, HIPAA, and FedRAMP-ready architectures</li>
+        <li>VPC-isolated deployment in AWS, Azure, GCP, or on-premises</li>
+        <li>Zero-trust networking with mutual TLS throughout</li>
+        <li>Immutable audit logs for every agent action and decision</li>
+        <li>Role-based access control with SSO/SAML integration</li>
+        <li>Disaster recovery with &lt;15-minute RTO, zero RPO</li>
+      </ul>
+      <a href="#" class="btn-primary" onclick="showPage('contact')"><span>Review Security Docs →</span></a>
+    </div>
+    <div class="sb-visual">
+      <div class="stream-widget">
+        <div class="stream-header"><div class="tf-dot" style="width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;"></div> Security Status — Live</div>
+        <div class="stream-row"><span class="stream-key">TLS Handshakes</span><span class="stream-val up">✓ Valid</span></div>
+        <div class="stream-row"><span class="stream-key">SOC2 Compliance</span><span class="stream-val up">✓ Certified</span></div>
+        <div class="stream-row"><span class="stream-key">Audit Log</span><span class="stream-val up">✓ Immutable</span></div>
+        <div class="stream-row"><span class="stream-key">Zero-Trust Policy</span><span class="stream-val up">✓ Active</span></div>
+        <div class="stream-row"><span class="stream-key">Anomaly Scanner</span><span class="stream-val">Running</span></div>
+        <div class="stream-row"><span class="stream-key">Last Threat Event</span><span class="stream-val warn">None (14d)</span></div>
+        <div class="stream-row"><span class="stream-key">MTTR</span><span class="stream-val up">4.2 min</span></div>
+        <div class="stream-row"><span class="stream-key">SLA Status</span><span class="stream-val up">99.97% ↑</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS: MESH + OPS + CUSTOM -->
+  <section class="solutions-tabs-section">
+    <div class="section-tag">Additional Capabilities</div>
+    <h2 class="section-title" style="margin-bottom:40px;">The Complete<br><em>Intelligence Stack.</em></h2>
+    <div class="tab-buttons">
+      <button class="tab-btn active" onclick="switchTab(this,'tab-mesh')">Neural Data Mesh</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-ops')">AI Operations</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-custom')">Custom Models</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-mesh">
+      <div>
+        <div class="tp-title">Neural Data Mesh</div>
+        <p class="tp-body">A unified intelligence substrate that connects every data source — structured, unstructured, streaming, and static — into a single coherent layer your agents can reason across without intermediate ETL pipelines or data warehousing delays.</p>
+        <p class="tp-body">The mesh is schema-agnostic and horizontally scalable. Add new data sources in hours, not sprints. Every connection is bidirectional, governed, and observable.</p>
+        <div class="mt-24"><a href="#" class="btn-primary" onclick="showPage('contact')"><span>Learn More →</span></a></div>
+      </div>
+      <div>
+        <ul class="tp-checklist">
+          <li>Schema-agnostic ingestion across 50+ connector types</li>
+          <li>Bi-directional data flows with conflict resolution</li>
+          <li>Real-time data lineage and provenance tracking</li>
+          <li>Semantic layer for consistent business definitions</li>
+          <li>Native vector storage for RAG-enabled agents</li>
+          <li>GDPR/CCPA data residency controls per data source</li>
+          <li>Self-healing pipelines with automatic failover</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tab-panel" id="tab-ops">
+      <div>
+        <div class="tp-title">AI Operations Platform</div>
+        <p class="tp-body">Production AI without observability is a liability. Our AIOps layer gives you full visibility into every model, every agent, and every decision — with automated governance and rollback built in from the start.</p>
+        <p class="tp-body">Proactive drift detection, shadow testing, A/B comparison infrastructure, and cost optimization ensure your intelligence architecture performs at peak — continuously.</p>
+        <div class="mt-24"><a href="#" class="btn-primary" onclick="showPage('contact')"><span>Learn More →</span></a></div>
+      </div>
+      <div>
+        <ul class="tp-checklist">
+          <li>Real-time performance dashboards per model and agent</li>
+          <li>Automated drift detection with configurable thresholds</li>
+          <li>One-click rollback to any previous model version</li>
+          <li>Shadow mode testing before production promotion</li>
+          <li>Cost attribution and inference optimization</li>
+          <li>SLA alerting with escalation policy engine</li>
+          <li>Full integration with PagerDuty, Datadog, Grafana</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tab-panel" id="tab-custom">
+      <div>
+        <div class="tp-title">Custom Intelligence Models</div>
+        <p class="tp-body">Generic foundation models aren't fine-tuned for your domain, your terminology, or your edge cases. Acuff builds domain-specific models using your proprietary data — delivering dramatically higher accuracy and zero data leakage risk.</p>
+        <p class="tp-body">Every model is trained, validated, and deployed entirely within your infrastructure boundary. No data leaves your environment. No shared model risk. You own every artifact.</p>
+        <div class="mt-24"><a href="#" class="btn-primary" onclick="showPage('contact')"><span>Learn More →</span></a></div>
+      </div>
+      <div>
+        <ul class="tp-checklist">
+          <li>Fine-tuning on proprietary datasets with full IP ownership</li>
+          <li>Multi-modal support: text, tabular, time-series, vision</li>
+          <li>Rigorous red-team evaluation before deployment</li>
+          <li>Continuous learning from production feedback loops</li>
+          <li>Distillation options for edge/low-latency deployments</li>
+          <li>Explainability layer for regulated industry requirements</li>
+          <li>Model cards and full documentation delivered with every build</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page-solutions -->
+
+
+<!-- ============================================================
+     PAGE: CASE STUDIES
+============================================================ -->
+<div class="page" id="page-cases">
+
+  <div class="cases-hero">
+    <div class="section-tag">Case Studies</div>
+    <h1 class="section-title" style="font-size:clamp(44px,5vw,72px); margin-bottom:20px;">Intelligence<br><em>in the Wild.</em></h1>
+    <p class="section-body">Every deployment is a production story. Below are six organizations that replaced pilot programs with operating infrastructure — and the outcomes that followed.</p>
+  </div>
+
+  <div class="cases-grid">
+    <!-- FEATURED -->
+    <div class="case-featured">
+      <div class="cf-content">
+        <div class="cf-badge">Featured Deployment</div>
+        <div class="cf-title">Rebuilding Risk Operations at a $40B Financial Institution</div>
+        <p class="cf-body">Quantum Capital Group's risk operations team was drowning in data but starved of intelligence. Quarterly reporting cycles meant market-moving anomalies were discovered weeks after the opportunity window had closed. Acuff deployed a full agentic analytics stack that now monitors 847,000 data events per second, surfaces anomalies in real time, and autonomously drafts remediation recommendations before a human analyst has opened their laptop.</p>
+        <div class="case-tag-list">
+          <span class="case-tag">Financial Services</span><span class="case-tag">Risk Analytics</span><span class="case-tag">Autonomous Reporting</span><span class="case-tag">Real-Time Intel</span>
+        </div>
+        <div class="cf-results">
+          <div class="cfr-item"><div class="cfr-num">$22M</div><div class="cfr-label">Revenue Identified, Yr 1</div></div>
+          <div class="cfr-item"><div class="cfr-num">97%</div><div class="cfr-label">Reduction in Report Time</div></div>
+          <div class="cfr-item"><div class="cfr-num">14×</div><div class="cfr-label">Data Coverage Increase</div></div>
+        </div>
+      </div>
+      <div class="cf-visual">
+        <div class="chart-mock">
+          <div class="chart-header">
+            <div class="chart-title">Revenue Signal Detection</div>
+            <div class="chart-val">+$22M</div>
+          </div>
+          <div class="chart-bars">
+            <div class="chart-bar" style="height:30%"></div>
+            <div class="chart-bar" style="height:45%"></div>
+            <div class="chart-bar" style="height:38%"></div>
+            <div class="chart-bar" style="height:55%"></div>
+            <div class="chart-bar" style="height:42%"></div>
+            <div class="chart-bar" style="height:60%"></div>
+            <div class="chart-bar" style="height:72%"></div>
+            <div class="chart-bar active" style="height:95%"></div>
+            <div class="chart-bar" style="height:80%"></div>
+            <div class="chart-bar" style="height:85%"></div>
+            <div class="chart-bar" style="height:90%"></div>
+            <div class="chart-bar active" style="height:100%"></div>
+          </div>
+          <div class="chart-x">
+            <span>Q1</span><span>Q2</span><span>Q3</span><span>Q4</span>
+          </div>
+          <div style="margin-top:20px;">
+            <div class="stream-row" style="padding:8px 0; border-bottom:1px solid var(--grid-line);"><span class="stream-key">Model Confidence</span><span class="stream-val up">96.4%</span></div>
+            <div class="stream-row" style="padding:8px 0; border-bottom:1px solid var(--grid-line);"><span class="stream-key">Signals Processed</span><span class="stream-val">847K/sec</span></div>
+            <div class="stream-row" style="padding:8px 0;"><span class="stream-key">Avg Response Time</span><span class="stream-val up">280ms</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 1 -->
+    <div class="case-card fade-in-up">
+      <div class="case-industry">Healthcare</div>
+      <div class="case-title">Autonomous Clinical Operations at Meridian Health Systems</div>
+      <p class="case-body">Deployed a multi-agent system across 14 hospital facilities to automate scheduling optimization, supply chain management, and clinical decision support. The system processes 2.3M patient touchpoints daily with zero HIPAA incidents across 18 months of operation.</p>
+      <div class="case-tag-list"><span class="case-tag">HIPAA</span><span class="case-tag">Multi-Agent</span><span class="case-tag">Clinical Ops</span></div>
+      <div class="case-results">
+        <div class="cr-item"><div class="cr-num">68%</div><div class="cr-label">Faster Decisions</div></div>
+        <div class="cr-item"><div class="cr-num">$8.4M</div><div class="cr-label">Annual Savings</div></div>
+        <div class="cr-item"><div class="cr-num">0</div><div class="cr-label">Compliance Events</div></div>
+      </div>
+    </div>
+
+    <!-- CASE 2 -->
+    <div class="case-card fade-in-up" style="transition-delay:0.1s">
+      <div class="case-industry">Federal Logistics</div>
+      <div class="case-title">Real-Time Supply Chain Intelligence for Atlas Federal</div>
+      <p class="case-body">Atlas Federal Logistics needed FedRAMP-compliant AI to optimize a 40,000-node distribution network. Acuff built a neural data mesh that ingested 28 legacy data sources and deployed autonomous routing agents that respond to disruptions in under 200ms.</p>
+      <div class="case-tag-list"><span class="case-tag">FedRAMP</span><span class="case-tag">Supply Chain</span><span class="case-tag">Real-Time</span></div>
+      <div class="case-results">
+        <div class="cr-item"><div class="cr-num">31%</div><div class="cr-label">Cost Reduction</div></div>
+        <div class="cr-item"><div class="cr-num">200ms</div><div class="cr-label">Disruption Response</div></div>
+        <div class="cr-item"><div class="cr-num">28</div><div class="cr-label">Systems Unified</div></div>
+      </div>
+    </div>
+
+    <!-- CASE 3 -->
+    <div class="case-card fade-in-up">
+      <div class="case-industry">Technology</div>
+      <div class="case-title">Engineering Intelligence Platform for NovaTech Systems</div>
+      <p class="case-body">NovaTech's 400-person engineering org was losing 30% of developer time to manual code review, incident triage, and documentation. Acuff deployed a custom fine-tuned model on their 8-year proprietary codebase, cutting review cycles by 78% and eliminating P1 incident MTTR from 4 hours to 11 minutes.</p>
+      <div class="case-tag-list"><span class="case-tag">Custom Model</span><span class="case-tag">DevOps</span><span class="case-tag">Code Intelligence</span></div>
+      <div class="case-results">
+        <div class="cr-item"><div class="cr-num">78%</div><div class="cr-label">Faster Review</div></div>
+        <div class="cr-item"><div class="cr-num">11min</div><div class="cr-label">P1 MTTR</div></div>
+        <div class="cr-item"><div class="cr-num">$4.2M</div><div class="cr-label">Dev Hours Saved</div></div>
+      </div>
+    </div>
+
+    <!-- CASE 4 -->
+    <div class="case-card fade-in-up" style="transition-delay:0.1s">
+      <div class="case-industry">Insurance</div>
+      <div class="case-title">Underwriting Automation at Stratex Insurance Group</div>
+      <p class="case-body">Manual underwriting at Stratex was creating a 3-week backlog and inconsistent risk assessments across underwriters. Acuff built a decision-intelligence layer that now handles 80% of submissions autonomously, with the remaining 20% enriched with AI-generated risk summaries for human review.</p>
+      <div class="case-tag-list"><span class="case-tag">Insurance</span><span class="case-tag">Decision AI</span><span class="case-tag">Underwriting</span></div>
+      <div class="case-results">
+        <div class="cr-item"><div class="cr-num">80%</div><div class="cr-label">Auto-Processed</div></div>
+        <div class="cr-item"><div class="cr-num">3d→4h</div><div class="cr-label">Cycle Time</div></div>
+        <div class="cr-item"><div class="cr-num">99.1%</div><div class="cr-label">Consistency</div></div>
+      </div>
+    </div>
+
+  </div><!-- /cases-grid -->
+</div><!-- /page-cases -->
+
+
+<!-- ============================================================
+     PAGE: ABOUT
+============================================================ -->
+<div class="page" id="page-about">
+
+  <div class="about-hero">
+    <div class="section-tag">About Acuff</div>
+    <div class="about-headline">
+      We Build<br><em>Intelligence</em><br>That <span class="outline">Ships.</span>
+    </div>
+    <div class="about-stats">
+      <div class="as-cell"><div class="as-num">2019</div><div class="as-label">Founded</div></div>
+      <div class="as-cell"><div class="as-num">140+</div><div class="as-label">Engineers & Scientists</div></div>
+      <div class="as-cell"><div class="as-num">87</div><div class="as-label">Production Deployments</div></div>
+      <div class="as-cell"><div class="as-num">$0</div><div class="as-label">VC Influence. Bootstrapped.</div></div>
+    </div>
+    <div class="about-intro-grid">
+      <div class="ai-body">
+        <p>Acuff Agentic AI &amp; Analytics was founded on one premise: <strong>enterprise AI should operate, not demonstrate.</strong> We watched too many organizations spend 18 months on pilots that never graduated to production. We built the antidote.</p>
+        <p>Our team came from aerospace, financial infrastructure, and defense systems — industries where software failure is measured in lives and billions. We brought that discipline to AI: every system we build is production-hardened, auditable, and designed to operate without a safety net.</p>
+        <p>Today we serve a concentrated portfolio of enterprise clients across financial services, healthcare, logistics, and technology. We grow deliberately. <strong>We don't take every engagement.</strong> We take the ones where we can deliver transformative, measurable intelligence infrastructure.</p>
+      </div>
+      <div class="ai-body">
+        <p>The name "Agentic" isn't a buzzword for us — it's an architectural commitment. Every system we build has <strong>agency</strong>: the ability to observe, reason, plan, and act without constant human direction.</p>
+        <p>We believe the organizations that win the next decade won't be the ones with the most data. They'll be the ones whose infrastructure can reason across it — autonomously, continuously, and at the speed of their markets.</p>
+        <p>We're not a consulting firm that recommends AI. We're the engineering team that builds the AI that runs your operations. <strong>There's a meaningful difference</strong> — and it shows up in your results.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VALUES -->
+  <div class="about-values">
+    <div class="section-tag">Operating Principles</div>
+    <h2 class="section-title">How We<br><em>Think.</em></h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">⬡</div>
+        <div class="value-title">Production First</div>
+        <p class="value-body">We design for production from line one. Every architecture decision is made with operational reality in mind — not research benchmarks or demo performance.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">◈</div>
+        <div class="value-title">Radical Auditability</div>
+        <p class="value-body">Every agent action, every decision, every data movement is logged, attributable, and explainable. Intelligence without transparency is liability, not infrastructure.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">⬛</div>
+        <div class="value-title">Client Ownership</div>
+        <p class="value-body">When we leave, you own everything. Models, data, code, documentation — all artifacts transfer to your team. No lock-in. No licensing dependency. Your intelligence is yours.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">◎</div>
+        <div class="value-title">Deliberate Scale</div>
+        <p class="value-body">We maintain a concentrated client portfolio. Not because we can't grow — because the depth of engagement required to deliver transformative intelligence demands it.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM -->
+  <div class="team-section">
+    <div class="section-tag">Leadership</div>
+    <h2 class="section-title">The <em>Architecture</em><br>Team.</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">JA</div>
+        <div class="team-name">Christian Acuff
+        <div class="team-role">Founder & CEO</div>
+        <p class="team-bio">Former principal quality engineer at LMI Aerospace's Advanced Systems group. Built safety-critical autonomous systems for 12 years before founding Acuff in 2019.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">DR</div>
+        <div class="team-name">Dr. Diana Ramos</div>
+        <div class="team-role">Chief AI Officer</div>
+        <p class="team-bio">PhD in Machine Learning from MIT. Previously led model infrastructure at a $20B quant hedge fund. Holds 8 patents in neural architecture and optimization.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">MK</div>
+        <div class="team-name">Marcus Kim</div>
+        <div class="team-role">VP Engineering</div>
+        <p class="team-bio">15 years building distributed systems at scale. Former Staff Engineer at Stripe and Google Brain. Designed Acuff's core agent execution framework.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">TP</div>
+        <div class="team-name">Tamara Pierce</div>
+        <div class="team-role">Chief Security Officer</div>
+        <p class="team-bio">NSA veteran with 14 years in signals intelligence and zero-trust architecture. Designed the security posture behind every Acuff enterprise deployment.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-about -->
+
+
+<!-- ============================================================
+     PAGE: CONTACT
+============================================================ -->
+<div class="page" id="page-contact">
+
+  <div class="contact-section">
+    <div>
+      <div class="section-tag">Contact</div>
+      <div class="contact-title">Let's Build<br><em>Something</em><br>That Operates.</div>
+      <p class="contact-body">We engage with a limited number of new clients per quarter. If you're ready to move from AI exploration to AI operations, we want to hear from you.</p>
+      <ul class="contact-info">
+        <li class="ci-item">
+          <div class="ci-icon">@</div>
+          <div>
+            <div class="ci-label">Email</div>
+            <div class="ci-value">intel@acuffaaa.com</div>
+          </div>
+        </li>
+        <li class="ci-item">
+          <div class="ci-icon">☎</div>
+          <div>
+            <div class="ci-label">Direct Line</div>
+            <div class="ci-value">+1 (512) 800-4400</div>
+          </div>
+        </li>
+        <li class="ci-item">
+          <div class="ci-icon">⊕</div>
+          <div>
+            <div class="ci-label">HQ</div>
+            <div class="ci-value">400 West Cesar Chavez, Austin, TX 78701</div>
+          </div>
+        </li>
+        <li class="ci-item">
+          <div class="ci-icon">◷</div>
+          <div>
+            <div class="ci-label">Response Time</div>
+            <div class="ci-value">We respond to all briefing requests within 1 business day.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="contact-form">
+        <div class="form-header">Request Intelligence Briefing</div>
+        <div class="form-row half">
+          <div><label>First Name</label><input type="text" placeholder="James"></div>
+          <div><label>Last Name</label><input type="text" placeholder="Acuff"></div>
+        </div>
+        <div class="form-row">
+          <label>Work Email</label>
+          <input type="email" placeholder="you@company.com">
+        </div>
+        <div class="form-row">
+          <label>Organization</label>
+          <input type="text" placeholder="Your Company Name">
+        </div>
+        <div class="form-row">
+          <label>Area of Interest</label>
+          <select>
+            <option value="">Select a capability area...</option>
+            <option>Agentic AI Systems</option>
+            <option>Deep Analytics Engine</option>
+            <option>Enterprise Deployment</option>
+            <option>Neural Data Mesh</option>
+            <option>AI Operations</option>
+            <option>Custom Intelligence Models</option>
+            <option>Full Platform</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Describe Your Challenge</label>
+          <textarea placeholder="What operational problem are you trying to solve? What does success look like in 12 months?"></textarea>
+        </div>
+        <button class="btn-primary form-submit" onclick="handleSubmit(event)"><span>Submit Briefing Request →</span></button>
+        <div class="form-note">We treat all information shared with us as confidential. NDA available upon request.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OFFICES -->
+  <section class="offices-section">
+    <div class="section-tag">Locations</div>
+    <h2 class="section-title">Where We<br><em>Operate.</em></h2>
+    <div class="offices-grid">
+      <div class="office-card">
+        <div class="office-city">Austin</div>
+        <div class="office-region">Headquarters — Texas, USA</div>
+        <div class="office-addr">400 West Cesar Chavez<br>Suite 1200<br>Austin, TX 78701</div>
+      </div>
+      <div class="office-card">
+        <div class="office-city">Washington D.C.</div>
+        <div class="office-region">Federal Operations — USA</div>
+        <div class="office-addr">1200 New Hampshire Ave NW<br>Suite 800<br>Washington, DC 20036</div>
+      </div>
+      <div class="office-card">
+        <div class="office-city">London</div>
+        <div class="office-region">EMEA — United Kingdom</div>
+        <div class="office-addr">One Canada Square<br>Canary Wharf<br>London, E14 5AB</div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page-contact -->
+
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer id="footer">
+  <div class="footer-main">
+    <div class="footer-col">
+      <div class="footer-brand">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);animation:navpulse 2s infinite;"></div>
+        ACUFF — AAA
+      </div>
+      <p class="footer-tagline">Industrial intelligence for organizations that operate at the edge of what's possible. We build the AI infrastructure that makes your best decisions run on autopilot.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="#" style="padding:8px 14px;border:1px solid var(--border);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.15em;color:var(--neural);text-decoration:none;text-transform:uppercase;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(0,245,255,0.4)';this.style.color='var(--white)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--neural)'">LinkedIn</a>
+        <a href="#" style="padding:8px 14px;border:1px solid var(--border);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.15em;color:var(--neural);text-decoration:none;text-transform:uppercase;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(0,245,255,0.4)';this.style.color='var(--white)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--neural)'">GitHub</a>
+        <a href="#" style="padding:8px 14px;border:1px solid var(--border);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.15em;color:var(--neural);text-decoration:none;text-transform:uppercase;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(0,245,255,0.4)';this.style.color='var(--white)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--neural)'">Research</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Solutions</div>
+      <ul class="footer-links">
+        <li><a onclick="showPage('solutions')">Agentic AI Systems</a></li>
+        <li><a onclick="showPage('solutions')">Deep Analytics Engine</a></li>
+        <li><a onclick="showPage('solutions')">Enterprise Deployment</a></li>
+        <li><a onclick="showPage('solutions')">Neural Data Mesh</a></li>
+        <li><a onclick="showPage('solutions')">AI Operations</a></li>
+        <li><a onclick="showPage('solutions')">Custom Models</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a onclick="showPage('about')">About Us</a></li>
+        <li><a onclick="showPage('cases')">Case Studies</a></li>
+        <li><a href="#">Research &amp; Papers</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Security</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Connect</div>
+      <ul class="footer-links">
+        <li><a onclick="showPage('contact')">Request Briefing</a></li>
+        <li><a onclick="showPage('contact')">Partner Program</a></li>
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">API Reference</a></li>
+        <li><a href="#">System Status</a></li>
+        <li><a href="#">Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Acuff Agentic AI &amp; Analytics, Inc. — All Rights Reserved.</div>
+    <div class="footer-status">
+      <div class="footer-status-item"><div class="fsi-dot"></div> All Systems Nominal</div>
+      <div class="footer-status-item">Privacy Policy</div>
+      <div class="footer-status-item">Terms of Service</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+/* ---- CURSOR ---- */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx=0, my=0, rx=0, ry=0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+});
+
+function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+/* ---- PAGE NAVIGATION ---- */
+function showPage(id) {
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  // Remove active from nav links
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  // Show selected
+  const page = document.getElementById('page-' + id);
+  if (page) {
+    page.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  // Highlight nav link
+  const navLink = document.getElementById('nav-' + id);
+  if (navLink) navLink.classList.add('active');
+
+  // Re-trigger scroll animations
+  setTimeout(() => {
+    document.querySelectorAll('.fade-in-up').forEach(el => {
+      el.classList.remove('visible');
+    });
+    setTimeout(checkVisibility, 50);
+  }, 100);
+
+  return false;
+}
+
+/* ---- TAB SWITCHER ---- */
+function switchTab(btn, panelId) {
+  const section = btn.closest('.solutions-tabs-section');
+  section.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  section.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+/* ---- SCROLL ANIMATIONS ---- */
+function checkVisibility() {
+  const els = document.querySelectorAll('.fade-in-up:not(.visible)');
+  els.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 60) {
+      el.classList.add('visible');
+    }
+  });
+}
+window.addEventListener('scroll', checkVisibility, { passive: true });
+window.addEventListener('load', checkVisibility);
+setTimeout(checkVisibility, 200);
+
+/* ---- FORM SUBMIT ---- */
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target;
+  btn.innerHTML = '<span>✓ Request Received — We\'ll be in touch within 24hrs</span>';
+  btn.style.background = 'var(--green)';
+  btn.style.letterSpacing = '0.1em';
+}
+
+/* ---- TERMINAL TYPEWRITER LOOP ---- */
+const terminalLines = [
+  { type: 'cmd', text: ' monitor.agents --status' },
+  { type: 'ok',  text: '✓ Agent ARIA-7: Running [2,341 tasks/hr]' },
+  { type: 'ok',  text: '✓ Agent NOVA-3: Running [insight mode]' },
+  { type: 'warn',text: '⚠ Agent ECHO-1: Queue depth elevated [84%]' },
+  { type: 'ok',  text: '✓ Auto-scaled: +2 ECHO instances deployed' },
+  { type: 'cmd', text: ' analytics.stream --watch revenue' },
+  { type: 'out', text: 'Connecting to revenue stream...' },
+  { type: 'ok',  text: '✓ Anomaly: East region +3.2σ above baseline' },
+  { type: 'ok',  text: '✓ Alert dispatched → ops-team Slack channel' },
+];
+
+let lineIdx = 0;
+function addTerminalLine() {
+  const body = document.getElementById('terminal-log');
+  if (!body) return;
+  const item = terminalLines[lineIdx % terminalLines.length];
+  lineIdx++;
+
+  // Remove cursor from last line
+  const lastCursor = body.querySelector('.t-cursor');
+  if (lastCursor) lastCursor.remove();
+
+  const el = document.createElement(item.type === 'cmd' ? 'div' : 'span');
+  el.className = item.type === 'cmd' ? 't-line' : 't-' + item.type;
+
+  if (item.type === 'cmd') {
+    el.innerHTML = `<span class="t-prompt">▶</span><span class="t-cmd">${item.text}<span class="t-cursor"></span></span>`;
+  } else {
+    el.textContent = item.text;
+    el.style.display = 'block';
+  }
+
+  body.appendChild(el);
+
+  // Keep only last 14 children visible
+  while (body.children.length > 14) {
+    body.removeChild(body.firstChild);
+  }
+  body.scrollTop = body.scrollHeight;
+}
+setInterval(addTerminalLine, 2400);
+
+/* ---- NAV LINK PREVENTION ---- */
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', e => e.preventDefault());
+});
+document.querySelectorAll('.footer-links a').forEach(a => {
+  a.addEventListener('click', e => { if (!a.getAttribute('href') || a.getAttribute('href') === '#') e.preventDefault(); });
+});
+</script>
+
+</body>
+</html>
