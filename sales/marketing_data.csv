@@ -1,9 +1,0 @@
-transaction_id,timestamp,channel,revenue,cost
-T1001,2023-10-01 09:00,Google_Ads,150.00,12.00
-T1002,2023-10-01 10:15,Facebook_Ads,200.00,15.50
-T1003,2023-10-01 11:30,Email_Marketing,50.00,2.00
-T1004,2023-10-02 08:45,Organic_Search,0.00,0.00
-T1005,2023-10-02 14:20,Google_Ads,320.00,25.00
-T1006,2023-10-03 16:10,LinkedIn_Ads,450.00,45.00
-T1007,2023-10-03 17:00,Facebook_Ads,120.00,10.00
-T1008,2023-10-04 12:00,Email_Marketing,85.00,2.00
