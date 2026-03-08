@@ -8,27 +8,28 @@ class AttributionAgent:
 
     def load_data(self):
         try:
-            # Attempt to load your marketing data
             self.df = pd.read_csv(self.data_path)
-            print(f"Successfully loaded {len(self.df)} rows from {self.data_path}")
+            print(f"--- Data Loaded: {len(self.df)} transactions ---\n")
         except FileNotFoundError:
-            print(f"Error: {self.data_path} not found. Please ensure your CSV is in the sales folder.")
+            print(f"Error: {self.data_path} not found.")
 
-    def run_last_touch_analysis(self):
+    def analyze_performance(self):
         if self.df is None: return
         
-        # Simple logic: Group by channel and sum conversions/revenue
-        # Assumes your CSV has 'channel' and 'revenue' columns
-        if 'channel' in self.df.columns and 'revenue' in self.df.columns:
-            attribution = self.df.groupby('channel')['revenue'].sum().sort_values(ascending=False)
-            print("\n--- Last-Touch Revenue Attribution ---")
-            print(attribution)
-            return attribution
-        else:
-            print("CSV missing 'channel' or 'revenue' columns.")
+        # Group by channel to sum Revenue and Cost
+        metrics = self.df.groupby('channel').agg({
+            'revenue': 'sum',
+            'cost': 'sum'
+        })
+
+        # Calculate ROAS: Revenue / Cost
+        # We use fillna(0) for Organic channels where cost might be 0
+        metrics['roas'] = (metrics['revenue'] / metrics['cost']).fillna(float('inf'))
+        
+        print(metrics.sort_values(by='roas', ascending=False))
+        return metrics
 
 if __name__ == "__main__":
-    # Change 'marketing_data.csv' to your actual data filename
-    agent = AttributionAgent('marketing_data.csv') 
+    agent = AttributionAgent('marketing_data.csv')
     agent.load_data()
-    agent.run_last_touch_analysis()
+    agent.analyze_performance()
