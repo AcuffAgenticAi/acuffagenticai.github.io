@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acuff Agentic AI & Analytics — Industrial Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ──────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c10;--bg2:#0c1219;--bg3:#111820;
+  --border:#1c2840;--border2:#243050;
+  --green:#00ff88;--green-dim:#00cc6a;--green-mute:rgba(0,255,136,0.08);--green-glow:rgba(0,255,136,0.15);
+  --cyan:#00d4ff;--amber:#ffb800;--red:#ff4444;
+  --text:#e8edf5;--text2:#8a9ab5;--text3:#4a5a72;
+  --mono:'Space Mono',monospace;--display:'Syne',sans-serif;--body:'DM Sans',sans-serif;
+  --radius:4px;--transition:240ms cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4}
+
+/* ── Scrollbar ──────────────────────────────────────────────────────── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ── Nav ────────────────────────────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:rgba(8,12,16,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--green);letter-spacing:0.12em;text-decoration:none}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-family:var(--mono);font-size:11px;color:var(--text2);text-decoration:none;letter-spacing:0.08em;transition:color var(--transition)}
+.nav-links a:hover{color:var(--green)}
+.nav-cta{font-family:var(--mono);font-size:11px;background:var(--green);color:#080c10;padding:9px 18px;border-radius:var(--radius);text-decoration:none;font-weight:700;letter-spacing:0.08em;transition:background var(--transition),box-shadow var(--transition)}
+.nav-cta:hover{background:#00ff99;box-shadow:0 4px 16px rgba(0,255,136,0.3)}
+.nav-status{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--text3);margin-left:24px}
+.nav-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* ── Page wrapper ───────────────────────────────────────────────────── */
+.page{position:relative;z-index:1}
+section{scroll-margin-top:64px}
+
+/* ── Shared ─────────────────────────────────────────────────────────── */
+.section-tag{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;color:var(--green);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.section-tag::before{content:'//';color:var(--text3)}
+h1,h2,h3{font-family:var(--display)}
+.container{max-width:1280px;margin:0 auto;padding:0 48px}
+
+/* ── Buttons ────────────────────────────────────────────────────────── */
+.btn-primary{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:0.1em;padding:14px 28px;background:var(--green);color:#080c10;border:none;border-radius:var(--radius);cursor:pointer;text-decoration:none;transition:background var(--transition),transform var(--transition),box-shadow var(--transition)}
+.btn-primary:hover{background:#00ff99;transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,255,136,0.3)}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:0.08em;padding:13px 26px;background:transparent;color:var(--text2);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;text-decoration:none;transition:all var(--transition)}
+.btn-secondary:hover{border-color:var(--text2);color:var(--text)}
+
+/* ── Hero ───────────────────────────────────────────────────────────── */
+#home{padding:140px 48px 80px;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.hero-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;color:var(--green);margin-bottom:24px}
+.hero-h1{font-size:clamp(44px,5.5vw,76px);font-weight:800;line-height:1.04;letter-spacing:-0.03em;margin-bottom:24px}
+.hero-h1 em{font-style:italic;color:var(--green)}
+.hero-p{font-size:17px;color:var(--text2);line-height:1.7;max-width:480px;margin-bottom:40px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.hero-trust{margin-top:56px;font-family:var(--mono);font-size:9px;letter-spacing:0.14em;color:var(--text3);margin-bottom:16px}
+.trust-logos{display:flex;gap:28px;flex-wrap:wrap}
+.trust-logo{font-family:var(--mono);font-size:11px;color:var(--text3);border:1px solid var(--border);padding:6px 14px;border-radius:var(--radius)}
+
+/* Hero terminal */
+.hero-terminal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:relative}
+.terminal-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.t-dot{width:10px;height:10px;border-radius:50%}
+.t-dot.red{background:#ff5f56}.t-dot.yellow{background:#ffbd2e}.t-dot.green{background:#27c93f}
+.terminal-label{font-family:var(--mono);font-size:10px;color:var(--text3);margin-left:auto;letter-spacing:0.08em}
+.terminal-tabs{display:flex;gap:0;border-bottom:1px solid var(--border)}
+.t-tab{font-family:var(--mono);font-size:10px;padding:8px 16px;color:var(--text3);cursor:pointer;border-right:1px solid var(--border)}
+.t-tab.active{color:var(--green);background:var(--green-mute)}
+.terminal-body{padding:24px;font-family:var(--mono);font-size:12px;line-height:1.8;min-height:320px}
+.t-prompt{color:var(--green)}.t-cmd{color:var(--text)}
+.t-comment{color:var(--text3)}.t-ok{color:var(--green)}.t-warn{color:var(--amber)}
+.t-val{color:var(--cyan)}
+
+/* ── Stats bar ──────────────────────────────────────────────────────── */
+.stats-bar{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2)}
+.stats-inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:repeat(4,1fr)}
+.stat-item{padding:32px 24px;border-right:1px solid var(--border);text-align:center}
+.stat-item:last-child{border-right:none}
+.stat-arrow{font-family:var(--mono);font-size:10px;color:var(--green);margin-bottom:4px}
+.stat-num{font-family:var(--display);font-size:36px;font-weight:800;color:var(--text);line-height:1}
+.stat-label{font-size:12px;color:var(--text3);margin-top:6px;line-height:1.4}
+
+/* ── Ticker ─────────────────────────────────────────────────────────── */
+.ticker-wrap{overflow:hidden;border-bottom:1px solid var(--border);padding:14px 0;background:var(--bg)}
+.ticker-track{display:flex;gap:48px;white-space:nowrap;animation:ticker 30s linear infinite}
+.ticker-track:hover{animation-play-state:paused}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-item{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:0.08em;display:flex;align-items:center;gap:12px}
+.ticker-dot{color:var(--green);font-size:8px}
+
+/* ── Solutions ──────────────────────────────────────────────────────── */
+#solutions{padding:100px 0}
+.solutions-header{max-width:1280px;margin:0 auto;padding:0 48px;margin-bottom:64px}
+.solutions-header h2{font-size:clamp(38px,4.5vw,62px);font-weight:800;line-height:1.06;letter-spacing:-0.03em}
+.solutions-header h2 em{font-style:italic;color:var(--green)}
+.solutions-header p{font-size:17px;color:var(--text2);max-width:520px;margin-top:16px;line-height:1.7}
+.solutions-header-row{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.cap-grid{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cap-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:32px;transition:border-color var(--transition),transform var(--transition),box-shadow var(--transition);position:relative;overflow:hidden}
+.cap-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green-dim),transparent);opacity:0;transition:opacity var(--transition)}
+.cap-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+.cap-card:hover::after{opacity:1}
+.cap-num{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.1em;margin-bottom:16px}
+.cap-icon{font-family:var(--mono);font-size:11px;color:var(--green);margin-bottom:12px;letter-spacing:0.1em}
+.cap-title{font-family:var(--display);font-size:20px;font-weight:700;margin-bottom:12px}
+.cap-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px}
+.cap-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.cap-tag{font-family:var(--mono);font-size:9px;padding:3px 8px;border:1px solid var(--border);border-radius:2px;color:var(--text3)}
+.cap-link{font-family:var(--mono);font-size:10px;color:var(--green);text-decoration:none;letter-spacing:0.08em;transition:opacity var(--transition)}
+.cap-link:hover{opacity:0.7}
+
+/* Solutions detail */
+.solutions-detail{max-width:1280px;margin:60px auto 0;padding:0 48px}
+.sol-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:60px 0;border-top:1px solid var(--border)}
+.sol-detail-grid:first-child{border-top:none}
+.sol-detail-visual{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;font-family:var(--mono);font-size:11px;line-height:1.8}
+.sol-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.sol-kpi{background:var(--bg3);border:1px solid var(--border);padding:14px;text-align:center;border-radius:var(--radius)}
+.sol-kpi-val{font-family:var(--display);font-size:22px;font-weight:800;color:var(--green)}
+.sol-kpi-label{font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:4px}
+.sol-list{list-style:none;margin:20px 0}
+.sol-list li{font-size:13px;color:var(--text2);padding:8px 0;border-bottom:1px solid var(--border);display:flex;gap:10px}
+.sol-list li::before{content:'✓';color:var(--green);font-family:var(--mono);flex-shrink:0}
+.sol-h3{font-size:28px;font-weight:800;margin-bottom:16px}
+.sol-h3 em{font-style:italic;color:var(--green)}
+
+/* Security status widget */
+.security-widget{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.sec-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:11px}
+.sec-row:last-child{border-bottom:none}
+.sec-label{color:var(--text3)}
+.sec-val-ok{color:var(--green)}
+.sec-val-run{color:var(--cyan)}
+.sec-val-none{color:var(--text2)}
+.sec-val-num{color:var(--amber)}
+
+/* Flow diagram */
+.flow-steps{display:flex;flex-direction:column;gap:0}
+.flow-step{display:flex;align-items:center;gap:16px;padding:12px 16px;background:var(--bg3);border:1px solid var(--border);font-family:var(--mono);font-size:11px;margin-bottom:-1px}
+.flow-step.active{background:var(--green-mute);border-color:var(--green);color:var(--green)}
+.flow-step-num{color:var(--text3);min-width:60px}
+
+/* ── CTA Banner ─────────────────────────────────────────────────────── */
+.cta-banner{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 48px;text-align:center}
+.cta-banner h2{font-size:clamp(32px,4vw,52px);font-weight:800;letter-spacing:-0.03em;margin-bottom:12px}
+.cta-banner h2 em{font-style:italic;color:var(--green)}
+.cta-banner p{font-size:17px;color:var(--text2);max-width:520px;margin:0 auto 36px}
+.cta-btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.cta-note{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:20px;letter-spacing:0.06em}
+
+/* ── Engagement ─────────────────────────────────────────────────────── */
+#engagement{padding:100px 0}
+.engagement-inner{max-width:1280px;margin:0 auto;padding:0 48px}
+.engagement-inner h2{font-size:clamp(34px,4vw,54px);font-weight:800;letter-spacing:-0.03em;margin-bottom:48px}
+.engagement-inner h2 em{font-style:italic;color:var(--green)}
+.engagement-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.eng-step{padding:32px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius)}
+.eng-num{font-family:var(--mono);font-size:32px;font-weight:700;color:var(--border2);margin-bottom:16px;line-height:1}
+.eng-title{font-family:var(--display);font-size:18px;font-weight:700;margin-bottom:12px}
+.eng-desc{font-size:13px;color:var(--text2);line-height:1.6}
+
+/* ── Case Studies ───────────────────────────────────────────────────── */
+#case-studies{padding:100px 0;background:var(--bg2);border-top:1px solid var(--border)}
+.cs-inner{max-width:1280px;margin:0 auto;padding:0 48px}
+.cs-header{margin-bottom:56px}
+.cs-header h2{font-size:clamp(38px,4.5vw,62px);font-weight:800;letter-spacing:-0.03em}
+.cs-header h2 em{font-style:italic;color:var(--green)}
+/* Featured */
+.cs-featured{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:48px;margin-bottom:32px;position:relative;overflow:hidden}
+.cs-featured::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.cs-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.cs-tag{font-family:var(--mono);font-size:9px;padding:4px 10px;border:1px solid var(--border);border-radius:2px;color:var(--text3)}
+.cs-featured h3{font-size:26px;font-weight:800;margin-bottom:16px;line-height:1.2}
+.cs-featured p{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:24px}
+.cs-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.cs-kpi{background:var(--bg2);border:1px solid var(--border);padding:16px;border-radius:var(--radius);text-align:center}
+.cs-kpi-val{font-family:var(--display);font-size:28px;font-weight:800;color:var(--green)}
+.cs-kpi-label{font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:6px;line-height:1.4}
+/* Chart widget */
+.cs-chart{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.cs-chart-title{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:16px;letter-spacing:0.08em}
+.chart-bars{display:flex;align-items:flex-end;gap:8px;height:100px}
+.chart-bar{flex:1;background:var(--green-mute);border-top:2px solid var(--green);border-radius:2px 2px 0 0;position:relative;transition:background var(--transition)}
+.chart-bar:hover{background:rgba(0,255,136,0.15)}
+.chart-labels{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.chart-label{font-family:var(--mono);font-size:9px;color:var(--text3);text-align:center}
+.chart-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.chart-meta-item{background:var(--bg3);border:1px solid var(--border);padding:10px;border-radius:var(--radius)}
+.chart-meta-val{font-family:var(--mono);font-size:11px;color:var(--green);font-weight:700}
+.chart-meta-label{font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:2px}
+/* CS grid */
+.cs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.cs-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:32px;transition:border-color var(--transition)}
+.cs-card:hover{border-color:var(--border2)}
+.cs-card-sector{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:0.1em;margin-bottom:12px}
+.cs-card h3{font-size:20px;font-weight:700;margin-bottom:12px;line-height:1.3}
+.cs-card p{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px}
+.cs-card-kpis{display:flex;gap:20px}
+.cs-card-kpi{text-align:center}
+.cs-card-kpi-val{font-family:var(--display);font-size:22px;font-weight:800;color:var(--green)}
+.cs-card-kpi-label{font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:3px}
+
+/* ── Testimonials ───────────────────────────────────────────────────── */
+.testimonials{padding:80px 0;border-top:1px solid var(--border)}
+.test-inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.test-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:32px}
+.test-quote{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:24px;font-style:italic}
+.test-meta{display:flex;align-items:center;gap:14px}
+.test-avatar{width:40px;height:40px;background:var(--bg3);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--green);flex-shrink:0}
+.test-name{font-family:var(--display);font-size:14px;font-weight:700}
+.test-role{font-size:12px;color:var(--text3)}
+.test-kpi{font-family:var(--display);font-size:28px;font-weight:800;color:var(--green);margin-top:20px}
+.test-kpi-label{font-size:11px;color:var(--text3);font-family:var(--mono)}
+
+/* ── About ──────────────────────────────────────────────────────────── */
+#about{padding:100px 0;border-top:1px solid var(--border)}
+.about-inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px}
+.about-h2{font-size:clamp(38px,4.5vw,62px);font-weight:800;letter-spacing:-0.03em;line-height:1.06;margin-bottom:32px}
+.about-h2 em{font-style:italic;color:var(--green)}
+.about-p{font-size:15px;color:var(--text2);line-height:1.75;margin-bottom:20px}
+.about-p strong{color:var(--text)}
+.about-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:48px}
+.about-stat{background:var(--bg2);border:1px solid var(--border);padding:20px;border-radius:var(--radius)}
+.about-stat-num{font-family:var(--display);font-size:32px;font-weight:800;color:var(--green);margin-bottom:4px}
+.about-stat-label{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.06em}
+.principles-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:48px}
+.principle{background:var(--bg2);border:1px solid var(--border);padding:24px;border-radius:var(--radius)}
+.principle-icon{font-size:18px;margin-bottom:12px}
+.principle-title{font-family:var(--display);font-size:16px;font-weight:700;margin-bottom:8px}
+.principle-desc{font-size:12px;color:var(--text2);line-height:1.6}
+/* Leadership */
+.leadership{border-top:1px solid var(--border);padding-top:48px}
+.leadership h3{font-family:var(--display);font-size:24px;font-weight:700;margin-bottom:24px}
+.leadership h3 em{font-style:italic;color:var(--green)}
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.team-card{background:var(--bg2);border:1px solid var(--border);padding:20px;border-radius:var(--radius);display:flex;gap:16px}
+.team-avatar{width:44px;height:44px;background:var(--bg3);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--green);flex-shrink:0}
+.team-name{font-family:var(--display);font-size:14px;font-weight:700}
+.team-title{font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:0.08em;margin-bottom:4px}
+.team-bio{font-size:11px;color:var(--text3);line-height:1.5}
+
+/* ── Agent Catalog ──────────────────────────────────────────────────── */
+#catalog{padding:100px 0;border-top:1px solid var(--border);background:var(--bg)}
+.catalog-inner{max-width:1280px;margin:0 auto;padding:0 48px}
+.catalog-header-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;gap:32px;flex-wrap:wrap}
+.catalog-h2{font-size:clamp(36px,4vw,58px);font-weight:800;letter-spacing:-0.03em;line-height:1.08}
+.catalog-h2 em{font-style:italic;color:var(--green)}
+.catalog-meta{text-align:right}
+.catalog-count{font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:4px}
+.catalog-arr{font-family:var(--display);font-size:28px;font-weight:800;color:var(--green)}
+/* Controls */
+.catalog-controls{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;align-items:center}
+.filter-search{flex:1;min-width:200px;background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:12px;padding:10px 14px;border-radius:var(--radius);outline:none;transition:border-color var(--transition)}
+.filter-search:focus{border-color:var(--green)}
+.filter-search::placeholder{color:var(--text3)}
+.filter-group{display:flex;gap:6px;flex-wrap:wrap}
+.filter-btn{font-family:var(--mono);font-size:10px;letter-spacing:0.06em;padding:8px 12px;background:var(--bg2);border:1px solid var(--border);color:var(--text3);border-radius:var(--radius);cursor:pointer;transition:all var(--transition);white-space:nowrap}
+.filter-btn:hover{border-color:var(--green);color:var(--green)}
+.filter-btn.active{background:var(--green-mute);border-color:var(--green);color:var(--green)}
+.tier-tabs{display:flex;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;width:fit-content;margin-bottom:28px}
+.tier-tab{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;padding:10px 18px;background:var(--bg2);color:var(--text3);cursor:pointer;border:none;border-right:1px solid var(--border);transition:all var(--transition);text-transform:uppercase}
+.tier-tab:last-child{border-right:none}
+.tier-tab.active{background:var(--green-mute);color:var(--green)}
+/* Agent grid */
+.agent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+.agent-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;gap:14px;transition:border-color var(--transition),transform var(--transition),box-shadow var(--transition);position:relative;overflow:hidden}
+.agent-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green-dim),transparent);opacity:0;transition:opacity var(--transition)}
+.agent-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+.agent-card:hover::after{opacity:1}
+.agent-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.agent-badges{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tier-pill{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;padding:3px 9px;border-radius:20px;border:1px solid;text-transform:uppercase;font-weight:700}
+.badge-entry{background:rgba(0,255,136,0.1);color:#00cc88;border-color:rgba(0,255,136,0.25)}
+.badge-standard{background:rgba(0,212,255,0.1);color:#00c8f0;border-color:rgba(0,212,255,0.25)}
+.badge-professional{background:rgba(255,184,0,0.1);color:#f0aa00;border-color:rgba(255,184,0,0.25)}
+.badge-enterprise{background:rgba(180,100,255,0.1);color:#c080ff;border-color:rgba(180,100,255,0.25)}
+.type-badge{font-family:var(--mono);font-size:9px;letter-spacing:0.06em;padding:3px 8px;border-radius:2px;border:1px solid var(--border);color:var(--text3);text-transform:uppercase}
+.agent-id{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.agent-name{font-family:var(--display);font-size:17px;font-weight:700;line-height:1.25}
+.agent-cat{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:0.04em;margin-top:2px}
+.agent-desc{font-size:13px;color:var(--text2);line-height:1.55;flex:1}
+.agent-pricing{border-top:1px solid var(--border);padding-top:14px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.price-monthly .amount{font-family:var(--display);font-size:26px;font-weight:800;color:var(--green);line-height:1}
+.price-monthly .period{font-family:var(--mono);font-size:10px;color:var(--text3);margin-left:2px}
+.price-annual{text-align:right}
+.price-annual .amount{font-family:var(--mono);font-size:13px;color:var(--text2);font-weight:700}
+.price-annual .label{font-size:10px;color:var(--text3);font-family:var(--mono);display:block;margin-top:1px}
+.price-annual .saving{font-size:10px;color:var(--green-dim);font-family:var(--mono)}
+.agent-actions{display:flex;gap:8px}
+.btn-deploy{flex:1;background:var(--green);color:#080c10;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.1em;padding:10px 16px;border:none;border-radius:var(--radius);cursor:pointer;text-transform:uppercase;transition:background var(--transition),box-shadow var(--transition);text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center}
+.btn-deploy:hover{background:#00ff99;box-shadow:0 4px 16px rgba(0,255,136,0.3)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2);font-family:var(--mono);font-size:10px;letter-spacing:0.06em;padding:10px 14px;border-radius:var(--radius);cursor:pointer;transition:all var(--transition);white-space:nowrap}
+.btn-outline:hover{border-color:var(--text2);color:var(--text)}
+.catalog-footer{text-align:center;padding:44px 0 0}
+.btn-load-more{background:transparent;border:1px solid var(--border);color:var(--text2);font-family:var(--mono);font-size:11px;letter-spacing:0.1em;padding:14px 32px;border-radius:var(--radius);cursor:pointer;transition:all var(--transition);text-transform:uppercase}
+.btn-load-more:hover{border-color:var(--green);color:var(--green);box-shadow:0 0 24px var(--green-glow)}
+.catalog-total{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:14px}
+
+/* ── Contact ────────────────────────────────────────────────────────── */
+#contact{padding:100px 0;border-top:1px solid var(--border)}
+.contact-inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.contact-h2{font-size:clamp(38px,4.5vw,62px);font-weight:800;letter-spacing:-0.03em;line-height:1.06;margin-bottom:24px}
+.contact-h2 em{font-style:italic;color:var(--green)}
+.contact-p{font-size:16px;color:var(--text2);line-height:1.7;max-width:420px;margin-bottom:36px}
+.contact-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cinfo-card{background:var(--bg2);border:1px solid var(--border);padding:20px;border-radius:var(--radius);transition:border-color var(--transition)}
+.cinfo-card:hover{border-color:var(--green)}
+.cinfo-icon{font-size:18px;margin-bottom:8px;display:block}
+.cinfo-label{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:var(--text3);margin-bottom:4px;text-transform:uppercase}
+.cinfo-value{font-size:13px;color:var(--text);font-weight:500}
+.cinfo-sub{font-size:11px;color:var(--text3);margin-top:2px}
+/* Form */
+.contact-form-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:40px;position:relative;overflow:hidden}
+.contact-form-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.form-title{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;color:var(--green);margin-bottom:28px;text-transform:uppercase}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--text3);margin-bottom:7px;text-transform:uppercase}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:var(--body);font-size:14px;padding:11px 13px;border-radius:var(--radius);outline:none;transition:border-color var(--transition),box-shadow var(--transition);-webkit-appearance:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-glow)}
+.form-group select option{background:var(--bg3)}
+.form-group textarea{min-height:100px;resize:vertical}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--text3)}
+.btn-form{width:100%;background:var(--green);color:#080c10;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:0.1em;padding:15px 24px;border:none;border-radius:var(--radius);cursor:pointer;text-transform:uppercase;transition:background var(--transition),transform var(--transition),box-shadow var(--transition);margin-top:6px}
+.btn-form:hover{background:#00ff99;transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,255,136,0.3)}
+.form-note{font-size:11px;color:var(--text3);margin-top:12px;text-align:center}
+/* Locations */
+.locations-wrap{max-width:1280px;margin:60px auto 0;padding:0 48px}
+.locations-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.location-card{background:var(--bg2);border:1px solid var(--border);padding:26px;border-radius:var(--radius)}
+.location-label{font-family:var(--mono);font-size:9px;letter-spacing:0.14em;color:var(--green);margin-bottom:10px;text-transform:uppercase}
+.location-city{font-family:var(--display);font-size:22px;font-weight:700;margin-bottom:4px}
+.location-sub{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:12px}
+.location-addr{font-size:13px;color:var(--text2);line-height:1.6}
+
+/* ── Modal ──────────────────────────────────────────────────────────── */
+.modal-overlay{position:fixed;inset:0;background:rgba(4,6,10,0.88);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 260ms}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:40px;max-width:560px;width:100%;position:relative;transform:translateY(16px);transition:transform 260ms cubic-bezier(0.4,0,0.2,1)}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;transition:color var(--transition);font-family:var(--mono)}
+.modal-close:hover{color:var(--text)}
+.modal-tag{font-family:var(--mono);font-size:9px;letter-spacing:0.14em;color:var(--green);margin-bottom:10px;text-transform:uppercase}
+.modal-name{font-family:var(--display);font-size:24px;font-weight:800;margin-bottom:4px}
+.modal-cat{font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:18px}
+.modal-desc{font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:24px}
+.modal-pricing-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.modal-price-box{background:var(--bg3);border:1px solid var(--border);padding:16px;border-radius:var(--radius);text-align:center}
+.mp-label{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;color:var(--text3);margin-bottom:6px;text-transform:uppercase}
+.mp-amount{font-family:var(--display);font-size:28px;font-weight:800;color:var(--green)}
+.mp-period{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.mp-saving{font-size:11px;color:var(--green-dim);font-family:var(--mono);margin-top:4px}
+.modal-cta{display:flex;gap:10px}
+.modal-cta .btn-deploy{flex:2}
+.modal-cta .btn-outline{flex:1}
+
+/* ── Toast ──────────────────────────────────────────────────────────── */
+.toast{position:fixed;bottom:32px;right:32px;background:var(--bg2);border:1px solid var(--green);color:var(--green);font-family:var(--mono);font-size:11px;letter-spacing:0.06em;padding:14px 20px;border-radius:var(--radius);z-index:300;transform:translateY(16px);opacity:0;transition:all 300ms;box-shadow:0 8px 32px rgba(0,255,136,0.15)}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+footer{border-top:1px solid var(--border);padding:60px 48px 40px;max-width:1280px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.footer-logo{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--green);letter-spacing:0.12em;margin-bottom:14px}
+.footer-desc{font-size:13px;color:var(--text3);line-height:1.65;max-width:280px}
+.footer-social{display:flex;gap:12px;margin-top:20px}
+.footer-social a{font-family:var(--mono);font-size:10px;color:var(--text3);text-decoration:none;border:1px solid var(--border);padding:6px 12px;border-radius:var(--radius);transition:all var(--transition)}
+.footer-social a:hover{border-color:var(--green);color:var(--green)}
+.footer-col h4{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;color:var(--text3);text-transform:uppercase;margin-bottom:16px}
+.footer-col ul{list-style:none}
+.footer-col li{margin-bottom:10px}
+.footer-col a{font-size:13px;color:var(--text2);text-decoration:none;transition:color var(--transition)}
+.footer-col a:hover{color:var(--green)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid var(--border)}
+.footer-copy{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-family:var(--mono);font-size:10px;color:var(--text3);text-decoration:none;transition:color var(--transition)}
+.footer-legal a:hover{color:var(--green)}
+.footer-status{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--text3)}
+
+/* ── Responsive ─────────────────────────────────────────────────────── */
+@media(max-width:1024px){
+  #home{grid-template-columns:1fr;padding:120px 24px 60px;gap:48px}
+  .cap-grid{grid-template-columns:repeat(2,1fr);padding:0 24px}
+  .solutions-header,.solutions-detail,.cs-inner,.engagement-inner,.catalog-inner,.contact-inner,.locations-wrap{padding:0 24px}
+  .contact-inner{grid-template-columns:1fr;gap:48px}
+  .about-inner{grid-template-columns:1fr;gap:48px;padding:0 24px}
+  .test-inner{grid-template-columns:1fr;padding:0 24px}
+  .cs-featured{grid-template-columns:1fr}
+  .cs-grid{grid-template-columns:1fr}
+  nav{padding:0 24px}
+  .nav-links{gap:16px}
+  footer{padding:60px 24px 40px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+  .stats-inner{padding:0 24px;grid-template-columns:repeat(2,1fr)}
+  .stat-item:nth-child(2){border-right:none}
+  .engagement-steps{grid-template-columns:repeat(2,1fr)}
+  .locations-grid{grid-template-columns:1fr}
+  .agent-grid{grid-template-columns:1fr}
+  .catalog-header-row{flex-direction:column;align-items:flex-start}
+  .catalog-meta{text-align:left}
+  .sol-detail-grid{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .cap-grid{grid-template-columns:1fr}
+  .engagement-steps{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:1fr}
+  .principles-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .contact-info-grid{grid-template-columns:1fr}
+  .about-stats{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ── Nav ──────────────────────────────────────────────────────────────── -->
+<nav>
+  <a href="#home" class="nav-logo">ACUFF — AGENTIC AI & ANALYTICS</a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#solutions">Solutions</a></li>
+    <li><a href="#case-studies">Case Studies</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#catalog">Agent Catalog</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:16px">
+    <div class="nav-status"><div class="nav-dot"></div>All Systems Nominal</div>
+    <a href="#contact" class="nav-cta">Request Briefing</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════════════════ -->
+<section id="home">
+  <div>
+    <div class="hero-eyebrow">// ACUFF_AGENT v4.1 — RUNTIME ● LIVE</div>
+    <h1 class="hero-h1">Where <em>Agency</em><br>Becomes Architecture.</h1>
+    <p class="hero-p">Autonomous AI systems engineered for enterprise-scale decisions. Not a tool. Not an assistant. An operational intelligence layer that thinks, adapts, and executes across your entire organization.</p>
+    <div class="hero-btns">
+      <a href="#solutions" class="btn-primary">Explore Solutions →</a>
+      <a href="#case-studies" class="btn-secondary">View Case Studies</a>
+    </div>
+    <div style="margin-top:48px">
+      <div class="hero-trust">TRUSTED BY</div>
+      <div class="trust-logos">
+        <div class="trust-logo">FinServ Corp</div>
+        <div class="trust-logo">Meridian Health</div>
+        <div class="trust-logo">Atlas Logistics</div>
+        <div class="trust-logo">NovaTech</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-terminal">
+    <div class="terminal-bar">
+      <div class="t-dot red"></div><div class="t-dot yellow"></div><div class="t-dot green"></div>
+      <div class="terminal-label">ACUFF_AGENT_v4.1.0 — RUNTIME</div>
+    </div>
+    <div class="terminal-tabs">
+      <div class="t-tab active">Agent Log</div>
+      <div class="t-tab">Analytics</div>
+      <div class="t-tab">Deploy</div>
+    </div>
+    <div class="terminal-body">
+      <div><span class="t-prompt">▶</span> <span class="t-cmd">init acuff.agent --mode=autonomous</span></div>
+      <div><span class="t-comment">Loading cognitive architecture...</span></div>
+      <div><span class="t-ok">✓</span> Neural mesh connected <span class="t-val">[24ms]</span></div>
+      <div><span class="t-ok">✓</span> Data pipelines active <span class="t-val">[12 streams]</span></div>
+      <div><span class="t-ok">✓</span> Decision engine armed</div>
+      <br>
+      <div><span class="t-prompt">▶</span> <span class="t-cmd">run analytics.deep --realtime</span></div>
+      <div><span class="t-comment">Scanning 847,291 data points...</span></div>
+      <div><span class="t-warn">⚠</span> Anomaly detected: revenue variance <span class="t-val">+18.3%</span></div>
+      <div><span class="t-ok">✓</span> Insight report generated → <span class="t-val">Q3_delta.pdf</span></div>
+      <div><span class="t-ok">✓</span> Stakeholders notified <span class="t-val">[3 recipients]</span></div>
+      <br>
+      <div><span class="t-prompt">▶</span> <span class="t-cmd">status --all</span></div>
+      <div><span class="t-ok">✓</span> 12 agents running — <span class="t-val">847K events/sec</span></div>
+      <div><span class="t-ok">✓</span> Uptime: <span class="t-val">99.97%</span> — Decision accuracy: <span class="t-val">98.7%</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats bar -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-arrow">↑ +2.1%</div><div class="stat-num">98.7%</div><div class="stat-label">Decision Accuracy<br>Validated across 12M+ decisions</div></div>
+    <div class="stat-item"><div class="stat-arrow">↓ 40% faster</div><div class="stat-num">0.3s</div><div class="stat-label">Avg. Response Time<br>Trigger to actionable output</div></div>
+    <div class="stat-item"><div class="stat-arrow">↑ Proven ROI</div><div class="stat-num">14×</div><div class="stat-label">Ops Efficiency Gain<br>Avg. across deployed clients</div></div>
+    <div class="stat-item"><div class="stat-arrow">↓ 0 breaches</div><div class="stat-num">SOC2</div><div class="stat-label">Compliance Ready<br>HIPAA, FedRAMP, SOC2 Type II</div></div>
+  </div>
+</div>
+
+<!-- Ticker -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="ticker-dot">✦</span>Autonomous Agents</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>Real-Time Analytics</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>Enterprise AI Infrastructure</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>Neural Data Mesh</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>Decision Intelligence</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>Production-Ready Deployment</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>AI Operations</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>Custom Intelligence Models</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>Autonomous Agents</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>Real-Time Analytics</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>Enterprise AI Infrastructure</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>Neural Data Mesh</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>Decision Intelligence</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>Production-Ready Deployment</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>AI Operations</span>
+    <span class="ticker-item"><span class="ticker-dot">✦</span>Custom Intelligence Models</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     SOLUTIONS
+═══════════════════════════════════════════════════════════════════ -->
+<section id="solutions">
+  <div class="solutions-header">
+    <div class="solutions-header-row">
+      <div>
+        <div class="section-tag">Core Capabilities</div>
+        <h2>Intelligence as <em>Infrastructure.</em></h2>
+        <p>Six interconnected capability layers built to operate as a unified intelligence platform. Each can be deployed independently, or as an integrated system.</p>
+      </div>
+      <a href="#contact" class="btn-primary">Full Capability Stack →</a>
+    </div>
+  </div>
+
+  <div class="cap-grid">
+    <div class="cap-card">
+      <div class="cap-num">01 / AGENT</div>
+      <div class="cap-icon">// AGENTIC_AI_SYSTEMS</div>
+      <div class="cap-title">Agentic AI Systems</div>
+      <div class="cap-desc">Autonomous agents that don't just respond — they plan, execute multi-step workflows, and self-correct in production environments. Designed for your most complex operational demands.</div>
+      <div class="cap-tags"><span class="cap-tag">Autonomous</span><span class="cap-tag">Multi-Step</span><span class="cap-tag">Self-Healing</span></div>
+      <a href="#contact" class="cap-link">Explore →</a>
+    </div>
+    <div class="cap-card">
+      <div class="cap-num">02 / ANALYTICS</div>
+      <div class="cap-icon">// DEEP_ANALYTICS_ENGINE</div>
+      <div class="cap-title">Deep Analytics Engine</div>
+      <div class="cap-desc">Real-time intelligence that surfaces decisions before your team knows to ask the question. Predictive, prescriptive, and continuously learning from your operational data stream.</div>
+      <div class="cap-tags"><span class="cap-tag">Real-Time</span><span class="cap-tag">Predictive</span><span class="cap-tag">Prescriptive</span></div>
+      <a href="#contact" class="cap-link">Explore →</a>
+    </div>
+    <div class="cap-card">
+      <div class="cap-num">03 / DEPLOY</div>
+      <div class="cap-icon">// ENTERPRISE_DEPLOYMENT</div>
+      <div class="cap-title">Enterprise Deployment</div>
+      <div class="cap-desc">Secure, scalable AI infrastructure built for regulated industries. SOC2, HIPAA, and FedRAMP-ready architectures from day one. Deploy to your cloud or on-premises environment.</div>
+      <div class="cap-tags"><span class="cap-tag">SOC2</span><span class="cap-tag">HIPAA</span><span class="cap-tag">FedRAMP</span></div>
+      <a href="#contact" class="cap-link">Explore →</a>
+    </div>
+    <div class="cap-card">
+      <div class="cap-num">04 / MESH</div>
+      <div class="cap-icon">// NEURAL_DATA_MESH</div>
+      <div class="cap-title">Neural Data Mesh</div>
+      <div class="cap-desc">Break down every data silo. Our mesh architecture connects every data source into a unified intelligence substrate your agents can reason across in real time. Zero shadow IT required.</div>
+      <div class="cap-tags"><span class="cap-tag">Unified</span><span class="cap-tag">Low-Latency</span><span class="cap-tag">Scalable</span></div>
+      <a href="#contact" class="cap-link">Explore →</a>
+    </div>
+    <div class="cap-card">
+      <div class="cap-num">05 / OPS</div>
+      <div class="cap-icon">// AI_OPERATIONS</div>
+      <div class="cap-title">AI Operations (AIOps)</div>
+      <div class="cap-desc">Monitor, optimize, and govern every model in production. Full observability with automated drift detection, performance alerting, and intelligent rollback protocols built in from day one.</div>
+      <div class="cap-tags"><span class="cap-tag">Observability</span><span class="cap-tag">Governance</span><span class="cap-tag">Drift Detection</span></div>
+      <a href="#contact" class="cap-link">Explore →</a>
+    </div>
+    <div class="cap-card">
+      <div class="cap-num">06 / INTEL</div>
+      <div class="cap-icon">// CUSTOM_INTELLIGENCE</div>
+      <div class="cap-title">Custom Intelligence Models</div>
+      <div class="cap-desc">Domain-specific models fine-tuned on your proprietary data. Built with your IP, secured in your environment, owned entirely by you. No shared model risk. No data leakage.</div>
+      <div class="cap-tags"><span class="cap-tag">Fine-Tuned</span><span class="cap-tag">Private</span><span class="cap-tag">Owned</span></div>
+      <a href="#contact" class="cap-link">Explore →</a>
+    </div>
+  </div>
+
+  <!-- Solution details -->
+  <div class="solutions-detail">
+    <div class="section-tag" style="margin-top:80px">// Full-Stack Intelligence</div>
+    <h2 style="font-size:clamp(34px,4vw,54px);font-weight:800;letter-spacing:-0.03em;margin-bottom:48px">Full-Stack <em style="font-style:italic;color:var(--green)">Intelligence.</em></h2>
+
+    <!-- Agentic AI detail -->
+    <div class="sol-detail-grid">
+      <div>
+        <div class="section-tag">// 01 — Core System</div>
+        <h3 class="sol-h3">Agentic AI <em>Systems</em></h3>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px">Our agentic framework is the core of every deployment. Unlike single-turn models, Acuff agents maintain persistent context, reason across multi-step plans, and self-heal when steps fail — without human intervention.</p>
+        <ul class="sol-list">
+          <li>Multi-step plan generation and autonomous execution</li>
+          <li>Self-correction loops with configurable failure thresholds</li>
+          <li>Parallel agent orchestration for high-throughput workflows</li>
+          <li>Full audit trail for every decision and action taken</li>
+          <li>Human-in-the-loop escalation at configurable confidence thresholds</li>
+          <li>Supports 40+ enterprise tool integrations out of the box</li>
+        </ul>
+        <a href="#contact" class="btn-primary" style="margin-top:16px">Get Technical Specs →</a>
+      </div>
+      <div>
+        <div class="flow-steps">
+          <div class="flow-step active"><span class="flow-step-num">TRIGGER</span>Event Received</div>
+          <div class="flow-step"><span class="flow-step-num">STEP 01</span>Plan Generation</div>
+          <div class="flow-step"><span class="flow-step-num">STEP 02</span>Data Retrieval</div>
+          <div class="flow-step"><span class="flow-step-num">STEP 03</span>Analysis + Reasoning</div>
+          <div class="flow-step"><span class="flow-step-num">STEP 04</span>Action Execution</div>
+          <div class="flow-step active"><span class="flow-step-num">OUTCOME</span>Logged + Verified</div>
+        </div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-align:center;margin-top:12px">Agent Execution Flow — v4.1</div>
+      </div>
+    </div>
+
+    <!-- Analytics detail -->
+    <div class="sol-detail-grid">
+      <div class="sol-detail-visual">
+        <div style="color:var(--text3);margin-bottom:12px;font-size:10px">// 02 — Analytics — LIVE FEED</div>
+        <div class="sol-kpi-row">
+          <div class="sol-kpi"><div class="sol-kpi-val">98.7%</div><div class="sol-kpi-label">Accuracy</div></div>
+          <div class="sol-kpi"><div class="sol-kpi-val">847K</div><div class="sol-kpi-label">Events/sec</div></div>
+          <div class="sol-kpi"><div class="sol-kpi-val">0.3s</div><div class="sol-kpi-label">Latency</div></div>
+          <div class="sol-kpi"><div class="sol-kpi-val">99.97%</div><div class="sol-kpi-label">Uptime</div></div>
+        </div>
+        <div style="margin-top:16px;color:var(--text3);font-size:10px">12 Streams — Active Data Sources</div>
+      </div>
+      <div>
+        <div class="section-tag">// 02 — Analytics</div>
+        <h3 class="sol-h3">Deep Analytics <em>Engine</em></h3>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px">Built on a streaming-first architecture, our analytics engine processes events in real time, surfaces anomalies proactively, and generates prescriptive recommendations — not just charts.</p>
+        <ul class="sol-list">
+          <li>Sub-second ingestion from 50+ data source connectors</li>
+          <li>Anomaly detection with configurable sensitivity per domain</li>
+          <li>Prescriptive intelligence: surfaces "what to do," not just "what happened"</li>
+          <li>Automated narrative generation for executive reporting</li>
+          <li>Scenario modeling and forward-looking simulation</li>
+        </ul>
+        <a href="#contact" class="btn-primary" style="margin-top:16px">See a Live Demo →</a>
+      </div>
+    </div>
+
+    <!-- Security detail -->
+    <div class="sol-detail-grid">
+      <div>
+        <div class="section-tag">// 03 — Infrastructure</div>
+        <h3 class="sol-h3">Enterprise <em>Deployment</em></h3>
+        <p style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px">Security and compliance are not add-ons. Every Acuff deployment is built within a governance framework that satisfies the most demanding regulatory environments.</p>
+        <ul class="sol-list">
+          <li>SOC2 Type II, HIPAA, and FedRAMP-ready architectures</li>
+          <li>VPC-isolated deployment in AWS, Azure, GCP, or on-premises</li>
+          <li>Zero-trust networking with mutual TLS throughout</li>
+          <li>Immutable audit logs for every agent action and decision</li>
+          <li>Disaster recovery with &lt;15-minute RTO, zero RPO</li>
+        </ul>
+        <a href="#contact" class="btn-primary" style="margin-top:16px">Review Security Docs →</a>
+      </div>
+      <div class="security-widget">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:16px;letter-spacing:0.08em">Security Status — Live</div>
+        <div class="sec-row"><span class="sec-label">TLS Handshakes</span><span class="sec-val-ok">✓ Valid</span></div>
+        <div class="sec-row"><span class="sec-label">SOC2 Compliance</span><span class="sec-val-ok">✓ Certified</span></div>
+        <div class="sec-row"><span class="sec-label">Audit Log</span><span class="sec-val-ok">✓ Immutable</span></div>
+        <div class="sec-row"><span class="sec-label">Zero-Trust Policy</span><span class="sec-val-ok">✓ Active</span></div>
+        <div class="sec-row"><span class="sec-label">Anomaly Scanner</span><span class="sec-val-run">Running</span></div>
+        <div class="sec-row"><span class="sec-label">Last Threat Event</span><span class="sec-val-none">None (14d)</span></div>
+        <div class="sec-row"><span class="sec-label">MTTR</span><span class="sec-val-num">4.2 min</span></div>
+        <div class="sec-row"><span class="sec-label">SLA Status</span><span class="sec-val-ok">99.97% ↑</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Banner -->
+<div class="cta-banner">
+  <div class="section-tag" style="justify-content:center">Deployment-First Approach</div>
+  <h2>Stop piloting.<br><em>Start operating.</em></h2>
+  <p>Most AI projects die in proof-of-concept — 73% according to Gartner. We build for production from day one: fully integrated, auditable, and built to scale.</p>
+  <div class="cta-btns">
+    <a href="#contact" class="btn-primary">Schedule a Briefing →</a>
+    <a href="#case-studies" class="btn-secondary">View Deployments</a>
+  </div>
+  <div class="cta-note">We respond to all briefing requests within 1 business day.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ENGAGEMENT MODEL
+═══════════════════════════════════════════════════════════════════ -->
+<section id="engagement">
+  <div class="engagement-inner">
+    <div class="section-tag">Engagement Model</div>
+    <h2>From Discovery to <em>Deployment.</em></h2>
+    <div class="engagement-steps">
+      <div class="eng-step"><div class="eng-num">01</div><div class="eng-title">Intelligence Audit</div><div class="eng-desc">Map your existing data, workflows, and decision points. Identify the highest-leverage AI interventions in a structured 2-week discovery sprint.</div></div>
+      <div class="eng-step"><div class="eng-num">02</div><div class="eng-title">Architecture Design</div><div class="eng-desc">Build the agentic blueprint. Data mesh configuration, model selection, integration layers, and governance framework — delivered as a full technical specification.</div></div>
+      <div class="eng-step"><div class="eng-num">03</div><div class="eng-title">Accelerated Build</div><div class="eng-desc">Deploy to production in weeks, not quarters. First agent live within 4 weeks of kickoff. Continuous integration with your engineering team throughout.</div></div>
+      <div class="eng-step"><div class="eng-num">04</div><div class="eng-title">Operate & Evolve</div><div class="eng-desc">Ongoing model ops, performance monitoring, and capability expansion as your intelligence architecture matures. Your team inherits full ownership.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     CASE STUDIES
+═══════════════════════════════════════════════════════════════════ -->
+<section id="case-studies">
+  <div class="cs-inner">
+    <div class="cs-header">
+      <div class="section-tag">Client Outcomes</div>
+      <h2>Intelligence <em>in the Wild.</em></h2>
+    </div>
+
+    <!-- Featured -->
+    <div class="cs-featured">
+      <div>
+        <div class="cs-tags">
+          <span class="cs-tag">Financial Services</span><span class="cs-tag">Risk Analytics</span>
+          <span class="cs-tag">Autonomous Reporting</span><span class="cs-tag">Real-Time Intel</span>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:12px">Featured Deployment</div>
+        <h3>Rebuilding Risk Operations at a $40B Financial Institution</h3>
+        <p>Quantum Capital Group's risk operations team was drowning in data but starved of intelligence. Quarterly reporting cycles meant market-moving anomalies were discovered weeks after the opportunity window closed. Acuff deployed a full agentic analytics stack now monitoring 847,000 data events per second.</p>
+        <div class="cs-kpis">
+          <div class="cs-kpi"><div class="cs-kpi-val">$22M</div><div class="cs-kpi-label">Revenue Identified, Yr 1</div></div>
+          <div class="cs-kpi"><div class="cs-kpi-val">97%</div><div class="cs-kpi-label">Reduction in Report Time</div></div>
+          <div class="cs-kpi"><div class="cs-kpi-val">14×</div><div class="cs-kpi-label">Data Coverage Increase</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="cs-chart">
+          <div class="cs-chart-title">Revenue Signal Detection</div>
+          <div class="chart-bars">
+            <div class="chart-bar" style="height:30%"></div>
+            <div class="chart-bar" style="height:55%"></div>
+            <div class="chart-bar" style="height:78%"></div>
+            <div class="chart-bar" style="height:100%"></div>
+          </div>
+          <div class="chart-labels"><div class="chart-label">Q1</div><div class="chart-label">Q2</div><div class="chart-label">Q3</div><div class="chart-label">Q4</div></div>
+          <div class="chart-meta">
+            <div class="chart-meta-item"><div class="chart-meta-val">96.4%</div><div class="chart-meta-label">Model Confidence</div></div>
+            <div class="chart-meta-item"><div class="chart-meta-val">847K/sec</div><div class="chart-meta-label">Signals Processed</div></div>
+            <div class="chart-meta-item"><div class="chart-meta-val">280ms</div><div class="chart-meta-label">Avg Response Time</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CS Grid -->
+    <div class="cs-grid">
+      <div class="cs-card">
+        <div class="cs-card-sector">Healthcare</div>
+        <div class="cs-tags" style="margin-bottom:12px"><span class="cs-tag">HIPAA</span><span class="cs-tag">Multi-Agent</span><span class="cs-tag">Clinical Ops</span></div>
+        <h3>Autonomous Clinical Operations at Meridian Health Systems</h3>
+        <p>Deployed a multi-agent system across 14 hospital facilities to automate scheduling optimization, supply chain management, and clinical decision support. Processes 2.3M patient touchpoints daily with zero HIPAA incidents across 18 months.</p>
+        <div class="cs-card-kpis">
+          <div class="cs-card-kpi"><div class="cs-card-kpi-val">68%</div><div class="cs-card-kpi-label">Faster Decisions</div></div>
+          <div class="cs-card-kpi"><div class="cs-card-kpi-val">$8.4M</div><div class="cs-card-kpi-label">Annual Savings</div></div>
+          <div class="cs-card-kpi"><div class="cs-card-kpi-val">0</div><div class="cs-card-kpi-label">Compliance Events</div></div>
+        </div>
+      </div>
+      <div class="cs-card">
+        <div class="cs-card-sector">Federal Logistics</div>
+        <div class="cs-tags" style="margin-bottom:12px"><span class="cs-tag">FedRAMP</span><span class="cs-tag">Supply Chain</span><span class="cs-tag">Real-Time</span></div>
+        <h3>Real-Time Supply Chain Intelligence for Atlas Federal</h3>
+        <p>Atlas Federal Logistics needed FedRAMP-compliant AI to optimize a 40,000-node distribution network. Acuff built a neural data mesh that ingested 28 legacy data sources and deployed autonomous routing agents responding to disruptions in under 200ms.</p>
+        <div class="cs-card-kpis">
+          <div class="cs-card-kpi"><div class="cs-card-kpi-val">31%</div><div class="cs-card-kpi-label">Cost Reduction</div></div>
+          <div class="cs-card-kpi"><div class="cs-card-kpi-val">200ms</div><div class="cs-card-kpi-label">Disruption Response</div></div>
+          <div class="cs-card-kpi"><div class="cs-card-kpi-val">28</div><div class="cs-card-kpi-label">Systems Unified</div></div>
+        </div>
+      </div>
+      <div class="cs-card">
+        <div class="cs-card-sector">Technology</div>
+        <div class="cs-tags" style="margin-bottom:12px"><span class="cs-tag">Custom Model</span><span class="cs-tag">DevOps</span><span class="cs-tag">Code Intelligence</span></div>
+        <h3>Engineering Intelligence Platform for NovaTech Systems</h3>
+        <p>NovaTech's 400-person engineering org was losing 30% of developer time to manual code review and incident triage. Acuff deployed a custom fine-tuned model on their 8-year proprietary codebase, cutting review cycles by 78%.</p>
+        <div class="cs-card-kpis">
+          <div class="cs-card-kpi"><div class="cs-card-kpi-val">78%</div><div class="cs-card-kpi-label">Faster Review</div></div>
+          <div class="cs-card-kpi"><div class="cs-card-kpi-val">11min</div><div class="cs-card-kpi-label">P1 MTTR</div></div>
+          <div class="cs-card-kpi"><div class="cs-card-kpi-val">$4.2M</div><div class="cs-card-kpi-label">Dev Hours Saved</div></div>
+        </div>
+      </div>
+      <div class="cs-card">
+        <div class="cs-card-sector">Insurance</div>
+        <div class="cs-tags" style="margin-bottom:12px"><span class="cs-tag">Insurance</span><span class="cs-tag">Decision AI</span><span class="cs-tag">Underwriting</span></div>
+        <h3>Underwriting Automation at Stratex Insurance Group</h3>
+        <p>Manual underwriting at Stratex was creating a 3-week backlog and inconsistent risk assessments. Acuff built a decision-intelligence layer that now handles 80% of submissions autonomously, with the remaining 20% enriched with AI-generated risk summaries.</p>
+        <div class="cs-card-kpis">
+          <div class="cs-card-kpi"><div class="cs-card-kpi-val">80%</div><div class="cs-card-kpi-label">Auto-Processed</div></div>
+          <div class="cs-card-kpi"><div class="cs-card-kpi-val">3d→4h</div><div class="cs-card-kpi-label">Cycle Time</div></div>
+          <div class="cs-card-kpi"><div class="cs-card-kpi-val">99.1%</div><div class="cs-card-kpi-label">Consistency</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="testimonials" style="padding:60px 0 0">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+        <div class="test-card">
+          <div class="test-quote">"The Acuff team didn't just build us an AI tool — they rebuilt how our entire operations center thinks. We're making decisions in real time that used to take three days and six people."</div>
+          <div class="test-meta"><div class="test-avatar">MR</div><div><div class="test-name">Michael R.</div><div class="test-role">CTO, Meridian Health Systems</div></div></div>
+          <div class="test-kpi">68%</div><div class="test-kpi-label">Reduction in Decision Latency</div>
+        </div>
+        <div class="test-card">
+          <div class="test-quote">"We went from 4 quarterly reports to continuous intelligence. The analytics engine catches things our analysts never would have found — and it tells us what to do about them."</div>
+          <div class="test-meta"><div class="test-avatar">SL</div><div><div class="test-name">Sarah L.</div><div class="test-role">VP Data, Quantum Capital Group</div></div></div>
+          <div class="test-kpi">$22M</div><div class="test-kpi-label">Additional Revenue Identified, Year 1</div>
+        </div>
+        <div class="test-card">
+          <div class="test-quote">"In a heavily regulated industry, we couldn't afford AI that wasn't fully auditable. Acuff built us a governance layer that satisfied legal, IT, and operations simultaneously. That's rare."</div>
+          <div class="test-meta"><div class="test-avatar">DK</div><div><div class="test-name">David K.</div><div class="test-role">COO, Atlas Federal Logistics</div></div></div>
+          <div class="test-kpi">100%</div><div class="test-kpi-label">Compliance Audit Pass Rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ABOUT
+═══════════════════════════════════════════════════════════════════ -->
+<section id="about">
+  <div class="about-inner">
+    <div>
+      <div class="section-tag">About Acuff</div>
+      <h2 class="about-h2">We Build <em>Intelligence</em> That Ships.</h2>
+      <div class="about-stats">
+        <div class="about-stat"><div class="about-stat-num">2019</div><div class="about-stat-label">Founded</div></div>
+        <div class="about-stat"><div class="about-stat-num">140+</div><div class="about-stat-label">Engineers & Scientists</div></div>
+        <div class="about-stat"><div class="about-stat-num">87</div><div class="about-stat-label">Production Deployments</div></div>
+        <div class="about-stat"><div class="about-stat-num">$0</div><div class="about-stat-label">VC Influence. Bootstrapped.</div></div>
+      </div>
+      <p class="about-p">Acuff Agentic AI & Analytics was founded on one premise: <strong>enterprise AI should operate, not demonstrate.</strong> We watched too many organizations spend 18 months on pilots that never graduated to production. We built the antidote.</p>
+      <p class="about-p">Our team came from aerospace, financial infrastructure, and defense systems — industries where software failure is measured in lives and billions. We brought that discipline to AI: every system we build is production-hardened, auditable, and designed to operate without a safety net.</p>
+      <p class="about-p">We're not a consulting firm that recommends AI. We're the engineering team that builds the AI that runs your operations. <strong>There's a meaningful difference</strong> — and it shows up in your results.</p>
+      <a href="#contact" class="btn-primary" style="margin-top:24px">Work With Us →</a>
+    </div>
+    <div>
+      <div class="section-tag">Operating Principles</div>
+      <h3 style="font-family:var(--display);font-size:24px;font-weight:700;margin-bottom:24px">How We <em style="font-style:italic;color:var(--green)">Think.</em></h3>
+      <div class="principles-grid">
+        <div class="principle"><div class="principle-icon">⬡</div><div class="principle-title">Production First</div><div class="principle-desc">We design for production from line one. Every architecture decision is made with operational reality in mind — not research benchmarks.</div></div>
+        <div class="principle"><div class="principle-icon">◈</div><div class="principle-title">Radical Auditability</div><div class="principle-desc">Every agent action, every decision, every data movement is logged, attributable, and explainable. Intelligence without transparency is liability.</div></div>
+        <div class="principle"><div class="principle-icon">⬛</div><div class="principle-title">Client Ownership</div><div class="principle-desc">When we leave, you own everything. Models, data, code, documentation — all artifacts transfer to your team. No lock-in. No licensing dependency.</div></div>
+        <div class="principle"><div class="principle-icon">◎</div><div class="principle-title">Deliberate Scale</div><div class="principle-desc">We maintain a concentrated client portfolio. Not because we can't grow — because the depth of engagement required to deliver transformative intelligence demands it.</div></div>
+      </div>
+      <div class="leadership">
+        <h3>The <em>Architecture</em> Team.</h3>
+        <div class="team-grid">
+          <div class="team-card"><div class="team-avatar">CA</div><div><div class="team-title">Founder & CEO</div><div class="team-name">Christian Acuff</div><div class="team-bio">Former principal quality engineer at LMI Aerospace. Built safety-critical autonomous systems for 12 years before founding Acuff in 2019.</div></div></div>
+          <div class="team-card"><div class="team-avatar">DR</div><div><div class="team-title">Chief AI Officer</div><div class="team-name">Dr. Diana Ramos</div><div class="team-bio">PhD in Machine Learning from MIT. Previously led model infrastructure at a $20B quant hedge fund. Holds 8 patents in neural architecture.</div></div></div>
+          <div class="team-card"><div class="team-avatar">MK</div><div><div class="team-title">VP Engineering</div><div class="team-name">Marcus Kim</div><div class="team-bio">15 years building distributed systems. Former Staff Engineer at Stripe and Google Brain. Designed Acuff's core agent execution framework.</div></div></div>
+          <div class="team-card"><div class="team-avatar">TP</div><div><div class="team-title">Chief Security Officer</div><div class="team-name">Tamara Pierce</div><div class="team-bio">NSA veteran with 14 years in signals intelligence and zero-trust architecture. Designed the security posture behind every Acuff deployment.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     AGENT CATALOG
+═══════════════════════════════════════════════════════════════════ -->
+<section id="catalog">
+  <div class="catalog-inner">
+    <div class="catalog-header-row">
+      <div>
+        <div class="section-tag">Agent Marketplace</div>
+        <div class="catalog-h2">Deploy <em>Intelligence.</em><br>On Demand.</div>
+      </div>
+      <div class="catalog-meta">
+        <div class="catalog-count">496 production-ready agents</div>
+        <div class="catalog-arr">$4.0M ARR Catalog</div>
+      </div>
+    </div>
+    <div class="catalog-controls">
+      <input type="text" class="filter-search" id="searchInput" placeholder="Search agents...">
+      <div class="filter-group" id="categoryFilters">
+        <button class="filter-btn active" data-cat="all">All</button>
+        <button class="filter-btn" data-cat="Sales & Marketing">Sales</button>
+        <button class="filter-btn" data-cat="Customer Service">CX</button>
+        <button class="filter-btn" data-cat="Operations">Ops</button>
+        <button class="filter-btn" data-cat="Finance">Finance</button>
+        <button class="filter-btn" data-cat="Human Resources">HR</button>
+        <button class="filter-btn" data-cat="IT & Security">IT</button>
+        <button class="filter-btn" data-cat="Product & Engineering">Product</button>
+        <button class="filter-btn" data-cat="Legal & Compliance">Legal</button>
+        <button class="filter-btn" data-cat="Small Business & Entrepreneurship">SMB</button>
+        <button class="filter-btn" data-cat="Marketing & Sales">Marketing</button>
+      </div>
+    </div>
+    <div class="tier-tabs" id="tierTabs">
+      <button class="tier-tab active" data-tier="all">All Tiers</button>
+      <button class="tier-tab" data-tier="entry">Entry $49–$199</button>
+      <button class="tier-tab" data-tier="standard">Standard $199–$499</button>
+      <button class="tier-tab" data-tier="professional">Professional $499–$999</button>
+      <button class="tier-tab" data-tier="enterprise">Enterprise $999+</button>
+    </div>
+    <div class="agent-grid" id="agentGrid"></div>
+    <div class="catalog-footer">
+      <button class="btn-load-more" id="loadMoreBtn">Load More Agents →</button>
+      <div class="catalog-total" id="catalogTotal"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     CONTACT
+═══════════════════════════════════════════════════════════════════ -->
+<section id="contact">
+  <div class="contact-inner">
+    <div>
+      <div class="section-tag">Get in Touch</div>
+      <h2 class="contact-h2">Let's Build<br><em>Something</em><br>That Operates.</h2>
+      <p class="contact-p">We engage with a limited number of new clients per quarter. If you're ready to move from AI exploration to AI operations — or deploy agents from our catalog — we want to hear from you.</p>
+      <div class="contact-info-grid">
+        <div class="cinfo-card"><span class="cinfo-icon">@</span><div class="cinfo-label">Email</div><div class="cinfo-value">christianmacuff@outlook.com</div></div>
+        <div class="cinfo-card"><span class="cinfo-icon">☎</span><div class="cinfo-label">Direct Line</div><div class="cinfo-value">+1 (557) 219-6978</div></div>
+        <div class="cinfo-card"><span class="cinfo-icon">⊕</span><div class="cinfo-label">Headquarters</div><div class="cinfo-value">400 West Cesar Chavez</div><div class="cinfo-sub">Austin, TX 78701</div></div>
+        <div class="cinfo-card"><span class="cinfo-icon">◷</span><div class="cinfo-label">Response Time</div><div class="cinfo-value">1 Business Day</div><div class="cinfo-sub">All briefing requests</div></div>
+      </div>
+    </div>
+    <div class="contact-form-wrap">
+      <div class="form-title">// Request Intelligence Briefing</div>
+      <form id="contactForm" onsubmit="handleFormSubmit(event)">
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input type="text" placeholder="Christian" required></div>
+          <div class="form-group"><label>Last Name</label><input type="text" placeholder="Acuff" required></div>
+        </div>
+        <div class="form-group"><label>Work Email</label><input type="email" placeholder="you@company.com" required></div>
+        <div class="form-group"><label>Organization</label><input type="text" placeholder="Company name" required></div>
+        <div class="form-group">
+          <label>Area of Interest</label>
+          <select required>
+            <option value="" disabled selected>Select a capability area...</option>
+            <option>Agentic AI Systems</option>
+            <option>Deep Analytics Engine</option>
+            <option>Enterprise Deployment</option>
+            <option>Neural Data Mesh</option>
+            <option>AI Operations</option>
+            <option>Custom Intelligence Models</option>
+            <option>Agent Catalog — Purchase Agents</option>
+            <option>Full Platform</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Agent Interest (optional)</label><input type="text" id="agentInterestField" placeholder="Agent name from catalog, or leave blank"></div>
+        <div class="form-group"><label>Describe Your Challenge</label><textarea placeholder="What operational problem are you solving? What does success look like?" required></textarea></div>
+        <button type="submit" class="btn-form">Submit Briefing Request →</button>
+        <p class="form-note">All information shared is confidential. NDA available upon request.</p>
+      </form>
+    </div>
+  </div>
+  <div class="locations-wrap">
+    <div class="section-tag">Where We Operate</div>
+    <div class="locations-grid">
+      <div class="location-card"><div class="location-label">Headquarters — Texas, USA</div><div class="location-city">Austin</div><div class="location-sub">Central Operations</div><div class="location-addr">400 West Cesar Chavez<br>Suite 1200<br>Austin, TX 78701</div></div>
+      <div class="location-card"><div class="location-label">Federal Operations — USA</div><div class="location-city">Washington D.C.</div><div class="location-sub">Government & Defense</div><div class="location-addr">1200 New Hampshire Ave NW<br>Suite 800<br>Washington, DC 20036</div></div>
+      <div class="location-card"><div class="location-label">EMEA — United Kingdom</div><div class="location-city">London</div><div class="location-sub">European Operations</div><div class="location-addr">One Canada Square<br>Canary Wharf<br>London, E14 5AB</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ────────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">ACUFF — AAA</div>
+      <p class="footer-desc">Industrial intelligence for organizations that operate at the edge of what's possible. We build the AI infrastructure that makes your best decisions run on autopilot.</p>
+      <div class="footer-social">
+        <a href="https://linkedin.com/company/acuffaaa" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/acuffagenticai" target="_blank" rel="noopener">GitHub</a>
+        <a href="#contact">Research</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Solutions</h4>
+      <ul>
+        <li><a href="#solutions">Agentic AI Systems</a></li>
+        <li><a href="#solutions">Deep Analytics Engine</a></li>
+        <li><a href="#solutions">Enterprise Deployment</a></li>
+        <li><a href="#solutions">Neural Data Mesh</a></li>
+        <li><a href="#solutions">AI Operations</a></li>
+        <li><a href="#catalog">Agent Catalog</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#case-studies">Case Studies</a></li>
+        <li><a href="#contact">Research & Papers</a></li>
+        <li><a href="#contact">Careers</a></li>
+        <li><a href="#contact">Press</a></li>
+        <li><a href="#contact">Security</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#contact">Request Briefing</a></li>
+        <li><a href="#contact">Partner Program</a></li>
+        <li><a href="#contact">Documentation</a></li>
+        <li><a href="#contact">API Reference</a></li>
+        <li><a href="#contact">System Status</a></li>
+        <li><a href="#contact">Support</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Acuff Agentic AI & Analytics, Inc. — All Rights Reserved.</div>
+    <div class="footer-legal">
+      <a href="#contact">Privacy Policy</a>
+      <a href="#contact">Terms of Service</a>
+    </div>
+    <div class="footer-status"><div class="nav-dot"></div>All Systems Nominal</div>
+  </div>
+</footer>
+
+</div><!-- .page -->
+
+<!-- Modal -->
+<div class="modal-overlay" id="agentModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-tag" id="modalTag"></div>
+    <div class="modal-name" id="modalName"></div>
+    <div class="modal-cat" id="modalCat"></div>
+    <div class="modal-desc" id="modalDesc"></div>
+    <div class="modal-pricing-row">
+      <div class="modal-price-box"><div class="mp-label">Monthly</div><div><span class="mp-amount" id="modalMonthly"></span><span class="mp-period">/mo</span></div></div>
+      <div class="modal-price-box"><div class="mp-label">Annual</div><div><span class="mp-amount" id="modalAnnual"></span><span class="mp-period">/yr</span></div><div class="mp-saving" id="modalSaving"></div></div>
+    </div>
+    <div class="modal-cta">
+      <button class="btn-deploy" onclick="deployFromModal()">Deploy This Agent →</button>
+      <button class="btn-outline" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Agent data ────────────────────────────────────────────────────────────────
+const AGENTS=[
+  {id:"1",name:"Sales Insights Analytics Agent",category:"Sales & Marketing",type:"Analytics",tier:"standard",monthly:499,annual:5389,desc:"Analyzes pipeline performance, win/loss patterns, and rep activity to identify revenue opportunities. Improves forecasting accuracy and sales execution."},
+  {id:"5",name:"Lead Quality Scoring Agent",category:"Sales & Marketing",type:"Predictor",tier:"standard",monthly:399,annual:4309,desc:"Scores inbound leads using behavioral and firmographic signals to prioritize sales efforts. Improves conversion rates by focusing reps on highest-potential opportunities."},
+  {id:"16",name:"Pricing Optimization Agent",category:"Sales & Marketing",type:"Optimizer",tier:"professional",monthly:749,annual:8089,desc:"Optimizes pricing strategies using competitive data, demand signals, and margin targets. Recommends adjustments that maximize revenue without sacrificing volume."},
+  {id:"36",name:"Autonomous Sales Agent",category:"Sales & Marketing",type:"Agentic",tier:"enterprise",monthly:2999,annual:32389,desc:"Autonomously manages outreach sequences, follows up with prospects, and qualifies leads end-to-end across email, LinkedIn, and CRM without human intervention."},
+  {id:"42",name:"Marketing ROI Modeling Agent",category:"Sales & Marketing",type:"ROI",tier:"professional",monthly:699,annual:7549,desc:"Models the full-funnel ROI of marketing investments across channels. Quantifies what each campaign contributes to pipeline and closed revenue."},
+  {id:"46",name:"Ad Creative Generator Agent",category:"Sales & Marketing",type:"Creative",tier:"entry",monthly:119,annual:1285,desc:"Generates high-converting ad copy and creative briefs tailored to audience segments. Reduces creative cycle time and improves ad performance across paid channels."},
+  {id:"51",name:"Customer Sentiment Analytics Agent",category:"Customer Service",type:"Analytics",tier:"standard",monthly:249,annual:2689,desc:"Analyzes customer sentiment across calls, chats, and emails to identify satisfaction trends. Helps teams proactively address dissatisfaction before it becomes churn."},
+  {id:"56",name:"Customer Support Assistant Agent",category:"Customer Service",type:"Assistant",tier:"entry",monthly:190,annual:2052,desc:"Drafts responses, summarizes tickets, and suggests next steps. Reduces handling time and improves consistency across your support team."},
+  {id:"81",name:"Autonomous Support Chat Agent",category:"Customer Service",type:"Agentic",tier:"enterprise",monthly:1999,annual:21589,desc:"Autonomously resolves Tier 1 and Tier 2 support tickets via chat. Escalates edge cases with full context. Handles 80%+ of volume without human intervention."},
+  {id:"86",name:"Support Cost Reduction Agent",category:"Customer Service",type:"ROI",tier:"professional",monthly:599,annual:6469,desc:"Identifies cost reduction opportunities across support operations: deflection rates, handle time, staffing efficiency, and channel mix optimization."},
+  {id:"101",name:"Operational Efficiency Analytics Agent",category:"Operations",type:"Analytics",tier:"standard",monthly:470,annual:5076,desc:"Analyzes workflows, processes, and resource usage to identify inefficiencies. Helps teams streamline operations and eliminate waste across the business."},
+  {id:"106",name:"Operations Assistant Agent",category:"Operations",type:"Assistant",tier:"entry",monthly:149,annual:1609,desc:"Supports daily operational tasks including scheduling, documentation, and coordination. Helps teams stay organized and reduce manual work."},
+  {id:"116",name:"Inventory Optimization Agent",category:"Operations",type:"Optimizer",tier:"professional",monthly:799,annual:8629,desc:"Optimizes inventory levels across SKUs and locations using demand forecasting and service level targets. Reduces overstock and stockout simultaneously."},
+  {id:"131",name:"Autonomous Operations Agent",category:"Operations",type:"Agentic",tier:"enterprise",monthly:2499,annual:26989,desc:"Monitors and orchestrates operational workflows autonomously — routing work, flagging exceptions, and executing standard operating procedures without human direction."},
+  {id:"151",name:"Financial Performance Analytics Agent",category:"Finance",type:"Analytics",tier:"standard",monthly:499,annual:5389,desc:"Analyzes revenue, expenses, and profitability trends to provide a clear financial health overview. Helps leaders make informed decisions with real-time financial intelligence."},
+  {id:"156",name:"Finance Assistant Agent",category:"Finance",type:"Assistant",tier:"entry",monthly:169,annual:1825,desc:"Supports daily financial tasks including reconciliations, reporting, and documentation. Helps teams reduce administrative burden and improve accuracy."},
+  {id:"166",name:"Cost Optimization Agent",category:"Finance",type:"Optimizer",tier:"professional",monthly:849,annual:9169,desc:"Identifies cost reduction opportunities across vendors, operations, and departments. Quantifies savings potential and prioritizes initiatives by expected impact."},
+  {id:"176",name:"Fraud Detection Agent",category:"Finance",type:"Specialized",tier:"professional",monthly:899,annual:9709,desc:"Detects anomalous transactions and behavioral patterns indicative of fraud in real time. Flags suspicious activity with confidence scores and supporting evidence."},
+  {id:"181",name:"Autonomous Finance Agent",category:"Finance",type:"Agentic",tier:"enterprise",monthly:2999,annual:32389,desc:"Autonomously manages financial workflows: reconciliations, variance analysis, reporting, and exception handling — continuously and without manual oversight."},
+  {id:"201",name:"Workforce Analytics Agent",category:"Human Resources",type:"Analytics",tier:"standard",monthly:349,annual:3769,desc:"Analyzes workforce trends, productivity, and performance metrics to identify opportunities for improvement. Helps HR leaders make data-driven talent decisions."},
+  {id:"206",name:"HR Assistant Agent",category:"Human Resources",type:"Assistant",tier:"entry",monthly:99,annual:1069,desc:"Supports HR teams with documentation, scheduling, and employee communication. Reduces administrative workload and improves response times."},
+  {id:"216",name:"Compensation Optimization Agent",category:"Human Resources",type:"Optimizer",tier:"professional",monthly:699,annual:7549,desc:"Optimizes compensation structures for retention, equity, and budget efficiency. Benchmarks against market data and recommends adjustments by role and level."},
+  {id:"231",name:"Autonomous Recruiting Agent",category:"Human Resources",type:"Agentic",tier:"enterprise",monthly:1499,annual:16189,desc:"Autonomously sources, screens, and advances qualified candidates through the pipeline. Handles outreach, scheduling, and follow-ups across open roles."},
+  {id:"251",name:"System Performance Analytics Agent",category:"IT & Security",type:"Analytics",tier:"standard",monthly:470,annual:5076,desc:"Analyzes system performance metrics across servers, applications, and networks to identify bottlenecks. Helps IT teams maintain uptime and optimize infrastructure."},
+  {id:"256",name:"IT Support Assistant Agent",category:"IT & Security",type:"Assistant",tier:"entry",monthly:149,annual:1609,desc:"Drafts troubleshooting steps, ticket responses, and diagnostic summaries. Helps IT teams resolve issues faster and maintain consistent documentation."},
+  {id:"266",name:"Cloud Resource Optimization Agent",category:"IT & Security",type:"Optimizer",tier:"professional",monthly:849,annual:9169,desc:"Optimizes cloud infrastructure spend by identifying underutilized resources, right-sizing instances, and automating scaling policies."},
+  {id:"278",name:"Threat Intelligence Agent",category:"IT & Security",type:"Specialized",tier:"professional",monthly:949,annual:10249,desc:"Aggregates and analyzes threat intelligence feeds to surface relevant indicators of compromise. Helps security teams prioritize response with context-rich threat data."},
+  {id:"281",name:"Autonomous SOC Agent",category:"IT & Security",type:"Agentic",tier:"enterprise",monthly:2499,annual:26989,desc:"Autonomously triages alerts, investigates incidents, and executes playbooks across your security operations center. Reduces analyst burden by handling L1 and L2 investigations."},
+  {id:"301",name:"Product Usage Analytics Agent",category:"Product & Engineering",type:"Analytics",tier:"standard",monthly:449,annual:4849,desc:"Analyzes product usage patterns, feature adoption, and user behavior to uncover insights. Helps product teams prioritize roadmap based on what users actually do."},
+  {id:"306",name:"Product Requirements Assistant Agent",category:"Product & Engineering",type:"Assistant",tier:"entry",monthly:140,annual:1512,desc:"Drafts product requirements, acceptance criteria, and user stories from inputs. Helps teams maintain clarity and reduce ambiguity throughout development."},
+  {id:"316",name:"Roadmap Optimization Agent",category:"Product & Engineering",type:"Optimizer",tier:"professional",monthly:699,annual:7549,desc:"Optimizes product roadmap prioritization using impact scoring, effort estimation, and strategic alignment. Surfaces the highest-ROI features to build next."},
+  {id:"331",name:"Autonomous Product Agent",category:"Product & Engineering",type:"Agentic",tier:"enterprise",monthly:1999,annual:21589,desc:"Autonomously monitors product health, detects degradations, and coordinates cross-functional responses — from engineering escalation to customer communication."},
+  {id:"351",name:"Contract Risk Analytics Agent",category:"Legal & Compliance",type:"Analytics",tier:"standard",monthly:449,annual:4849,desc:"Analyzes contracts for risk indicators, obligations, and compliance gaps. Helps legal teams reduce exposure and accelerate contract review cycles."},
+  {id:"356",name:"Contract Drafting Assistant Agent",category:"Legal & Compliance",type:"Assistant",tier:"entry",monthly:140,annual:1512,desc:"Drafts contract clauses, summaries, and redlines from templates and requirements. Helps legal teams reduce drafting time and maintain consistency."},
+  {id:"366",name:"Compliance Workflow Optimization Agent",category:"Legal & Compliance",type:"Optimizer",tier:"professional",monthly:849,annual:9169,desc:"Optimizes compliance workflows to reduce manual effort, improve coverage, and accelerate audit readiness across regulatory requirements."},
+  {id:"381",name:"Autonomous Compliance Agent",category:"Legal & Compliance",type:"Agentic",tier:"enterprise",monthly:1999,annual:21589,desc:"Continuously monitors regulatory changes, evaluates policy compliance, and triggers remediation workflows — keeping your organization current autonomously."},
+  {id:"401",name:"Business Health Analytics Agent",category:"Small Business & Entrepreneurship",type:"Analytics",tier:"standard",monthly:330,annual:3564,desc:"Analyzes financial, operational, and customer metrics to provide a holistic view of business health. Helps small business owners make confident decisions with clear data."},
+  {id:"406",name:"Business Admin Assistant Agent",category:"Small Business & Entrepreneurship",type:"Assistant",tier:"entry",monthly:79,annual:853,desc:"Supports administrative tasks including scheduling, documentation, and communication. Helps small teams stay organized and reduce time on low-value work."},
+  {id:"416",name:"Pricing Optimization Agent (SMB)",category:"Small Business & Entrepreneurship",type:"Optimizer",tier:"professional",monthly:499,annual:5389,desc:"Optimizes pricing for small business context — competitive benchmarking, margin analysis, and demand-based recommendations tailored to owner-operated businesses."},
+  {id:"431",name:"Autonomous Business Operations Agent",category:"Small Business & Entrepreneurship",type:"Agentic",tier:"enterprise",monthly:1299,annual:14029,desc:"Autonomously manages daily business operations — customer communication, scheduling, invoicing, and reporting — freeing owners to focus on growth."},
+  {id:"451",name:"Audience Insights Analytics Agent",category:"Marketing & Sales",type:"Analytics",tier:"standard",monthly:449,annual:4849,desc:"Analyzes audience demographics, behavior, and engagement patterns to uncover actionable insights. Helps teams refine targeting and improve campaign efficiency."},
+  {id:"456",name:"Marketing Assistant Agent",category:"Marketing & Sales",type:"Assistant",tier:"entry",monthly:140,annual:1512,desc:"Drafts marketing emails, social posts, and campaign assets. Helps teams maintain consistent messaging and reduce manual content creation time."},
+  {id:"466",name:"Pricing Optimization Agent (M&S)",category:"Marketing & Sales",type:"Optimizer",tier:"professional",monthly:699,annual:7549,desc:"Optimizes pricing strategies for marketing and sales contexts, balancing competitive positioning, conversion impact, and margin contribution across product lines."},
+  {id:"481",name:"Autonomous Marketing Agent",category:"Marketing & Sales",type:"Agentic",tier:"enterprise",monthly:2499,annual:26989,desc:"Autonomously plans, launches, and optimizes marketing campaigns across channels. Adjusts spend, targeting, and creative based on real-time performance signals."},
+  {id:"500",name:"Go-To-Market Strategy Agent",category:"Marketing & Sales",type:"Advanced",tier:"enterprise",monthly:1880,annual:20304,desc:"Develops and stress-tests go-to-market strategies using market data, competitive intelligence, and internal capability analysis. Produces actionable GTM blueprints."},
+];
+
+const TIER_CONFIG={entry:{label:"Entry",cls:"badge-entry"},standard:{label:"Standard",cls:"badge-standard"},professional:{label:"Professional",cls:"badge-professional"},enterprise:{label:"Enterprise",cls:"badge-enterprise"}};
+let activeCategory="all",activeTier="all",searchQuery="",visibleCount=9,currentModal=null;
+
+function filteredAgents(){
+  return AGENTS.filter(a=>{
+    const matchCat=activeCategory==="all"||a.category===activeCategory;
+    const matchTier=activeTier==="all"||a.tier===activeTier;
+    const q=searchQuery.toLowerCase();
+    const matchQ=!q||a.name.toLowerCase().includes(q)||a.category.toLowerCase().includes(q)||a.type.toLowerCase().includes(q)||a.desc.toLowerCase().includes(q);
+    return matchCat&&matchTier&&matchQ;
+  });
+}
+
+function renderGrid(){
+  const grid=document.getElementById("agentGrid");
+  const total=document.getElementById("catalogTotal");
+  const loadBtn=document.getElementById("loadMoreBtn");
+  const agents=filteredAgents();
+  const slice=agents.slice(0,visibleCount);
+  grid.innerHTML=slice.map(a=>{
+    const tc=TIER_CONFIG[a.tier]||TIER_CONFIG.standard;
+    const saving=Math.round(a.monthly*12-a.annual);
+    return`<div class="agent-card"><div class="agent-card-top"><div class="agent-badges"><span class="tier-pill ${tc.cls}">${tc.label}</span><span class="type-badge">${a.type}</span></div><span class="agent-id">#${a.id}</span></div><div><div class="agent-name">${a.name}</div><div class="agent-cat">${a.category}</div></div><div class="agent-desc">${a.desc}</div><div class="agent-pricing"><div class="price-monthly"><span class="amount">$${a.monthly.toLocaleString()}</span><span class="period">/mo</span></div><div class="price-annual"><span class="amount">$${a.annual.toLocaleString()}</span><span class="label">billed annually</span><span class="saving">Save $${saving.toLocaleString()}/yr</span></div></div><div class="agent-actions"><button class="btn-deploy" onclick="requestAgent('${a.id}')">Deploy →</button><button class="btn-outline" onclick="openModal('${a.id}')">Details</button></div></div>`;
+  }).join("");
+  total.textContent=`Showing ${Math.min(visibleCount,agents.length)} of ${agents.length} agents`;
+  loadBtn.style.display=visibleCount>=agents.length?"none":"inline-block";
+  if(agents.length===0)grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px;font-family:var(--mono);font-size:12px;color:var(--text3)">// No agents match your filters</div>`;
+}
+
+document.getElementById("searchInput").addEventListener("input",e=>{searchQuery=e.target.value;visibleCount=9;renderGrid()});
+document.getElementById("categoryFilters").addEventListener("click",e=>{const b=e.target.closest(".filter-btn");if(!b)return;document.querySelectorAll(".filter-btn").forEach(x=>x.classList.remove("active"));b.classList.add("active");activeCategory=b.dataset.cat;visibleCount=9;renderGrid()});
+document.getElementById("tierTabs").addEventListener("click",e=>{const t=e.target.closest(".tier-tab");if(!t)return;document.querySelectorAll(".tier-tab").forEach(x=>x.classList.remove("active"));t.classList.add("active");activeTier=t.dataset.tier;visibleCount=9;renderGrid()});
+document.getElementById("loadMoreBtn").addEventListener("click",()=>{visibleCount+=9;renderGrid()});
+
+function openModal(id){
+  const a=AGENTS.find(x=>x.id===id);if(!a)return;currentModal=a;
+  const tc=TIER_CONFIG[a.tier]||TIER_CONFIG.standard;
+  const saving=Math.round(a.monthly*12-a.annual);
+  document.getElementById("modalTag").textContent=`${a.category} — ${tc.label} Tier`;
+  document.getElementById("modalName").textContent=a.name;
+  document.getElementById("modalCat").textContent=`Type: ${a.type} · Agent #${a.id}`;
+  document.getElementById("modalDesc").textContent=a.desc;
+  document.getElementById("modalMonthly").textContent=`$${a.monthly.toLocaleString()}`;
+  document.getElementById("modalAnnual").textContent=`$${a.annual.toLocaleString()}`;
+  document.getElementById("modalSaving").textContent=`Save $${saving.toLocaleString()} vs monthly`;
+  document.getElementById("agentModal").classList.add("open");
+}
+function closeModal(){document.getElementById("agentModal").classList.remove("open");currentModal=null}
+document.getElementById("agentModal").addEventListener("click",e=>{if(e.target===document.getElementById("agentModal"))closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+function requestAgent(id){
+  const a=AGENTS.find(x=>x.id===id);if(!a)return;
+  document.getElementById("agentInterestField").value=a.name;
+  document.getElementById("contact").scrollIntoView({behavior:"smooth"});
+  showToast(`✓ ${a.name} added to your briefing request`);
+}
+function deployFromModal(){if(!currentModal)return;requestAgent(currentModal.id);closeModal()}
+
+function handleFormSubmit(e){
+  e.preventDefault();const btn=e.target.querySelector(".btn-form");
+  btn.textContent="⟳ Submitting...";btn.disabled=true;
+  setTimeout(()=>{btn.textContent="✓ Request Submitted";showToast("✓ Briefing request received — we'll respond within 1 business day.");
+  setTimeout(()=>{btn.textContent="Submit Briefing Request →";btn.disabled=false;e.target.reset()},4000)},1200);
+}
+
+function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3500)}
+
+// Smooth nav highlight on scroll
+const sections=["home","solutions","case-studies","about","catalog","contact"];
+const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){document.querySelectorAll(".nav-links a").forEach(a=>{a.style.color=a.getAttribute("href")==="#"+entry.target.id?"var(--green)":""})}})},{threshold:0.3});
+sections.forEach(id=>{const el=document.getElementById(id);if(el)observer.observe(el)});
+
+renderGrid();
+</script>
+</body>
+</html>
