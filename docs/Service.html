@@ -1,1 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terms of Service — Acuff Analytics LLC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
 
+/* ── Reset ──────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:       #0f1117;
+  --ink-mid:   #3d4152;
+  --ink-light: #6b7080;
+  --ink-faint: #9ba3b5;
+  --rule:      #e2e5ed;
+  --bg:        #f8f8f6;
+  --white:     #ffffff;
+  --accent:    #1a3a5c;
+  --accent-2:  #c8832a;
+  --tag-bg:    #eef2f8;
+
+  --font-serif: 'Libre Baskerville', Georgia, serif;
+  --font-sans:  'Barlow', system-ui, sans-serif;
+  --max-w:      1120px;
+  --col-toc:    240px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Top nav ────────────────────────────────────────────────────── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 40px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.topbar-brand {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--accent);
+  letter-spacing: 0.03em;
+  text-decoration: none;
+}
+.topbar-brand span { color: var(--accent-2); }
+.topbar-right { display: flex; align-items: center; gap: 20px; }
+.topbar-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-light);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.topbar-link:hover { color: var(--accent); }
+.topbar-link.back { display: flex; align-items: center; gap: 5px; }
+
+/* ── Hero ───────────────────────────────────────────────────────── */
+.hero {
+  background: var(--accent);
+  color: var(--white);
+  padding: 64px 40px 52px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 360px; height: 360px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -50px; left: 30%;
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  background: rgba(200,131,42,0.10);
+}
+.hero-inner { max-width: var(--max-w); margin: 0 auto; position: relative; z-index: 1; }
+.hero-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  flex-wrap: wrap;
+}
+.hero-meta-item { display: flex; align-items: center; gap: 6px; }
+.hero-meta-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent-2); }
+
+/* ── Layout ─────────────────────────────────────────────────────── */
+.layout {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 56px 40px 80px;
+  display: grid;
+  grid-template-columns: var(--col-toc) 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* ── TOC ────────────────────────────────────────────────────────── */
+.toc { position: sticky; top: 80px; }
+.toc-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 16px;
+}
+.toc-list { list-style: none; }
+.toc-item { margin-bottom: 2px; }
+.toc-link {
+  display: block;
+  font-size: 13px;
+  color: var(--ink-light);
+  text-decoration: none;
+  padding: 5px 12px;
+  border-left: 2px solid transparent;
+  border-radius: 0 4px 4px 0;
+  transition: all 0.15s;
+  line-height: 1.4;
+}
+.toc-link:hover { color: var(--accent); border-left-color: var(--rule); background: var(--white); }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); background: var(--tag-bg); font-weight: 500; }
+
+.toc-footer {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+}
+.toc-footer p { font-size: 12px; color: var(--ink-faint); line-height: 1.6; }
+.toc-footer a { color: var(--accent); text-decoration: none; }
+.toc-footer a:hover { text-decoration: underline; }
+
+/* ── Content ────────────────────────────────────────────────────── */
+.content section {
+  margin-bottom: 56px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--rule);
+  animation: fadeUp 0.5s ease both;
+}
+.content section:last-child { border-bottom: none; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-number {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  margin-bottom: 8px;
+  display: block;
+}
+.content h2 {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 20px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+.content h3 {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 28px;
+  margin-bottom: 10px;
+}
+.content p {
+  font-size: 15px;
+  color: var(--ink-mid);
+  margin-bottom: 16px;
+  line-height: 1.75;
+}
+.content p:last-child { margin-bottom: 0; }
+.content ul {
+  list-style: none;
+  margin: 12px 0 20px;
+}
+.content ul li {
+  font-size: 15px;
+  color: var(--ink-mid);
+  padding: 6px 0 6px 24px;
+  position: relative;
+  line-height: 1.65;
+  border-bottom: 1px solid var(--rule);
+}
+.content ul li:last-child { border-bottom: none; }
+.content ul li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 14px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent-2);
+}
+.content strong { color: var(--ink); }
+.content a { color: var(--accent); }
+
+/* ── Callout ────────────────────────────────────────────────────── */
+.callout {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 20px 0;
+}
+.callout p { font-size: 14px; color: var(--ink-mid); margin: 0; font-style: italic; }
+.callout strong { color: var(--ink); font-style: normal; }
+
+/* ── Warning callout ────────────────────────────────────────────── */
+.callout-warn {
+  background: #fffaf3;
+  border: 1px solid #f0d9a8;
+  border-left: 3px solid var(--accent-2);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 20px 0;
+}
+.callout-warn p { font-size: 14px; color: #6b5a2a; margin: 0; line-height: 1.65; }
+.callout-warn strong { color: #4a3a10; }
+
+/* ── Caps block ─────────────────────────────────────────────────── */
+.caps-block {
+  background: var(--tag-bg);
+  border: 1px solid #c8d4e8;
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin: 16px 0;
+}
+.caps-block p {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1.7;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* ── Contact box ────────────────────────────────────────────────── */
+.contact-box {
+  background: var(--accent);
+  color: var(--white);
+  border-radius: 12px;
+  padding: 32px 36px;
+  margin-top: 20px;
+}
+.contact-box h3 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.contact-box p { font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 20px; }
+.contact-details { display: flex; flex-direction: column; gap: 8px; }
+.contact-row { display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.85); }
+.contact-row a { color: var(--white); }
+.contact-icon { width: 28px; height: 28px; border-radius: 6px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+
+/* ── Footer ─────────────────────────────────────────────────────── */
+.page-footer {
+  border-top: 1px solid var(--rule);
+  background: var(--white);
+  padding: 28px 40px;
+  text-align: center;
+}
+.page-footer p { font-size: 13px; color: var(--ink-faint); }
+.page-footer a { color: var(--ink-light); text-decoration: none; }
+.page-footer a:hover { color: var(--accent); }
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; gap: 0; padding: 32px 24px 60px; }
+  .toc { display: none; }
+  .hero { padding: 44px 24px 36px; }
+  .topbar { padding: 0 24px; }
+  .page-footer { padding: 24px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<nav class="topbar">
+  <a class="topbar-brand" href="#">Acuff <span>Analytics</span></a>
+  <div class="topbar-right">
+    <a class="topbar-link" href="privacy_policy.html">Privacy Policy</a>
+    <a class="topbar-link back" href="#">&#8592; Back to site</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Legal</div>
+    <h1>Terms of Service</h1>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-dot"></div>
+        <span>Acuff Analytics LLC</span>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-dot"></div>
+        <span id="effective-date">Effective: March 10, 2025</span>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-dot"></div>
+        <span>15 sections</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Layout -->
+<div class="layout">
+
+  <!-- TOC -->
+  <aside class="toc">
+    <div class="toc-label">Contents</div>
+    <ul class="toc-list">
+      <li class="toc-item"><a class="toc-link" href="#s1">1. Acceptance of Terms</a></li>
+      <li class="toc-item"><a class="toc-link" href="#s2">2. Description of Services</a></li>
+      <li class="toc-item"><a class="toc-link" href="#s3">3. Eligibility &amp; Registration</a></li>
+      <li class="toc-item"><a class="toc-link" href="#s4">4. Acceptable Use</a></li>
+      <li class="toc-item"><a class="toc-link" href="#s5">5. AI Content &amp; Limitations</a></li>
+      <li class="toc-item"><a class="toc-link" href="#s6">6. Data &amp; Privacy</a></li>
+      <li class="toc-item"><a class="toc-link" href="#s7">7. Intellectual Property</a></li>
+      <li class="toc-item"><a class="toc-link" href="#s8">8. Third-Party Services</a></li>
+      <li class="toc-item"><a class="toc-link" href="#s9">9. Fees &amp; Payment</a></li>
+      <li class="toc-item"><a class="toc-link" href="#s10">10. Disclaimers &amp; Liability</a></li>
+      <li class="toc-item"><a class="toc-link" href="#s11">11. Indemnification</a></li>
+      <li class="toc-item"><a class="toc-link" href="#s12">12. Termination</a></li>
+      <li class="toc-item"><a class="toc-link" href="#s13">13. Governing Law</a></li>
+      <li class="toc-item"><a class="toc-link" href="#s14">14. General Provisions</a></li>
+      <li class="toc-item"><a class="toc-link" href="#s15">15. Contact Information</a></li>
+    </ul>
+    <div class="toc-footer">
+      <p>Questions about these terms?<br/><a href="mailto:legal@acuffanalytics.com">legal@acuffanalytics.com</a></p>
+    </div>
+  </aside>
+
+  <!-- Content -->
+  <main class="content">
+
+    <section id="s1">
+      <span class="section-number">Section 01</span>
+      <h2>Acceptance of Terms</h2>
+      <p>By accessing or using any product, service, software, dashboard, or AI agent provided by Acuff Analytics LLC ("Company," "we," "our," or "us"), you ("User" or "you") agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, do not access or use our Services.</p>
+      <p>These Terms constitute a legally binding agreement between you and Acuff Analytics LLC. Your continued use of the Services following any updates constitutes your acceptance of the revised Terms.</p>
+    </section>
+
+    <section id="s2">
+      <span class="section-number">Section 02</span>
+      <h2>Description of Services</h2>
+      <p>Acuff Analytics LLC provides AI-powered business automation software including, but not limited to:</p>
+      <ul>
+        <li>AI agent frameworks for sales, marketing, and customer support automation</li>
+        <li>CRM integration tools and pipeline management utilities</li>
+        <li>LinkedIn content scheduling and automated publishing tools</li>
+        <li>Local and cloud-based AI inference dashboards</li>
+        <li>Web search and data enrichment tools</li>
+        <li>Associated documentation, APIs, and configuration utilities</li>
+      </ul>
+      <p>We reserve the right to modify, suspend, or discontinue any part of the Services at any time with or without notice. We will not be liable to you or any third party for any such modification, suspension, or discontinuation.</p>
+    </section>
+
+    <section id="s3">
+      <span class="section-number">Section 03</span>
+      <h2>Eligibility &amp; Account Registration</h2>
+      <p>You must be at least 18 years of age to use our Services. By using the Services, you represent and warrant that you meet this requirement and that all information you provide is accurate and complete.</p>
+      <p>You are responsible for maintaining the confidentiality of your account credentials, API keys, and access tokens. You agree to notify us immediately of any unauthorized use of your account. We are not liable for any loss resulting from unauthorized use of your credentials.</p>
+    </section>
+
+    <section id="s4">
+      <span class="section-number">Section 04</span>
+      <h2>Acceptable Use Policy</h2>
+      <p>You agree to use the Services only for lawful purposes and in accordance with these Terms. You agree <strong>not</strong> to:</p>
+      <ul>
+        <li>Use the Services to violate any applicable local, state, national, or international law or regulation</li>
+        <li>Transmit any unsolicited or unauthorized advertising or promotional material (spam)</li>
+        <li>Impersonate any person or entity or misrepresent your affiliation with any person or entity</li>
+        <li>Use the Services to harass, abuse, threaten, or intimidate any individual</li>
+        <li>Attempt to gain unauthorized access to any portion of the Services or any related systems</li>
+        <li>Reverse engineer, decompile, or otherwise attempt to derive source code from any part of the Services</li>
+        <li>Use automated tools to scrape or extract data beyond what is permitted by our APIs</li>
+        <li>Interfere with or disrupt the integrity or performance of the Services</li>
+        <li>Use the Services to generate content that is defamatory, obscene, fraudulent, or harmful to minors</li>
+        <li>Circumvent any rate limits, usage caps, or other technical measures we impose</li>
+      </ul>
+      <div class="callout-warn">
+        <p><strong>Enforcement:</strong> We reserve the right to terminate or suspend your access to the Services immediately and without notice for any violation of this Acceptable Use Policy.</p>
+      </div>
+    </section>
+
+    <section id="s5">
+      <span class="section-number">Section 05</span>
+      <h2>AI-Generated Content &amp; Limitations</h2>
+
+      <h3>Nature of AI Output</h3>
+      <p>Our Services use artificial intelligence and large language models to generate content, recommendations, and analyses. You acknowledge that:</p>
+      <ul>
+        <li>AI-generated content may be inaccurate, incomplete, or not suitable for your specific use case</li>
+        <li>AI outputs do not constitute professional legal, financial, medical, or business advice</li>
+        <li>You are solely responsible for reviewing, verifying, and approving any AI-generated content before use</li>
+        <li>Results may vary based on the AI model used, prompt content, and other factors outside our control</li>
+      </ul>
+
+      <h3>LinkedIn Automation</h3>
+      <p>When using our LinkedIn content scheduling tools, you are solely responsible for ensuring that all published content complies with LinkedIn's Terms of Service and Community Standards. We are not liable for any account suspension, restriction, or penalties imposed by LinkedIn as a result of your use of our automation tools.</p>
+
+      <h3>Local vs. Cloud Processing</h3>
+      <p>When operating in <strong>local mode (Ollama)</strong>, all AI inference occurs on your hardware and is subject to the terms of the applicable open-source model license. When operating in <strong>cloud mode</strong> (Anthropic Claude or OpenAI), your data is subject to the terms and policies of those third-party providers in addition to these Terms.</p>
+    </section>
+
+    <section id="s6">
+      <span class="section-number">Section 06</span>
+      <h2>Data, Privacy &amp; Security</h2>
+      <p>Your use of the Services is also governed by our <a href="privacy_policy.html">Privacy Policy</a>, incorporated herein by reference. By using the Services, you consent to the data practices described in the Privacy Policy.</p>
+      <p>You retain all ownership rights to data you input into the Services, including CRM records, contact data, and business information. You grant us a limited, non-exclusive license to process that data solely for the purpose of providing the Services to you.</p>
+      <div class="callout">
+        <p>You are solely responsible for the security of your local environment, API keys, access tokens, and any credentials stored in your systems. We strongly recommend using environment variables rather than hardcoding credentials in source files.</p>
+      </div>
+    </section>
+
+    <section id="s7">
+      <span class="section-number">Section 07</span>
+      <h2>Intellectual Property</h2>
+      <p>All content, software, code, designs, and materials comprising the Services — excluding your input data — are the exclusive property of Acuff Analytics LLC or its licensors and are protected by applicable intellectual property laws.</p>
+      <p>You are granted a limited, non-exclusive, non-transferable, revocable license to use the Services for your internal business purposes. This license does not include the right to sublicense, sell, resell, transfer, assign, or commercially exploit any part of the Services.</p>
+      <p>Any feedback, suggestions, or ideas you provide regarding the Services may be used by us without restriction or compensation to you.</p>
+    </section>
+
+    <section id="s8">
+      <span class="section-number">Section 08</span>
+      <h2>Third-Party Services &amp; Integrations</h2>
+      <p>The Services integrate with third-party platforms including but not limited to LinkedIn, Anthropic, OpenAI, Ollama, DuckDuckGo, HubSpot, and Salesforce. Your use of these integrations is subject to the respective third-party terms of service and privacy policies.</p>
+      <p>We do not control and are not responsible for the availability, accuracy, or practices of any third-party service. We disclaim all liability arising from your use of third-party integrations.</p>
+    </section>
+
+    <section id="s9">
+      <span class="section-number">Section 09</span>
+      <h2>Fees &amp; Payment</h2>
+      <p>Certain features of the Services may require payment. All fees are stated in U.S. dollars unless otherwise specified. You agree to pay all applicable fees associated with your use of the Services.</p>
+      <p>Fees are non-refundable except as expressly stated in our refund policy or as required by applicable law. We reserve the right to change our pricing at any time with 30 days notice to existing subscribers.</p>
+      <p>Failure to pay applicable fees may result in suspension or termination of your access to the Services.</p>
+    </section>
+
+    <section id="s10">
+      <span class="section-number">Section 10</span>
+      <h2>Disclaimers &amp; Limitation of Liability</h2>
+
+      <h3>Disclaimer of Warranties</h3>
+      <div class="caps-block">
+        <p>The services are provided "as is" and "as available" without warranties of any kind, either express or implied. To the fullest extent permitted by law, Acuff Analytics LLC disclaims all warranties, including implied warranties of merchantability, fitness for a particular purpose, and non-infringement.</p>
+      </div>
+      <p>We do not warrant that the Services will be uninterrupted, error-free, secure, or free of viruses or other harmful components.</p>
+
+      <h3>Limitation of Liability</h3>
+      <div class="caps-block">
+        <p>To the maximum extent permitted by applicable law, Acuff Analytics LLC and its officers, directors, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly.</p>
+      </div>
+      <p>In no event shall our aggregate liability exceed the greater of (a) the amount you paid us in the 12 months preceding the claim, or (b) one hundred U.S. dollars ($100.00).</p>
+    </section>
+
+    <section id="s11">
+      <span class="section-number">Section 11</span>
+      <h2>Indemnification</h2>
+      <p>You agree to defend, indemnify, and hold harmless Acuff Analytics LLC and its officers, directors, employees, and agents from any claims, damages, losses, costs, or expenses (including reasonable attorneys' fees) arising out of:</p>
+      <ul>
+        <li>Your use of or access to the Services</li>
+        <li>Your violation of these Terms</li>
+        <li>Your violation of any third-party rights, including intellectual property or privacy rights</li>
+        <li>Any content you generate, publish, or transmit through the Services</li>
+      </ul>
+    </section>
+
+    <section id="s12">
+      <span class="section-number">Section 12</span>
+      <h2>Termination</h2>
+      <p>Either party may terminate these Terms at any time. We may suspend or terminate your access to the Services immediately, without notice or liability, for any reason including if you breach these Terms.</p>
+      <p>Upon termination, your right to use the Services ceases immediately. Sections covering intellectual property, disclaimers, limitation of liability, indemnification, and governing law shall survive termination.</p>
+    </section>
+
+    <section id="s13">
+      <span class="section-number">Section 13</span>
+      <h2>Governing Law &amp; Disputes</h2>
+      <p>These Terms shall be governed by and construed in accordance with the laws of the State of Texas, without regard to its conflict of law principles. Any dispute arising under or relating to these Terms shall be subject to the exclusive jurisdiction of the state and federal courts located in Texas.</p>
+      <p>You agree to attempt to resolve any dispute informally by contacting us first. If a dispute cannot be resolved informally within 30 days, either party may pursue formal legal remedies.</p>
+    </section>
+
+    <section id="s14">
+      <span class="section-number">Section 14</span>
+      <h2>General Provisions</h2>
+      <ul>
+        <li><strong>Entire Agreement:</strong> These Terms, together with the Privacy Policy, constitute the entire agreement between you and Acuff Analytics LLC regarding the Services.</li>
+        <li><strong>Severability:</strong> If any provision of these Terms is held invalid or unenforceable, the remaining provisions shall continue in full force.</li>
+        <li><strong>Waiver:</strong> Our failure to enforce any right or provision of these Terms will not be deemed a waiver of such right or provision.</li>
+        <li><strong>Assignment:</strong> You may not assign your rights under these Terms without our prior written consent. We may assign our rights without restriction.</li>
+        <li><strong>Notices:</strong> We may provide notices via email or by posting to the Services. You may provide notices to us at the contact information below.</li>
+      </ul>
+    </section>
+
+    <section id="s15">
+      <span class="section-number">Section 15</span>
+      <h2>Contact Information</h2>
+      <p>For questions, legal notices, or concerns regarding these Terms of Service, please contact us. We will respond to all legal inquiries within 30 days.</p>
+      <div class="contact-box">
+        <h3>Legal inquiries</h3>
+        <p>We aim to respond to all Terms-related inquiries within 30 days.</p>
+        <div class="contact-details">
+          <div class="contact-row">
+            <div class="contact-icon">@</div>
+            <a href="mailto:legal@acuffanalytics.com">legal@acuffanalytics.com</a>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">⌂</div>
+            <a href="https://www.acuffanalytics.com" target="_blank">www.acuffanalytics.com</a>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">✦</div>
+            <span>Acuff Analytics LLC</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Footer -->
+<footer class="page-footer">
+  <p>&copy; <span id="year"></span> Acuff Analytics LLC. All rights reserved. &nbsp;·&nbsp; <a href="terms_of_service.html">Terms of Service</a> &nbsp;·&nbsp; <a href="privacy_policy.html">Privacy Policy</a></p>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  document.getElementById("effective-date").textContent =
+    "Effective: " + new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+
+  const sections = document.querySelectorAll("section[id]");
+  const links    = document.querySelectorAll(".toc-link");
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove("active"));
+        const active = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+        if (active) active.classList.add("active");
+      }
+    });
+  }, { rootMargin: "-20% 0px -70% 0px" });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+
+</html>
