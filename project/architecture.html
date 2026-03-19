@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Architecture — Control Tower</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .arch-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 32px;
+      max-width: 680px;
+    }
+    .arch-node {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg-subtle);
+      position: relative;
+    }
+    .arch-node.highlight { border-color: rgba(37,99,235,0.4); background: var(--blue-dim); }
+    .arch-connector {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+      margin-left: 31px;
+    }
+    .arch-node-num {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--primary-blue);
+      font-weight: 600;
+      min-width: 24px;
+      margin-top: 2px;
+    }
+    .arch-node-body h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 3px; }
+    .arch-node-body p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
+  </style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-eyebrow">System Architecture</div>
+  <h1>Multi-Agent Reliability<br>by <em>Design</em></h1>
+  <p class="sub">Every agent has a defined role, a bounded scope, and an explicit interface. No black boxes. No hidden prompts. No un-logged actions.</p>
+</div>
+
+<section>
+  <div class="tag">Execution Flow</div>
+  <h2 class="section-title">From chaos to verified action</h2>
+  <p class="section-body">The oversight lifecycle runs as a directed graph. Every node is an agent class. Every edge is a conditional transition. Every state is logged.</p>
+
+  <div class="arch-flow">
+    <div class="arch-node">
+      <div class="arch-node-num">01</div>
+      <div class="arch-node-body"><h4>Detection Agents</h4><p>Continuous KS-test drift monitoring, performance degradation detection, latency SLA alerting. Sub-10s detection latency across all live model outputs.</p></div>
+    </div>
+    <div class="arch-connector"></div>
+    <div class="arch-node">
+      <div class="arch-node-num">02</div>
+      <div class="arch-node-body"><h4>Investigation Agents</h4><p>Root cause analysis with feature-level attribution. Isolates which input distribution shifted, by how much, and which tenants are affected.</p></div>
+    </div>
+    <div class="arch-connector"></div>
+    <div class="arch-node">
+      <div class="arch-node-num">03</div>
+      <div class="arch-node-body"><h4>Planning Agents</h4><p>Structured remediation plans with cost, risk, confidence, and estimated recovery time attached to every proposed action.</p></div>
+    </div>
+    <div class="arch-connector"></div>
+    <div class="arch-node">
+      <div class="arch-node-num">04</div>
+      <div class="arch-node-body"><h4>Debate Agents</h4><p>Adversarial review of every plan before it reaches safety. Dissent is surfaced, logged, and must be resolved — not suppressed.</p></div>
+    </div>
+    <div class="arch-connector"></div>
+    <div class="arch-node highlight">
+      <div class="arch-node-num">05</div>
+      <div class="arch-node-body"><h4>Safety Layer — Three Gates</h4><p><strong>Policy Compliance → Risk Evaluation → Human Approval.</strong> In sequence. Every gate produces an auditable decision record. No action bypasses this layer.</p></div>
+    </div>
+    <div class="arch-connector"></div>
+    <div class="arch-node">
+      <div class="arch-node-num">06</div>
+      <div class="arch-node-body"><h4>Execution Agents</h4><p>Atomic model swap, zero-downtime deployment, tenant routing update, or escalation — depending on the approved plan.</p></div>
+    </div>
+    <div class="arch-connector"></div>
+    <div class="arch-node">
+      <div class="arch-node-num">07</div>
+      <div class="arch-node-body"><h4>Simulation Engine</h4><p>Every approved action is simulated before it reaches production. Forecasts accuracy, cost, risk, and stability. Blocks execution if thresholds are not met.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="tag">Infrastructure</div>
+  <h2 class="section-title">Kubernetes-ready. Production-grade.</h2>
+  <div class="card-grid card-grid-4 mt-24">
+    <div class="card"><h4>FastAPI Server</h4><p>REST inference with /predict, /predict/batch, /healthz, /readyz and full request tracing.</p></div>
+    <div class="card"><h4>LangGraph Orchestration</h4><p>Directed state graph execution with conditional transitions and immutable state logging.</p></div>
+    <div class="card"><h4>MLflow Tracking</h4><p>Every model version, retrain event, and quality gate outcome is logged to MLflow.</p></div>
+    <div class="card"><h4>Kubernetes HPA</h4><p>Horizontal pod autoscaling, rolling updates, liveness/readiness probes, ConfigMap configuration.</p></div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="section-inner">
+    <div class="tag tag-green">Multi-Tenant</div>
+    <h2 class="section-title white">Per-tenant model routing with canary support</h2>
+    <p class="section-body white">Each tenant routes to its own model version. Canary deployments run at configurable traffic splits with shadow metrics and automatic promotion on quality gate pass.</p>
+    <div class="pill-list mt-24">
+      <div class="pill" style="border-color:#1e293b;color:#94a3b8">Per-tenant isolation</div>
+      <div class="pill" style="border-color:#1e293b;color:#94a3b8">Canary split (configurable)</div>
+      <div class="pill" style="border-color:#1e293b;color:#94a3b8">Shadow metrics</div>
+      <div class="pill" style="border-color:#1e293b;color:#94a3b8">Auto-promotion on gate pass</div>
+      <div class="pill" style="border-color:#1e293b;color:#94a3b8">Instant rollback</div>
+    </div>
+  </div>
+</section>
+
+<section style="text-align:center">
+  <h2 class="section-title">See it in the display panels</h2>
+  <p class="section-body" style="margin:0 auto 28px">Every architectural layer has a live instrument panel.</p>
+  <a href="displays.html" class="btn btn-primary">View the Displays →</a>
+</section>
+
+<script src="nav.js"></script>
+</body>
+</html>
